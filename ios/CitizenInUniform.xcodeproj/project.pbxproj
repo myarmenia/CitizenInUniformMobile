@@ -8,16 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* CitizenInUniformTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CitizenInUniformTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-CitizenInUniform.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-CitizenInUniform.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-CitizenInUniform-CitizenInUniformTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-CitizenInUniform-CitizenInUniformTests.a */; };
+		713B6D99F6016E6ADCAFE991 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2319D467EE57EF076F44BABD /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A483EEDE31DB4D338CBF8BDD /* NotoSansArmenian-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F084057D261744FCA6EF5806 /* NotoSansArmenian-Black.ttf */; };
-		A669AE66CE514FD29F7C710D /* NotoSansArmenian-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E213C875F1248239B52F117 /* NotoSansArmenian-Bold.ttf */; };
-		1394A07C8D334AB1BAD83AEC /* NotoSansArmenian-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8AF786331375419E9BF50342 /* NotoSansArmenian-Thin.ttf */; };
-		08E71A13EBBF48879F63A662 /* NotoSansArmenian.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33B7D933C8A74D188D52F1CB /* NotoSansArmenian.ttf */; };
+		980DBE66E075A6B256AE5956 /* libPods-CitizenInUniform-CitizenInUniformTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD9D77868BD9A58189C6166 /* libPods-CitizenInUniform-CitizenInUniformTests.a */; };
+		E92E0303F1C1EC3E37581A48 /* libPods-CitizenInUniform.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA2175FFB6DD5E9EFD339492 /* libPods-CitizenInUniform.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +31,7 @@
 		00E356EE1AD99517003FC87E /* CitizenInUniformTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CitizenInUniformTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* CitizenInUniformTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CitizenInUniformTests.m; sourceTree = "<group>"; };
+		0CD9D77868BD9A58189C6166 /* libPods-CitizenInUniform-CitizenInUniformTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CitizenInUniform-CitizenInUniformTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* CitizenInUniform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitizenInUniform.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = CitizenInUniform/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = CitizenInUniform/AppDelegate.mm; sourceTree = "<group>"; };
@@ -41,18 +39,14 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CitizenInUniform/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CitizenInUniform/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = CitizenInUniform/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-CitizenInUniform-CitizenInUniformTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CitizenInUniform-CitizenInUniformTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-CitizenInUniform.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform.debug.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-CitizenInUniform.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform.release.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-CitizenInUniform.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CitizenInUniform.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2319D467EE57EF076F44BABD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = CitizenInUniform/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3A1AD6EE595EA44F75A97A78 /* Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CitizenInUniform/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig"; sourceTree = "<group>"; };
+		98D7A25BFDE902167AD0F116 /* Pods-CitizenInUniform.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform.debug.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform.debug.xcconfig"; sourceTree = "<group>"; };
+		B37F4C33331C71A31D4B3068 /* Pods-CitizenInUniform.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform.release.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform.release.xcconfig"; sourceTree = "<group>"; };
+		EB2F263EF23AA0A18B5CF08B /* Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig"; path = "Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F084057D261744FCA6EF5806 /* NotoSansArmenian-Black.ttf */ = {isa = PBXFileReference; name = "NotoSansArmenian-Black.ttf"; path = "../src/assets/fonts/NotoSansArmenian-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8E213C875F1248239B52F117 /* NotoSansArmenian-Bold.ttf */ = {isa = PBXFileReference; name = "NotoSansArmenian-Bold.ttf"; path = "../src/assets/fonts/NotoSansArmenian-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8AF786331375419E9BF50342 /* NotoSansArmenian-Thin.ttf */ = {isa = PBXFileReference; name = "NotoSansArmenian-Thin.ttf"; path = "../src/assets/fonts/NotoSansArmenian-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		33B7D933C8A74D188D52F1CB /* NotoSansArmenian.ttf */ = {isa = PBXFileReference; name = "NotoSansArmenian.ttf"; path = "../src/assets/fonts/NotoSansArmenian.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FA2175FFB6DD5E9EFD339492 /* libPods-CitizenInUniform.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CitizenInUniform.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-CitizenInUniform-CitizenInUniformTests.a in Frameworks */,
+				980DBE66E075A6B256AE5956 /* libPods-CitizenInUniform-CitizenInUniformTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-CitizenInUniform.a in Frameworks */,
+				E92E0303F1C1EC3E37581A48 /* libPods-CitizenInUniform.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,16 +96,28 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				2319D467EE57EF076F44BABD /* PrivacyInfo.xcprivacy */,
 			);
 			name = CitizenInUniform;
+			sourceTree = "<group>";
+		};
+		1D4F571E5A93FA4D6D28605F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				98D7A25BFDE902167AD0F116 /* Pods-CitizenInUniform.debug.xcconfig */,
+				B37F4C33331C71A31D4B3068 /* Pods-CitizenInUniform.release.xcconfig */,
+				3A1AD6EE595EA44F75A97A78 /* Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig */,
+				EB2F263EF23AA0A18B5CF08B /* Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-CitizenInUniform.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-CitizenInUniform-CitizenInUniformTests.a */,
+				FA2175FFB6DD5E9EFD339492 /* libPods-CitizenInUniform.a */,
+				0CD9D77868BD9A58189C6166 /* libPods-CitizenInUniform-CitizenInUniformTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -131,8 +137,7 @@
 				00E356EF1AD99517003FC87E /* CitizenInUniformTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				BBD78D7AC51CEA395F1C20DB /* Pods */,
-				D8D06BE005B046EE85869E2D /* Resources */,
+				1D4F571E5A93FA4D6D28605F /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -148,29 +153,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3B4392A12AC88292D35C810B /* Pods-CitizenInUniform.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-CitizenInUniform.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		D8D06BE005B046EE85869E2D /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				F084057D261744FCA6EF5806 /* NotoSansArmenian-Black.ttf */,
-				8E213C875F1248239B52F117 /* NotoSansArmenian-Bold.ttf */,
-				8AF786331375419E9BF50342 /* NotoSansArmenian-Thin.ttf */,
-				33B7D933C8A74D188D52F1CB /* NotoSansArmenian.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -178,12 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CitizenInUniformTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				A8EEE84B44BDDFBE3746C23F /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				EEE3F5FC116D741302BBE549 /* [CP] Embed Pods Frameworks */,
+				62F1A56AD29D370CFFFB1B09 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -199,13 +181,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CitizenInUniform" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				7FBAD125097E4A7E0B4D6099 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				8A9BA8A5FF332796F33A554A /* [CP] Embed Pods Frameworks */,
+				95DC1166570ACB5F24C5FDE9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -222,7 +204,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -266,10 +249,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				A483EEDE31DB4D338CBF8BDD /* NotoSansArmenian-Black.ttf in Resources */,
-				A669AE66CE514FD29F7C710D /* NotoSansArmenian-Bold.ttf in Resources */,
-				1394A07C8D334AB1BAD83AEC /* NotoSansArmenian-Thin.ttf in Resources */,
-				08E71A13EBBF48879F63A662 /* NotoSansArmenian.ttf in Resources */,
+				713B6D99F6016E6ADCAFE991 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +258,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -288,50 +268,28 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		62F1A56AD29D370CFFFB1B09 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CitizenInUniform-CitizenInUniformTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		7FBAD125097E4A7E0B4D6099 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -353,24 +311,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+		8A9BA8A5FF332796F33A554A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+		95DC1166570ACB5F24C5FDE9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -387,21 +345,43 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform/Pods-CitizenInUniform-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		A8EEE84B44BDDFBE3746C23F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CitizenInUniform-CitizenInUniformTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EEE3F5FC116D741302BBE549 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CitizenInUniform-CitizenInUniformTests/Pods-CitizenInUniform-CitizenInUniformTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -437,7 +417,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig */;
+			baseConfigurationReference = 3A1AD6EE595EA44F75A97A78 /* Pods-CitizenInUniform-CitizenInUniformTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -464,7 +444,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig */;
+			baseConfigurationReference = EB2F263EF23AA0A18B5CF08B /* Pods-CitizenInUniform-CitizenInUniformTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -488,11 +468,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-CitizenInUniform.debug.xcconfig */;
+			baseConfigurationReference = 98D7A25BFDE902167AD0F116 /* Pods-CitizenInUniform.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GA254X58JF;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CitizenInUniform/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -515,11 +496,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-CitizenInUniform.release.xcconfig */;
+			baseConfigurationReference = B37F4C33331C71A31D4B3068 /* Pods-CitizenInUniform.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GA254X58JF;
 				INFOPLIST_FILE = CitizenInUniform/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -542,6 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -569,8 +552,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -588,6 +573,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -607,7 +594,13 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -615,6 +608,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -642,8 +636,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				CXX = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -654,6 +650,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -672,7 +670,13 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
