@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/NotoSansArmenian-Black.ttf",
+      "sha1": "72f846ab8b681b4eff83d8e8a5963ee7c944c35d"
+    },
+    {
+      "path": "src/assets/fonts/NotoSansArmenian-Bold.ttf",
+      "sha1": "54f0d5fc990d75882b4371bb5ea170c58ead2bc6"
+    },
+    {
+      "path": "src/assets/fonts/NotoSansArmenian-Thin.ttf",
+      "sha1": "b700c78e3e03d7f68e5d4cb53d4236b97605ce2c"
+    },
+    {
+      "path": "src/assets/fonts/NotoSansArmenian.ttf",
+      "sha1": "3c21fdd44a64e4e5361acc6fbafe1996046953af"
+    }
+  ]
+}

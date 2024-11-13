@@ -3,6 +3,7 @@ module.exports = {
     'module:@react-native/babel-preset',
   ],
   plugins: [
+    "react-native-reanimated/plugin",
     [
       'module:react-native-dotenv',
       {
@@ -11,8 +12,8 @@ module.exports = {
         path: '.env',
         blocklist: null,
         allowlist: null,
-        blacklist: null, // DEPRECATED
-        whitelist: null, // DEPRECATED
+        blacklist: null,
+        whitelist: null,
         safe: false,
         allowUndefined: true,
         verbose: false,
