@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import Background from "../components/Background";
@@ -61,15 +61,21 @@ export default function ChatScreen({ navigation }: IProps) {
                             <Text style={stylesMemo.title}>
                                 {messageTo}   
                             </Text>
-                            <ChatList
-                                messages={messages}
-                                flatListRef={flatListRef}
-                            />
-                            <MessageInput 
-                                value={value}
-                                setValue={setValue}
-                                onSend={onSend}
-                            />
+                            <KeyboardAvoidingView
+                                behavior="padding"
+                                style={{ flex: 1 }}
+                                keyboardVerticalOffset={10}
+                            >
+                                <ChatList
+                                    messages={messages}
+                                    flatListRef={flatListRef}
+                                />
+                                <MessageInput 
+                                    value={value}
+                                    setValue={setValue}
+                                    onSend={onSend}
+                                />
+                            </KeyboardAvoidingView>
                         </View>
                     </>
                     : <Loading title="Please a wait ..." />
