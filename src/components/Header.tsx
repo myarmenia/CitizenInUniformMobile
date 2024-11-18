@@ -7,6 +7,7 @@ import { useModal, useTheme } from "../hooks";
 import { questionIcon } from "../assets/icons/questionIcon";
 import { ColorScheme, IStyles } from "../contexts/ThemeContext";
 import { navigationTypes } from "../navigation/navigation.types";
+import { appStyles } from "../styles";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
@@ -89,8 +90,8 @@ const styles = ({ colors, fontSize }: IStyles) => {
             paddingHorizontal: 16,
             height: 50,
             borderRadius: 4,
-            marginTop: 10
-
+            marginTop: 10,
+            ...appStyles({colors, fontSize}).shadow
         },
         title: {
             fontSize: fontSize(14),

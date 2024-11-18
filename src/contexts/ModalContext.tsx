@@ -25,9 +25,7 @@ export const ModalProvider = ({ children }: IProps) => {
     const [visible, setVisible] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [navigation, setNavigation] = useState<NavigationProp<ParamListBase>  | undefined>();
-
-
-
+    
     const showModal = (state: boolean) => {
         setIsSuccess(state);
         setVisible(true);
@@ -35,7 +33,6 @@ export const ModalProvider = ({ children }: IProps) => {
 
     const hideModal = () => {
         setVisible(false);
-        setIsSuccess(false);
         if(navigateToHome) {
             navigation?.navigate(navigationTypes.HOME)
             setNavigateToHome(false);
