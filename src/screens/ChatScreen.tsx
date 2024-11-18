@@ -1,4 +1,4 @@
-import { FlatList, KeyboardAvoidingView, StyleSheet, Text, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import Background from "../components/Background";
@@ -64,7 +64,8 @@ export default function ChatScreen({ navigation }: IProps) {
                             <KeyboardAvoidingView
                                 behavior="padding"
                                 style={{ flex: 1 }}
-                                keyboardVerticalOffset={10}
+                                keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : undefined}
+                                enabled={Platform.OS === 'ios'}
                             >
                                 <ChatList
                                     messages={messages}
