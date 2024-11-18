@@ -1,7 +1,7 @@
 
 
 import React, { memo, ReactNode, useMemo } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { ICategory, ISubcategory } from "../interfaces/data.types";
@@ -15,10 +15,11 @@ interface IProps {
     borderColor?: string;
     borderEnabled?: boolean;
     borderWidth?: number;
-    children?: ReactNode
+    children?: ReactNode,
+    style?: ViewStyle
 }
 
-function Button({ title, backgroundColor, disabled, onPress, borderColor, borderEnabled, borderWidth, children}: IProps) {
+function Button({ title, backgroundColor, disabled, onPress, borderColor, borderEnabled, borderWidth, children, style }: IProps) {
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
@@ -26,21 +27,26 @@ function Button({ title, backgroundColor, disabled, onPress, borderColor, border
     return (
         <TouchableOpacity
             style={[
-                stylesMemo.container, 
-                { 
+                stylesMemo.container,
+                style,
+                {
                     backgroundColor: backgroundColor ?? colors.PRIMARY,
-                    borderColor: borderEnabled ? borderColor?? backgroundColor ?? colors.PRIMARY : undefined,
+                    borderColor: borderEnabled ? borderColor ?? backgroundColor ?? colors.PRIMARY : undefined,
                     borderWidth: borderEnabled ? borderWidth ?? 1 : 0,
+                },
+                disabled && {
+                    backgroundColor: colors.DISABLED,
+                    borderColor: colors.DISABLED,
                 }
-            ]} 
+            ]}
             onPress={onPress}
             disabled={disabled}
         >
-           {!children
-           ?  <Text style={stylesMemo.title} >
-                {title}
-            </Text>
-            : children}
+            {!children
+                ? <Text style={stylesMemo.title} >
+                    {title}
+                </Text>
+                : children}
         </TouchableOpacity>
     )
 }

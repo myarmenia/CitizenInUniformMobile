@@ -1,5 +1,5 @@
 import { memo, ReactNode } from "react";
-import { ImageBackground, View } from "react-native";
+import { ImageBackground, SafeAreaView, View } from "react-native";
 import { useTheme } from "../hooks";
 
 
@@ -22,6 +22,7 @@ function Background ({ children }: IProps) {
                     height: '100%',
                 }}      
             >
+                <SafeAreaView/>
                 {children}
             </ImageBackground>
         </View>

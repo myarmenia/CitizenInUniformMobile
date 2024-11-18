@@ -13,5 +13,14 @@ export const appStrings = {
     emptyMessagesInactive: 'Դուք դեռ չունեք ավարտված նամակներ սեղմեք “նոր” կոճակը որպեսզի սկսեք',
     active: 'Ակտիվ',
     inactive: 'Ավարտած',
-    new: 'Նոր'
+    new: 'Նոր',
+    message: 'Նամակ',
+    emailMessageLarge: 'Էլեկտրոնային նամակ',
+    pnAndMipTogether: 'Պաշտպանության նախարարություն եվ ՄԻՊ գրասենյակ միասին',
+    emailErrorMessage: 'Մուտքագրած էլ. հասցեն անվավեր է',
+    nameLastName: 'Անուն Ազգանուն*',
+    emailAddress: 'Էլ. հասցե',
+    number: 'Հեռախոսահամար*',
+    numberError: 'Համոզվեք, որ հեռախոսահամարը ճիշտ է մուտքագրված',
+    category: 'Կատեգորիա'
 }

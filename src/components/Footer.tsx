@@ -4,15 +4,19 @@ import { callIcon, chatIcon } from "../assets/icons";
 import { appStrings } from "../assets/appStrings";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { appStyles } from "../styles";
-import { useTheme } from "../hooks";
+import { useFormData, useTheme } from "../hooks";
 import { ColorScheme, IStyles } from "../contexts/ThemeContext";
 import { emailIcon } from "../assets/icons/emailIcon";
 import { fastConnectIcon } from "../assets/icons/fastConnectIcon";
+import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
     showActions?: boolean,
-    selectedItem?: number
+    selectedItem?: {
+        id: number,
+        name: string,
+    }
 }
 
 function Footer({ navigation, showActions = false, selectedItem }: IProps) {
@@ -23,8 +27,10 @@ function Footer({ navigation, showActions = false, selectedItem }: IProps) {
     const stylesMemo = useMemo(() => styles({colors, fontSize}), [isDarkTheme, coefficient])
     const appStylesMemo = useMemo(() => appStyles({colors, fontSize}), [isDarkTheme, coefficient])
 
-    const disabledAll = selectedItem == -1;
-    const disabled = disabledAll || selectedItem == 2;
+    const { setMessageTo, setMessageType } = useFormData();    
+
+    const disabledAll = selectedItem?.id == -1;
+    const disabled = disabledAll || selectedItem?.id == 2;
 
 
     const onPressCall = () => {
@@ -33,16 +39,24 @@ function Footer({ navigation, showActions = false, selectedItem }: IProps) {
     }
 
     const onPressChat = () => {
-        navigation.navigate('Messages');
+        if (selectedItem?.name){
+            setMessageTo(selectedItem?.name);
+            setMessageType(appStrings.message);
+            navigation.navigate(navigationTypes.MESSAGES);
+        }
     }
 
     const onPressEmail = () => {
-        // navigation.navigate('Chat');
-        console.log('onPressEmail');
+        if (selectedItem?.name){
+            setMessageTo(selectedItem?.name);
+            setMessageType(appStrings.emailMessageLarge);
+            navigation.navigate(navigationTypes.FORM_NAME);
+
+        }
     }
 
     const onPressFastConnect = () => {
-        navigation.navigate('SelectConnectionType');
+        navigation.navigate(navigationTypes.CONNECTION_TYPE);
     }
 
     return (

@@ -1,9 +1,9 @@
 import { memo, useMemo } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 
-function Loading() {
+function Loading({ title }: { title?: string }) {
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
@@ -15,6 +15,9 @@ function Loading() {
                 size={"large"}
                 color={colors.PRIMARY}
             />
+            {title && <Text style={stylesMemo.title} >
+                {title}
+            </Text>}
         </View>
     );
 }
@@ -32,8 +35,15 @@ const styles = ({ colors, fontSize }: IStyles) => {
             zIndex: 100,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: colors.BACKGROUND
+            gap: 20
         },
+        title: {
+            fontSize: fontSize(18),
+            fontFamily: "NotoSansArmenian",
+            fontWeight: "400",
+            textAlign: "center",
+            color: colors.TEXT_COLOR,
+        }
 
     })
 }

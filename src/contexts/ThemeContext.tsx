@@ -24,20 +24,35 @@ interface IProps {
 
 export const ThemeProvider = ({ children }: IProps) => {
 
-    const isDarkTheme = useColorScheme() === 'dark';
-    const [coefficient, setCoefficient] = useState(1)
+    const colorScheme = useColorScheme();
+    const isDarkTheme = colorScheme === 'dark';
+    const [isDark, setIsDark] = useState(isDarkTheme);
+    const [coefficient, setCoefficient] = useState(1);    
 
-    const colors = isDarkTheme ? darkColors : lightColors;
+    const colors = isDark ? darkColors : lightColors;
 
     useEffect(() => {
         getFontSize();
-    }, [])
+        AsyncStorage.getItem('theme').then(theme => {
+            if(theme) {
+                setIsDark(theme === 'dark')
+            } else {
+                setIsDark(isDarkTheme);
+                if(colorScheme) {
+                    AsyncStorage.setItem('theme', colorScheme)
+                }
+
+            }
+        })
+    }, [isDarkTheme])
 
 
     const toggleTheme = () => {
-        if (isDarkTheme) {
+        if (isDarkTheme) {            
             Appearance.setColorScheme('light');
+            AsyncStorage.setItem('theme', 'light')
         } else {
+            AsyncStorage.setItem('theme', 'dark')
             Appearance.setColorScheme('dark');
         }
     }
@@ -55,7 +70,6 @@ export const ThemeProvider = ({ children }: IProps) => {
     const handleFontSize = (size: number ) => {
         if (size == 1) {
             setCoefficient(1);
-
         } else if (size == 2) {
             setCoefficient(1.2);
         } else if (size == 0) {
@@ -68,9 +82,9 @@ export const ThemeProvider = ({ children }: IProps) => {
     const getFontSize = async () => {
         try {
             const size = await AsyncStorage.getItem('font-size');
-            size && handleFontSize(+size);
-
+            
             if (size) {
+                handleFontSize(+size);
                 return parseInt(size);
             } else {
                 AsyncStorage.setItem('font-size', (1).toString());
@@ -84,14 +98,14 @@ export const ThemeProvider = ({ children }: IProps) => {
 
     const value = React.useMemo(
         () => ({
-            isDarkTheme,
+            isDarkTheme: isDark,
             colors,
             toggleTheme,
             setFontSize,
             coefficient
         }),
         [
-            isDarkTheme,
+            isDark,
             colors,
             toggleTheme,
             setFontSize,

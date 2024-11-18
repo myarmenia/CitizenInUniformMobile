@@ -9,6 +9,7 @@ import { IStyles } from "../contexts/ThemeContext";
 import SliderComponent from "../components/Slider";
 import Menu from "../components/Menu";
 import { ICategory } from "../interfaces/data.types";
+import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -24,9 +25,8 @@ export default function CategoryScreen({ navigation, route }: IProps) {
     const data: ICategory= route.params?.data;
 
     const onPress = () => {
-        console.log('onPress ---->');
+        navigation.navigate(navigationTypes.SUB_CATEGORY, {data})
     }
-
     return (
         <Background>
             <View style={stylesMemo.container}  >
@@ -40,10 +40,9 @@ export default function CategoryScreen({ navigation, route }: IProps) {
                 />
                 <Footer
                     navigation={navigation}
-                    showActions={true}
+                    showActions={false}
                 />
             </View>
-
         </Background>
     )
 };

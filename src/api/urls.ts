@@ -1,4 +1,4 @@
 export const urls = {
     CATEGORIES: 'api/mobile/categories/',
-    SUB_CATEGORIES: 'sub_categories/'
+    SUB_CATEGORY: 'api/mobile/sub-category/'
 }

@@ -4,6 +4,7 @@ import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { ICategory, ISubcategory } from "../interfaces/data.types";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     data?: ICategory[] | ISubcategory[];
@@ -24,14 +25,14 @@ function Menu({ data, onPress, navigation, iconUrl }: IProps) {
         if (onPress) {
             onPress();
         } else {
-            navigation.navigate('Category', { data: item });
+            navigation.navigate(navigationTypes.CATEGORY, { data: item });
         }
     };
 
     const renderItem = ({ item, index }: { item: any, index: number }) => {
         const size = (width - 32 - 10) / 2
 
-        const isLastItem = (index === data?.length! - 1) && data!.length > 1;
+        const isLastItem = (index === data?.length! - 1) && data!.length > 1 && data!.length % 2;
 
         return (
             <TouchableOpacity

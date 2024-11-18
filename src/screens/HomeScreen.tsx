@@ -1,10 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import Header from "../components/Header";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { NavigationProp, ParamListBase, useIsFocused } from "@react-navigation/native";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
-import { useTheme } from "../hooks";
-import { useMemo } from "react";
+import { useFormData, useTheme } from "../hooks";
+import { useEffect, useMemo } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import Menu from "../components/Menu";
 import { useQuery } from "@tanstack/react-query";
@@ -12,11 +12,13 @@ import { urls } from "../api/urls";
 import { ICategoryData } from "../interfaces/data.types";
 import Loading from "../components/Loading";
 import { axiosInstance } from "../api";
+import { navigationTypes } from "../navigation/navigation.types";
+
 interface IProps {
     navigation: NavigationProp<ParamListBase>
 }
 
-const getPosts = async () => {
+const getCategories = async () => {
     return axiosInstance.get<ICategoryData>(urls.CATEGORIES)
 }
 
@@ -25,13 +27,21 @@ export default function HomeScreen({ navigation }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
+    const { clearState } = useFormData();
+
+    const isFocused = useIsFocused();
 
     const { data, isError, isFetching } = useQuery({
-        queryKey: ['posts'],
-        queryFn: getPosts,
+        queryKey: ['categories'],
+        queryFn: getCategories,
         select: (data) => data.data,
     });
 
+    useEffect(() => {        
+        isFocused && clearState()        
+    }, [isFocused]);
+
+  
 
     return (
         <Background>

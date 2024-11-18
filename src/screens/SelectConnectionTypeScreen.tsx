@@ -1,6 +1,6 @@
 import React, { memo, useMemo, useState } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useTheme } from "../hooks";
+import { useFormData, useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { callIcon } from "../assets/icons";
 import { ICategory, ISubcategory } from "../interfaces/data.types";
@@ -18,12 +18,17 @@ interface IProps {
 
 export default function SelectConnectionTypeScreen({ navigation }: IProps) {
 
-    const [selectedItem, setSelectedItem] = useState(-1);
+    const [selectedItem, setSelectedItem] = useState({
+        name: '',
+        id: -1
+    });
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { width } = Dimensions.get('window')
+
+
+    const { width } = Dimensions.get('window');
 
 
     const size = width - 32
@@ -40,10 +45,13 @@ export default function SelectConnectionTypeScreen({ navigation }: IProps) {
                                     style={[
                                         stylesMemo.item, 
                                         { width: (size - 8) / 2 },
-                                        selectedItem === 0 &&  stylesMemo.selectedItem
+                                        selectedItem.id === 0 &&  stylesMemo.selectedItem
 
                                     ]}
-                                    onPress={() => setSelectedItem(0)}    
+                                    onPress={() => setSelectedItem({
+                                        name: appStrings.pn,
+                                        id: 0
+                                    })}    
                                 >
                                     {PNIcon(colors)}
                                     <Text style={stylesMemo.title} >
@@ -54,10 +62,13 @@ export default function SelectConnectionTypeScreen({ navigation }: IProps) {
                                     style={[
                                         stylesMemo.item, 
                                         { width: (size - 8) / 2 },
-                                        selectedItem === 1 &&  stylesMemo.selectedItem
+                                        selectedItem.id === 1 &&  stylesMemo.selectedItem
 
                                     ]}
-                                    onPress={() => setSelectedItem(1)}    
+                                    onPress={() => setSelectedItem({
+                                        name: appStrings.mip,
+                                        id: 1
+                                    })}    
                                >
                                     {MIPIcon(colors)}
                                     <Text style={stylesMemo.title} >
@@ -67,11 +78,14 @@ export default function SelectConnectionTypeScreen({ navigation }: IProps) {
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity 
-                                onPress={() => setSelectedItem(2)}    
+                                onPress={() => setSelectedItem({
+                                    name: appStrings.pnAndMip,
+                                    id: 2
+                                })}    
                                 style={[
                                     stylesMemo.item, 
                                     { width: size, paddingHorizontal: 60 },
-                                    selectedItem === 2 &&  stylesMemo.selectedItem
+                                    selectedItem.id === 2 &&  stylesMemo.selectedItem
                                 ]}
                             >
                                 <View style={stylesMemo.row} >

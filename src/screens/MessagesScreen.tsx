@@ -8,6 +8,7 @@ import { IStyles } from "../contexts/ThemeContext";
 import { appStrings } from "../assets/appStrings";
 import Button from "../components/Button";
 import { plusIcon } from "../assets/icons/plusIcon";
+import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -21,7 +22,11 @@ export default function MessagesScreen({ navigation }: IProps) {
 
     const [toggleMessages, setToggleMessages] = useState(true);
 
-    const data = []
+    const data = [];
+
+    const onNewMessage = () => {
+        navigation.navigate(navigationTypes.FORM_NAME);
+    }
 
     return (
         <Background>
@@ -55,7 +60,7 @@ export default function MessagesScreen({ navigation }: IProps) {
                         />
                     </View>
 
-                    <Button borderWidth={2} borderEnabled >
+                    <Button borderWidth={2} borderEnabled onPress={onNewMessage} >
                         <View style={stylesMemo.row} >
                             {plusIcon(colors.WHITE)}
 
@@ -92,7 +97,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             padding: 16
         },
         title: {
-            fontSize: 18,
+            fontSize: fontSize(18),
             fontFamily: 'NotoSansArmenian',
             fontWeight: '700',
             textAlign: 'center',

@@ -1,12 +1,18 @@
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native';
 import socketIOClient from 'socket.io-client';
+import { navigationTypes } from '../navigation/navigation.types';
 
 export const ModalContext = React.createContext({
     showModal: (state: boolean) => { },
+    setNavigateToHome: (state: boolean) => { },
     hideModal: () => { },
     visible: false,
-    isSuccess: false
+    isSuccess: false,
+    navigation: undefined as NavigationProp<ParamListBase>  | undefined,
+    setNavigation: (v:  NavigationProp<ParamListBase>) => {},
+    
 })
 
 interface IProps {
@@ -14,9 +20,12 @@ interface IProps {
 }
 
 export const ModalProvider = ({ children }: IProps) => {
+    const [navigateToHome, setNavigateToHome ] = useState(false);
 
     const [visible, setVisible] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [navigation, setNavigation] = useState<NavigationProp<ParamListBase>  | undefined>();
+
 
 
     const showModal = (state: boolean) => {
@@ -27,6 +36,10 @@ export const ModalProvider = ({ children }: IProps) => {
     const hideModal = () => {
         setVisible(false);
         setIsSuccess(false);
+        if(navigateToHome) {
+            navigation?.navigate(navigationTypes.HOME)
+            setNavigateToHome(false);
+        }
     }
 
     const value = React.useMemo(
@@ -34,13 +47,18 @@ export const ModalProvider = ({ children }: IProps) => {
             showModal,
             hideModal,
             visible,
-            isSuccess
+            isSuccess,
+            navigation,
+            setNavigation,
+            setNavigateToHome
         }),
         [
             showModal,
             hideModal,
             visible,
-            isSuccess
+            isSuccess,
+            navigateToHome,
+            navigation
         ],
     )
 

@@ -6,6 +6,7 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useModal, useTheme } from "../hooks";
 import { questionIcon } from "../assets/icons/questionIcon";
 import { ColorScheme, IStyles } from "../contexts/ThemeContext";
+import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
@@ -20,7 +21,7 @@ function Header({ navigation, goBackAction = true }: IProps) {
 
     const onGoToHamePage = () => {
         if (goBackAction) {
-            navigation.navigate('Home');
+            navigation.navigate(navigationTypes.HOME);
         } else {
             toggleTheme()
         }
