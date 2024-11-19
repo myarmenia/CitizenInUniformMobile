@@ -13,6 +13,8 @@ import EmailMessageScreen from "../screens/EmailMessageScreen";
 import SubCategoryScreen from "../screens/SubCategoryScreen";
 import FormSelectTypeScreen from "../screens/form/FormSelectCategory";
 import ChatScreen from "../screens/ChatScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import NotificationScreen from "../screens/NotificationScreen";
 
 
 const Stack = createStackNavigator();
@@ -31,6 +33,8 @@ export function AppNavigation() {
                 <Stack.Screen name={navigationTypes.SUB_CATEGORY} component={SubCategoryScreen} />
                 <Stack.Screen name={navigationTypes.FORM_SELECT_TYPE} component={FormSelectTypeScreen} />
                 <Stack.Screen name={navigationTypes.CHAT} component={ChatScreen} />
+                <Stack.Screen name={navigationTypes.SETTINGS} component={SettingsScreen} />
+                <Stack.Screen name={navigationTypes.NOTIFICATIONS} component={NotificationScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { Appearance, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import { Alert, Appearance, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
 import { alertIcon, arrowLeftIcon, settingsIcon } from "../assets/icons";
 import { appStrings } from "../assets/appStrings";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
@@ -11,10 +11,17 @@ import { appStyles } from "../styles";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
-    goBackAction?: boolean
+    goBackAction?: boolean,
+    showSettings?: boolean,
+    showNotification?: boolean,
 }
 
-function Header({ navigation, goBackAction = true }: IProps) {
+function Header({
+    navigation,
+    goBackAction = true,
+    showSettings = true,
+    showNotification = true,
+}: IProps) {
     const { showModal } = useModal();
     const { colors, isDarkTheme, coefficient, toggleTheme } = useTheme()
     const fontSize = (size: number) => size * coefficient;
@@ -24,14 +31,13 @@ function Header({ navigation, goBackAction = true }: IProps) {
         if (goBackAction) {
             navigation.navigate(navigationTypes.HOME);
         } else {
-            toggleTheme()
+            Alert.alert('Oooops!', 'FAQ page is not available')
         }
     }
 
     const onGoToSettingsPage = () => {
-        // navigation.navigate('Settings');
+        navigation.navigate(navigationTypes.SETTINGS);
         console.log('Settings');
-        showModal(true);
     }
 
     const onGoToNotificationPage = () => {
@@ -58,16 +64,16 @@ function Header({ navigation, goBackAction = true }: IProps) {
                     }
                 </TouchableOpacity>
                 <View style={stylesMemo.rightContent} >
-                    <TouchableOpacity
+                    {showNotification && <TouchableOpacity
                         onPress={onGoToNotificationPage}
                     >
                         {alertIcon(89)}
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                    </TouchableOpacity>}
+                    {showSettings && <TouchableOpacity
                         onPress={onGoToSettingsPage}
                     >
                         {settingsIcon(colors.ICON_COLOR)}
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </View>
             </View>
         </View>
@@ -91,7 +97,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             height: 50,
             borderRadius: 4,
             marginTop: 10,
-            ...appStyles({colors, fontSize}).shadow
+            ...appStyles({ colors, fontSize }).shadow
         },
         title: {
             fontSize: fontSize(14),

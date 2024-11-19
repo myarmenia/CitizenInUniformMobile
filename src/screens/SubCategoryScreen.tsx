@@ -37,6 +37,7 @@ const getSubCategory = async (id?: string) => {
 }
 
 export default function SubCategoryScreen({ navigation, route }: IProps) {
+    const { width } = useWindowDimensions();
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
 
@@ -81,7 +82,6 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
 
 
 
-    const { width } = useWindowDimensions();
 
     return (
         <Background>
@@ -113,7 +113,7 @@ const tagsStyles = ({ colors, fontSize }: IStyles) => {
             fontSize: 16,
             color: colors.TEXT_COLOR
         },
-       
+
         h1: {
             fontSize: 24,
             color: colors.TEXT_COLOR
