@@ -1,31 +1,77 @@
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { useMemo, useState } from "react";
-import { useFormData, useTheme } from "../../hooks";
+import { useEffect, useMemo, useState } from "react";
+import { useFormData, useSocket, useTheme } from "../../hooks";
 import Background from "../../components/Background";
 import Header from "../../components/Header";
 import { IStyles } from "../../contexts/ThemeContext";
 import Form from "../../components/Form";
 import DropDown from "../../components/DropDown";
 import { navigationTypes } from "../../navigation/navigation.types";
+import { axiosInstance } from "../../api";
+import { useQuery } from "@tanstack/react-query";
+import { urls } from "../../api/urls";
+import { handleUser } from "../../services/asyncStoryge";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
 }
+
 
 export default function FormSelectTypeScreen({ navigation }: IProps) {
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { type, setType } = useFormData();
+    const { type, setType, name, email, phoneNumber } = useFormData();
+    const { socketId, socket } = useSocket();
 
     const [dropDownPosition, setDropDownPosition] = useState(0);
     const [visible, setVisible] = useState(false);
+    const [userId, setUserId] = useState('');
 
-    const onNextStep = () => {
-        navigation.navigate(navigationTypes.CHAT)
+    const onNextStep = async () => {
+        try {
+            const checkActiveAdmins = await axiosInstance.post('https://citizenb.trigger.ltd/api/admin/online/exist')
+            console.log('111',checkActiveAdmins.data);
+
+            if (name && email && socketId) {
+                const res = await axiosInstance.post('https://citizenb.trigger.ltd/api/user/register', {
+                    name,
+                    email,
+                    message_category_id: '2',
+                    governing_body: '2',
+                    type: "IOS",
+                    phone_number: phoneNumber,
+                    socket_id: socketId
+                })
+
+                
+                const user = await handleUser()
+                const x = {
+                    ...res.data,
+                    m_user_id: user?.id
+                }
+                socket.emit('searchAdmin', x)
+                setUserId(res.data.id);
+            } else {
+                console.log('pakas ban ka');
+            }
+        } catch (error) {
+            console.log({ error: error! })
+        }
     }
+
+    useEffect(() => {
+        userId && socket.on('roomCreated', (data: any) => {
+            console.log('roomCreated --------->', data);
+            navigation.navigate(navigationTypes.CHAT, { userId, roomId: data.room });
+        })
+
+        return () => {
+            socket.off('roomCreated')
+        }
+    }, [userId])
 
     const onLayout = (e: LayoutChangeEvent) => {
         setDropDownPosition(e.nativeEvent.layout.y)
@@ -43,10 +89,11 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
                     <Header navigation={navigation} goBackAction />
                     <Form
                         activeStep={4}
-                        showGoBackButton={false}
+                        showGoBackButton={true}
                         navigation={navigation}
                         onNextStep={onNextStep}
-                        disabled={!type}
+                        disabled={false}
+                        
                     >
                         <View onLayout={onLayout} >
                             <DropDown

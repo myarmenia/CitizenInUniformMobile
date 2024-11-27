@@ -12,7 +12,6 @@ import { urls } from "../api/urls";
 import { ICategoryData } from "../interfaces/data.types";
 import Loading from "../components/Loading";
 import { axiosInstance } from "../api";
-import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>

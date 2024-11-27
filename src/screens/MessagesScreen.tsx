@@ -1,18 +1,22 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import Background from "../components/Background";
 import { useTheme } from "../hooks";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import { appStrings } from "../assets/appStrings";
 import Button from "../components/Button";
 import { plusIcon } from "../assets/icons/plusIcon";
 import { navigationTypes } from "../navigation/navigation.types";
+import { IMessage, IRoom } from "../interfaces/data.types";
+import { useChat } from "../hooks/useChat";
+import RoomItem from "../components/RoomItem";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
 }
+
 
 export default function MessagesScreen({ navigation }: IProps) {
 
@@ -22,11 +26,18 @@ export default function MessagesScreen({ navigation }: IProps) {
 
     const [toggleMessages, setToggleMessages] = useState(true);
 
-    const data = [];
+    const { rooms, isUpdate } = useChat();
+
 
     const onNewMessage = () => {
         navigation.navigate(navigationTypes.FORM_NAME);
     }
+
+    useEffect(() => {
+         console.log(rooms.active[0]?.messages[0].content);
+        
+    }, [isUpdate]);
+
 
     return (
         <Background>
@@ -39,7 +50,7 @@ export default function MessagesScreen({ navigation }: IProps) {
                     {appStrings.sendMessage}
                 </Text>
 
-                <View style={stylesMemo.row} >
+                <View style={[stylesMemo.row, {paddingHorizontal: 16}]} >
 
                     <View style={stylesMemo.row} >
                         <Button
@@ -72,14 +83,21 @@ export default function MessagesScreen({ navigation }: IProps) {
                 </View>
 
                 {
-                    data.length > 0
+                    (
+                        toggleMessages ? (rooms.active && rooms.active?.length > 0) : (rooms.passive && rooms.passive?.length > 0)
+                    )
                         ? <>
-                            {/* handle messages here */}
+                            <FlatList
+                                data={toggleMessages ? rooms.active : rooms.passive}
+                                renderItem={({ item }) => <RoomItem navigation={navigation} room={item} />}
+                                contentContainerStyle={{flexGrow: 1}}
+                                extraData={[isUpdate]}
+                            />
                         </>
 
                         : <View style={stylesMemo.empty}>
                             <Text style={stylesMemo.emptyLabel} >
-                                { toggleMessages ? appStrings.emptyMessages : appStrings.emptyMessagesInactive }
+                                {toggleMessages ? appStrings.emptyMessages : appStrings.emptyMessagesInactive}
                             </Text>
                         </View>}
 
@@ -94,7 +112,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
             flex: 1,
-            padding: 16
+            // padding: 16
         },
         title: {
             fontSize: fontSize(18),

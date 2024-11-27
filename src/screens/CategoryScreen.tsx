@@ -31,7 +31,6 @@ export default function CategoryScreen({ navigation, route }: IProps) {
         <Background>
             <View style={stylesMemo.container}  >
                 <Header navigation={navigation} goBackAction={true} />
-                <SliderComponent/>
                 <Menu
                     onPress={onPress}
                     navigation={navigation}

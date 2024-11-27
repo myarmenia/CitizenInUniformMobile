@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     Modal,
     Pressable,
@@ -10,28 +11,35 @@ import {
 } from 'react-native';
 import { IStyles } from '../contexts/ThemeContext';
 import { useTheme } from '../hooks';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { appStrings } from '../assets/appStrings';
 import { arrowIcon } from '../assets/icons';
+import { axiosInstance } from '../api';
+import { urls } from '../api/urls';
+import { useQuery } from '@tanstack/react-query';
+import { sleep } from '../screens/ChatScreen';
 
 interface IProps {
     visible: boolean;
     setVisible: (visible: boolean) => void;
     onPressItem?: (item: any) => void;
     top: number;
-    selectedCategory: string
+    selectedCategory: string,
 }
 
-const data = [
-    'Դիմումներ եվ բողոքներ',
-    'Մշտադիտարկման եվ անհատական այցեր',
-    'Տարեկան հաղորդում եվ զեկույց',
-    'Իրավական փաստաթղթեր',
-];
+const getMessageTypes = async () => {
+    await sleep(2000)
+    return axiosInstance.get(urls.GET_MESSAGE_CATEGORY);
+};
+
 
 function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: IProps) {
+    const { data, isError, isFetching } = useQuery({
+        queryKey: ['messageTypes'],
+        queryFn: getMessageTypes,
+        select: (data) => data.data.result,
+    });
 
-    const DROP_DOWN_HEIGHT = data.length * 50.5;
+    const DROP_DOWN_HEIGHT = data ? data?.length * 51 : 0;
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
@@ -39,6 +47,7 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
         () => styles({ colors, fontSize }),
         [isDarkTheme, coefficient],
     );
+
 
     const onDismiss = () => {
         setVisible(false);
@@ -49,14 +58,13 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
         onDismiss();
     };
 
-    const renderItem = (item: string, index: number) => {
+    const renderItem = (item: { id: number, title: string }, index: number) => {
         return (
             <TouchableOpacity
-                key={item}
-                onPress={() => onPress(item)}
+                onPress={() => onPress(item.title)}
                 style={stylesMemo.item}>
                 <Text style={stylesMemo.title} numberOfLines={1}>
-                    {item}
+                    {item.title}
                 </Text>
             </TouchableOpacity>
         );
@@ -73,14 +81,18 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
                         stylesMemo.button,
                         { borderColor: visible ? colors.PRIMARY : colors.BACKGROUND_2 },
                     ]}>
-                        <View style={stylesMemo.titleBox}>
-                            <Text numberOfLines={1} style={stylesMemo.title}>
-                                {selectedCategory ? selectedCategory : appStrings.category}
-                            </Text>
+                    <View style={stylesMemo.titleBox}>
+                        <Text numberOfLines={1} style={stylesMemo.title}>
+                            {selectedCategory ? selectedCategory : appStrings.category}
+                        </Text>
 
-                        </View>
+                    </View>
                     <View style={stylesMemo.arrow} >
-                        {arrowIcon(colors.PRIMARY)}
+                        {
+                            !isFetching ?
+                                arrowIcon(colors.PRIMARY)
+                                : <ActivityIndicator color={colors.PRIMARY} size={'small'} />
+                        }
                     </View>
                 </View>
             </TouchableOpacity>

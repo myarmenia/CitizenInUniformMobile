@@ -20,6 +20,7 @@
     "axios": "^1.7.7",
     "react": "18.2.0",
     "react-native": "0.74.5",
+    "react-native-device-info": "11.1.0",
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "^2.20.2",
     "react-native-google-recaptcha": "^1.0.8",

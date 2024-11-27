@@ -37,13 +37,10 @@ function Header({
 
     const onGoToSettingsPage = () => {
         navigation.navigate(navigationTypes.SETTINGS);
-        console.log('Settings');
     }
 
     const onGoToNotificationPage = () => {
-        // navigation.navigate('Notification');
-        console.log('Notification');
-        showModal(false);
+        navigation.navigate(navigationTypes.NOTIFICATIONS);
     }
 
     return (

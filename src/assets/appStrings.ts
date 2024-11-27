@@ -22,5 +22,11 @@ export const appStrings = {
     emailAddress: 'Էլ. հասցե',
     number: 'Հեռախոսահամար*',
     numberError: 'Համոզվեք, որ հեռախոսահամարը ճիշտ է մուտքագրված',
-    category: 'Կատեգորիա'
+    category: 'Կատեգորիա',
+    on: 'Միացնել',
+    off: 'Անջատել',
+    notifications: 'Ծանուցումներ',
+    notificationsSound: 'Ծանուցումների ձայնը',
+    darkMode: 'Մուգ ռեժիմ',
+    fontSize: 'Տառաչափ'
 }

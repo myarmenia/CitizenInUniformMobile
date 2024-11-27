@@ -11,7 +11,10 @@ export const lightColors = {
     DISABLED: '#989898',
     SHADOW: 'rgba(0, 0, 0, 0.75)',
     BUTTON: '#FFFFFF',
-    BUTTON_BORDER: '#D9D9D9'
+    BUTTON_BORDER: '#D9D9D9',
+    SWITCH_ACTIVE: '#46593A',
+    SWITCH_INACTIVE: '#292929',
+    SWITCH: '#D9D9D9',
 }
 
 export const darkColors = {
@@ -27,6 +30,9 @@ export const darkColors = {
     DISABLED: '#989898',
     SHADOW: '#38383899',
     BUTTON: '#292929',
-    BUTTON_BORDER: '#383838'
+    BUTTON_BORDER: '#383838',
+    SWITCH_ACTIVE: '#46593A',
+    SWITCH_INACTIVE: '#292929',
+    SWITCH: '#ABABAB',
 }
 

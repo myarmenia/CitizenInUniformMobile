@@ -19,11 +19,11 @@ function ChatList({ messages, flatListRef }: IProps) {
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
 
 
-    // useEffect(() => {
-    //     if (flatListRef.current) {
-    //         flatListRef.current.scrollToEnd({ animated: false });
-    //     }
-    // }, [fakeMessagesList]);
+    useEffect(() => {
+        if (flatListRef.current && messages.length) {
+            flatListRef.current.scrollToOffset({offset: 0, animated: true });
+        }
+    }, [messages.length]);
 
 
     return (
@@ -32,7 +32,7 @@ function ChatList({ messages, flatListRef }: IProps) {
                 ref={flatListRef}
                 data={messages}
                 renderItem={({ item }) => <Message message={item} />}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item, index) => item.id?.toString()!+ item.content }
                 style={{ flex: 1 }}
                 contentContainerStyle={stylesMemo.contentContainer}
                 inverted
@@ -41,7 +41,7 @@ function ChatList({ messages, flatListRef }: IProps) {
     );
 }
 
-export default memo(ChatList);
+export default ChatList;
 
 const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
@@ -58,7 +58,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
         contentContainer: {
             paddingHorizontal: 16,
             gap: 10,
-            paddingBottom: 40,
+            paddingBottom: 0,
             flexGrow: 1
         }
     })

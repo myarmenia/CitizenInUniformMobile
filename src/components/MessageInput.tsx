@@ -13,9 +13,10 @@ interface IProps {
     value: string;
     setValue: (text: string) => void,
     onSend: () => void,
+    disabled?: boolean,
 }
 
-function Message({ value, setValue, onSend }: IProps) {
+function Message({ value, setValue, onSend, disabled }: IProps) {
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
@@ -24,6 +25,7 @@ function Message({ value, setValue, onSend }: IProps) {
     const MAX_HEIGHT = 5 * 26 + 30;
     const insets = useSafeAreaInsets()
     const bottom = insets ? insets.bottom + 20 : 20;
+
     return (
         <View style={[stylesMemo.container, { marginBottom: bottom }]}  >
             <View style={{ flex: 1, borderRadius: 8 }} >
@@ -33,11 +35,14 @@ function Message({ value, setValue, onSend }: IProps) {
                     placeholder={appStrings.sendMessage}
                     onChangeText={setValue}
                     value={value}
+                    placeholderTextColor={colors.DISABLED}
+                    focusable
                 />
             </View>
             <TouchableOpacity
                 onPress={onSend}
                 style={stylesMemo.button}
+                disabled={disabled}
             >
                 {sendIcon()}
             </TouchableOpacity>

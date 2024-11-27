@@ -15,7 +15,6 @@ const SliderComponent = ({ stepsCount = 3, sliderWidth = 200 }: IProps) => {
     const { colors, isDarkTheme, setFontSize } = useTheme()
     const stylesMemo = useMemo(() => styles(colors), [isDarkTheme])
 
-
     const maxValue = stepsCount - 1;
     const minValue = 0;
 
@@ -78,7 +77,7 @@ const SliderComponent = ({ stepsCount = 3, sliderWidth = 200 }: IProps) => {
                 style={stylesMemo.button}
                 onPress={onPressMinus}
             >
-                {minusIcon()}
+                {minusIcon(colors.ICON_COLOR)}
             </TouchableOpacity>
             <View style={[stylesMemo.sliderContainer, { width: sliderWidth }]}>
                 <View style={stylesMemo.sliderTrack} />
@@ -98,7 +97,7 @@ const SliderComponent = ({ stepsCount = 3, sliderWidth = 200 }: IProps) => {
                 style={stylesMemo.button}
                 onPress={onPressPlus}
             >
-                {plusIcon()}
+                {plusIcon(colors.ICON_COLOR)}
             </TouchableOpacity>
         </View>
     );
@@ -110,13 +109,9 @@ const styles = (appColors: ColorScheme) => {
             alignItems: 'center',
             flexDirection: 'row',
             justifyContent: 'center',
-            gap: 10
+            gap: 20
         },
-        label: {
-            fontSize: 18,
-            marginBottom: 10,
-            color: '#ffffff',
-        },
+       
         sliderContainer: {
             height: 30,
             justifyContent: 'center',
@@ -135,11 +130,7 @@ const styles = (appColors: ColorScheme) => {
             top: 4,
             left: -10
         },
-        valueText: {
-            fontSize: 16,
-            marginTop: 10,
-            color: '#ffffff',
-        },
+       
         step: {
             width: 8,
             height: 8,
@@ -158,7 +149,6 @@ const styles = (appColors: ColorScheme) => {
             bottom: 0,
         },
         button: {
-            width: 40,
             height: 40,
             alignItems: 'center',
             justifyContent: 'center',

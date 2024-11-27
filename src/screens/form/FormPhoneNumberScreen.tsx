@@ -36,7 +36,7 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
         setError('');
         setPhoneNumber(value);
         if (messageType === appStrings.message) {
-            navigation.navigate(navigationTypes.CHAT);
+            navigation.navigate(navigationTypes.FORM_SELECT_TYPE);
         } else {
             navigation.navigate(navigationTypes.EMAIL_MESSAGE);
         }

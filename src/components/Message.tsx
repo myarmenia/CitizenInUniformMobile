@@ -16,8 +16,8 @@ function Message({ message}: IProps) {
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
 
-    const user = 'User1';
-    const isUserMessage = message.sender === user;
+    const user = 'user';
+    const isUserMessage = message.writer === user;
 
     return (
         <View style={{
@@ -33,7 +33,7 @@ function Message({ message}: IProps) {
                 <Text
                     style={isUserMessage ? stylesMemo.userMessageLabel : stylesMemo.messageLabel}
                 >
-                    {message.message}
+                    {message.content}
                 </Text>
             </View>
         </View>
