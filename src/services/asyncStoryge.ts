@@ -9,7 +9,6 @@ export const handleUser = async () => {
         const user = await AsyncStorage.getItem(('user'));
 
         if (user) {  
-                      
             return JSON.parse(user) as IUser ;
         } else {
             const deviceID = await getDeviceID();

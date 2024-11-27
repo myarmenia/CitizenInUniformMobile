@@ -15,11 +15,15 @@ export const checkAvailableAdmins = async () => {
 
 export const getRooms = async () => {
     const user = await handleUser()
+    console.log(user?.id, 'userId');
+    
     const res = await axiosInstanceBack.get<IRoom[]>(`/api/room/get/rooms/user/` + user?.id);
+    console.log(res.data);
 
     res.data.forEach((room) => {
         room.messages = room.messages.reverse();
     })
+    
     return res
 };
 

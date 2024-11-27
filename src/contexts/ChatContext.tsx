@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSocket } from '../hooks';
 import { handleUser } from '../services/asyncStoryge';
-import { IMessage, IRoom, ISearchOperator, IUser } from '../interfaces/data.types';
-import { axiosInstance } from '../api';
+import { IMessage, IRoom, IUser } from '../interfaces/data.types';
 import { getRooms } from '../api/requests';
 import { useQuery } from '@tanstack/react-query';
 import { sortRooms } from '../helpers';
@@ -11,7 +10,6 @@ import { sortRooms } from '../helpers';
 interface IProps {
     children: React.ReactNode;
 }
-
 
 export const ChatContext = React.createContext({
    rooms: {} as IRooms,
@@ -48,6 +46,8 @@ export const ChatProvider = ({ children }: IProps) => {
 
     useEffect(() => {
         if (data) {
+            console.log({data});
+            
             const sortedRooms = sortRooms(data);
             setRooms(sortedRooms);
             if (sortedRooms?.active) {

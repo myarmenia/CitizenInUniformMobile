@@ -9,7 +9,6 @@ import { IStyles } from "../contexts/ThemeContext";
 import Menu from "../components/Menu";
 import { useQuery } from "@tanstack/react-query";
 import { urls } from "../api/urls";
-import { ICategoryData } from "../interfaces/data.types";
 import Loading from "../components/Loading";
 import { axiosInstance } from "../api";
 
@@ -18,7 +17,7 @@ interface IProps {
 }
 
 const getCategories = async () => {
-    return axiosInstance.get<ICategoryData>(urls.CATEGORIES)
+    return axiosInstance.get(urls.CATEGORIES)
 }
 
 export default function HomeScreen({ navigation }: IProps) {

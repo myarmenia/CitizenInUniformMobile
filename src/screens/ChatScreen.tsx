@@ -44,7 +44,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     
     const userId = route.params?.userId;
     const roomId = route.params?.roomId;
-    const isActive = route.params?.isActive;
+    const isActive = route.params?.isActive;    
 
     let messagesList = route.params?.messages;
 
@@ -167,7 +167,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
                                     value={value}
                                     setValue={setValue}
                                     onSend={onSend}
-                                    disabled={!isActive}
+                                    disabled={!(isActive !== false)}
                                 />
                             </KeyboardAvoidingView>
                         </View>

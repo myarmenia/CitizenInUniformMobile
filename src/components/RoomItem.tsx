@@ -32,7 +32,7 @@ function RoomItem({
             roomId: room.id,
             messages: room.messages,
             userId: room.m_user_id,
-            isActive: room.activ > 0
+            isActive: room.activ !== 0
         });
     }
 

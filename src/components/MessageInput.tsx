@@ -30,7 +30,7 @@ function Message({ value, setValue, onSend, disabled }: IProps) {
         <View style={[stylesMemo.container, { marginBottom: bottom }]}  >
             <View style={{ flex: 1, borderRadius: 8 }} >
                 <TextInput
-                    style={[stylesMemo.input, stylesMemo.label, { maxHeight: MAX_HEIGHT }]}
+                    style={[stylesMemo.input, stylesMemo.label, { maxHeight: MAX_HEIGHT, fontSize: 16 }]}
                     multiline
                     placeholder={appStrings.sendMessage}
                     onChangeText={setValue}
