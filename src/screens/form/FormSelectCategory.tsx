@@ -12,6 +12,7 @@ import { axiosInstance } from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { urls } from "../../api/urls";
 import { handleUser } from "../../services/asyncStoryge";
+import { appStrings } from "../../assets/appStrings";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -23,7 +24,7 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { type, setType, name, email, phoneNumber } = useFormData();
+    const { type, setType, name, email, phoneNumber, governingBodyID, messageTo, messageType } = useFormData();
     const { socketId, socket } = useSocket();
 
     const [dropDownPosition, setDropDownPosition] = useState(0);
@@ -53,6 +54,8 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
                     m_user_id: user?.id
                 }
                 socket.emit('searchAdmin', x)
+                console.log( res.data.id ,'--------------->', user?.id);
+                
                 setUserId(res.data.id);
             } else {
                 console.log('pakas ban ka');
@@ -77,9 +80,23 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
         setDropDownPosition(e.nativeEvent.layout.y)
     }
 
-    const onPressListItem = (v: string) => {
+    const onPressListItem = (v: {title: string, id: number}) => {
         setVisible(false);
-        setType(v);
+        console.log({v});
+        
+        setType({
+            name: v.title,
+            id: v.id,
+        });
+    }
+
+    const onPress = () => {
+        if (messageType === appStrings.message){
+            onNextStep();
+        
+        } else {
+            navigation.navigate(navigationTypes.EMAIL_MESSAGE)
+        }
     }
 
     return (
@@ -91,7 +108,7 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
                         activeStep={4}
                         showGoBackButton={true}
                         navigation={navigation}
-                        onNextStep={onNextStep}
+                        onNextStep={onPress}
                         disabled={false}
                         
                     >

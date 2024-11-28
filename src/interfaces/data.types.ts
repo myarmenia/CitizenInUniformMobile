@@ -102,3 +102,12 @@ export interface ISearchOperator {
         updated_at: string
     }
 }
+
+export interface IGoverningBody {
+    id: number;
+    name: string;
+    named: string;
+    email: number;
+    phone: number;
+    phone_numbers: string[];
+} 

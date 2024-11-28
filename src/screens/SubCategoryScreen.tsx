@@ -10,7 +10,7 @@ import Background from '../components/Background';
 import { useTheme } from '../hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { IStyles } from '../contexts/ThemeContext';
-import { ICategory, ISubcategoryData } from '../interfaces/data.types';
+import { ISubcategory, ISubcategoryData } from '../interfaces/data.types';
 import RenderHTML from 'react-native-render-html';
 import { axiosInstance } from '../api';
 import { urls } from '../api/urls';
@@ -21,11 +21,7 @@ interface IProps {
     route: RouteProp<any>;
 }
 
-
-
-
-
-const getSubCategory = async (id?: string) => {
+const getSubCategory = async (id?: number) => {
     try {
         if (id) {
             return axiosInstance.get<ISubcategoryData>(urls.SUB_CATEGORY + `${id}/show`)
@@ -41,10 +37,11 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
 
-    const category: ICategory = route.params?.data;
+    
+    const category: ISubcategory = route.params?.item;
     const { data, error, isFetching } = useQuery({
         queryKey: ['subcategory' + category.id],
-        queryFn: async () => await getSubCategory(category?.id),
+        queryFn: async () => await getSubCategory(category.id),
         select: (data) => data?.data,
     });
 
@@ -70,7 +67,7 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
                     defaultTextProps={{
                         style: {
                             fontSize: 16,
-
+                            color: colors.TEXT_COLOR
                         }
                     }}
                 />

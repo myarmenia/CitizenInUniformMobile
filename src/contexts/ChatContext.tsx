@@ -6,7 +6,6 @@ import { getRooms } from '../api/requests';
 import { useQuery } from '@tanstack/react-query';
 import { sortRooms } from '../helpers';
 
-
 interface IProps {
     children: React.ReactNode;
 }
@@ -45,9 +44,7 @@ export const ChatProvider = ({ children }: IProps) => {
     }, []);
 
     useEffect(() => {
-        if (data) {
-            console.log({data});
-            
+        if (data) {            
             const sortedRooms = sortRooms(data);
             setRooms(sortedRooms);
             if (sortedRooms?.active) {
@@ -64,37 +61,37 @@ export const ChatProvider = ({ children }: IProps) => {
         }
     }, [!!data])
 
-    useEffect(() => {
-        socket.on('receive_message', (message: IMessage) => {
-            console.log('received message', message.content);
+    // useEffect(() => {
+    //     socket.on('receive_message', (message: IMessage) => {
+    //         console.log('received message', message.content);
             
-            if (rooms) {
-                const updatedRooms = { ...rooms };
-                let roomIndex = updatedRooms.active.findIndex((room) => room.id === message.room_id);
-                if (roomIndex !== -1) {
-                    updatedRooms.active[roomIndex].messages.unshift(message);
-                    setRooms({...updatedRooms});
-                } else {
-                    roomIndex = updatedRooms.passive.findIndex((room) => room.id === message.room_id);
-                    if (roomIndex !== -1) {
-                        updatedRooms.passive[roomIndex].messages.unshift(message);
-                        setRooms(updatedRooms);
-                    }
-                }
-            }
-            setIsUpdate(!isUpdate)
-        })
+    //         if (rooms) {
+    //             const updatedRooms = { ...rooms };
+    //             let roomIndex = updatedRooms.active.findIndex((room) => room.id === message.room_id);
+    //             if (roomIndex !== -1) {
+    //                 updatedRooms.active[roomIndex].messages.unshift(message);
+    //                 setRooms({...updatedRooms});
+    //             } else {
+    //                 roomIndex = updatedRooms.passive.findIndex((room) => room.id === message.room_id);
+    //                 if (roomIndex !== -1) {
+    //                     updatedRooms.passive[roomIndex].messages.unshift(message);
+    //                     setRooms(updatedRooms);
+    //                 }
+    //             }
+    //         }
+    //         setIsUpdate(!isUpdate)
+    //     })
         
-        socket.on('roomEnded', (roomId: string) => {
-            refetch()
+    //     socket.on('roomEnded', (roomId: string) => {
+    //         refetch()
             
-        })
+    //     })
         
-        return () => {
-            socket.off('receive_message');
-            socket.off('end_chat');
-        }
-    }, []);
+    //     return () => {
+    //         socket.off('receive_message');
+    //         socket.off('end_chat');
+    //     }
+    // }, []);
 
 
 

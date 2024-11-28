@@ -18,7 +18,8 @@ interface IProps {
     selectedItem?: {
         id: number,
         name: string,
-    }
+    },
+    setCallAction?: (v: boolean) => void,
 }
 
 
@@ -26,7 +27,7 @@ const getGovernigIDS = async () => {
     return axiosInstance.get('api/mobile/governing-bodies');
 }
 
-function Footer({ navigation, showActions = false, selectedItem }: IProps) {
+function Footer({ navigation, showActions = false, selectedItem, setCallAction }: IProps) {
 
 
     const { colors, isDarkTheme, coefficient } = useTheme()
@@ -34,7 +35,7 @@ function Footer({ navigation, showActions = false, selectedItem }: IProps) {
     const stylesMemo = useMemo(() => styles({colors, fontSize}), [isDarkTheme, coefficient])
     const appStylesMemo = useMemo(() => appStyles({colors, fontSize}), [isDarkTheme, coefficient])
 
-    const { setMessageTo, setMessageType } = useFormData();    
+    const { setMessageTo, setMessageType, setGoverningBodyID } = useFormData();    
 
     const {data, isFetching, isError} = useQuery({
         queryKey: ['governments'],
@@ -44,16 +45,18 @@ function Footer({ navigation, showActions = false, selectedItem }: IProps) {
     
 
     const disabledAll = selectedItem?.id == -1;
-    const disabled = disabledAll || selectedItem?.id == 2;
+    const disabled = disabledAll || selectedItem?.id == 3;
 
 
     const onPressCall = () => {
         // navigation.navigate('Call');
         console.log('Call');
+        setCallAction && setCallAction(true);
     }
 
     const onPressChat = () => {
         if (selectedItem?.name){
+            setGoverningBodyID(selectedItem.id)
             setMessageTo(selectedItem?.name);
             setMessageType(appStrings.message);
             navigation.navigate(navigationTypes.MESSAGES);
@@ -62,6 +65,7 @@ function Footer({ navigation, showActions = false, selectedItem }: IProps) {
 
     const onPressEmail = () => {
         if (selectedItem?.name){
+            setGoverningBodyID(selectedItem.id)
             setMessageTo(selectedItem?.name);
             setMessageType(appStrings.emailMessageLarge);
             navigation.navigate(navigationTypes.FORM_NAME);

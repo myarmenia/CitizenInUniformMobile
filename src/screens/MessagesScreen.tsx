@@ -32,13 +32,7 @@ export default function MessagesScreen({ navigation }: IProps) {
     const onNewMessage = () => {
         navigation.navigate(navigationTypes.FORM_NAME);
     }
-
-    useEffect(() => {
-         console.log(rooms.active[0]?.messages[0].content);
-        
-    }, [isUpdate]);
-
-
+    
     return (
         <Background>
             <Header

@@ -21,7 +21,9 @@ import GoogleRecaptcha, {
     GoogleRecaptchaProps,
     GoogleRecaptchaBaseProps,
     GoogleRecaptchaRefAttributes
-  } from 'react-native-google-recaptcha'
+} from 'react-native-google-recaptcha'
+import { axiosInstance } from "../api";
+import { handleUser } from "../services/asyncStoryge";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -32,17 +34,46 @@ export default function EmailMessageScreen({ navigation }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { setName, name } = useFormData();
-    const { showModal, setNavigation,setNavigateToHome } = useModal()
+    const { setName, name, type, email, governingBodyID, phoneNumber, } = useFormData();
+    const { showModal, setNavigation, setNavigateToHome } = useModal()
     const [value, setValue] = useState('');
 
     const recaptcha = useRef(null);
 
-    const onNextStep = () => {
-        setNavigateToHome(true);
-        setNavigation(navigation);
-        showModal(true)
+    const onNextStep = async () => {
+        try {
+            await sendEmailMessage();
+            setNavigateToHome(true);
+            setNavigation(navigation);
+            showModal(true);
+            
+        } catch (error) {
+            showModal(false);    
+        }
     };
+
+    const sendEmailMessage = async () => {
+        try {
+            const user = await handleUser()
+            const data =  {
+                "governing_body_id": governingBodyID == 3 ? [1,2] : governingBodyID,
+                "fullname": name,
+                "email": email,
+                "phone": phoneNumber,
+                "message_category_id": type.id,
+                "content": value,
+                "mobile_user_id": user?.id
+            }
+            console.log( data);
+            
+            const res = await axiosInstance.post('/api/mobile/email-messages/store', data)
+            console.log(res.data);
+            
+        } catch (error) {
+            console.log('send email message error', error);
+            
+        }
+    }
 
     const onVerify = (token: string) => {
         console.log('success!', token);

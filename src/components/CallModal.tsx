@@ -1,0 +1,159 @@
+import { memo, useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, FlatList, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../hooks";
+import { IStyles } from "../contexts/ThemeContext";
+import { useQuery } from "@tanstack/react-query";
+import { getGoverningBody } from "../api/requests";
+import { IGoverningBody } from "../interfaces/data.types";
+import { appStyles } from "../styles";
+import { callFillIcon } from "../assets/icons/callFillIcon";
+import { appStrings } from "../assets/appStrings";
+import { validateAndFormatPhoneNumber } from "../helpers";
+
+interface IProps {
+    visible: boolean;
+    setVisible: (value: boolean) => void;
+    selectedItem: {
+        name: string;
+        id: number;
+    }
+}
+
+function CallModal({
+    visible,
+    setVisible,
+    selectedItem
+}: IProps) {
+    const { colors, isDarkTheme, coefficient } = useTheme()
+    const fontSize = (size: number) => size * coefficient;
+    const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient])
+
+    const [selectedGov, setSelectedGov] = useState<IGoverningBody>()
+
+    const { data, isFetching, isError } = useQuery({
+        queryKey: ['governingBodies'],
+        queryFn: getGoverningBody,
+
+    })
+
+    useEffect(() => {
+        if (data?.result) {
+            const gov = data.result.find(v => v.id === selectedItem.id)
+            console.log(gov?.id, gov?.phone_numbers);
+            if (gov) {
+                setSelectedGov(gov);
+            }
+
+        }
+    }, [selectedItem.id, data])
+
+    const onDismiss = () => {
+        setVisible(false)
+    }
+
+    const renderItem = ({ item }: { item: string }) => (
+        <TouchableOpacity
+            style={stylesMemo.renderItem}
+        >
+            {callFillIcon()}
+            <Text style={stylesMemo.title} numberOfLines={1}>
+                {appStrings.call} {validateAndFormatPhoneNumber(item)}
+            </Text>
+
+        </TouchableOpacity>
+    )
+
+
+    return (
+        <Modal
+            transparent
+            visible={visible}
+            animationType="slide"
+        >
+            <Pressable
+                style={[
+                    StyleSheet.absoluteFillObject,
+                    stylesMemo.background
+                ]}
+                onPress={onDismiss}
+            >
+                <Pressable style={stylesMemo.container}>
+                    {selectedGov?.phone_numbers.length
+
+                        ? <FlatList
+                            data={selectedGov.phone_numbers}
+                            renderItem={renderItem}
+
+                        />
+                        : 
+                        <View style={stylesMemo.center}  >
+                           {isFetching
+                           ? <ActivityIndicator size={'large'} color={colors.PRIMARY}/>
+                           :<Text style={stylesMemo.title} numberOfLines={1}>
+                                Numbers is not available
+                            </Text>}
+                        </View> 
+                
+                    }
+                    <TouchableOpacity
+                        style={[stylesMemo.renderItem, { justifyContent: 'center' }]}
+                        onPress={onDismiss}
+                    >
+                        <Text style={stylesMemo.title} numberOfLines={1}>
+                            {appStrings.cancel}
+                        </Text>
+                    </TouchableOpacity>
+                    <SafeAreaView />
+                </Pressable>
+
+            </Pressable>
+        </Modal>
+    )
+}
+
+export default memo(CallModal);
+
+
+const styles = ({ colors, fontSize }: IStyles) => {
+
+    return StyleSheet.create({
+        container: {
+            width: '100%',
+            // height: 300,
+            backgroundColor: colors.BACKGROUND_2,
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+            ...appStyles({ colors, fontSize }).shadow,
+            shadowColor: colors.TEXT_COLOR,
+            paddingHorizontal: 16,
+            paddingTop: 20,
+            paddingBottom: 10,
+            gap: 8
+        },
+        title: {
+            fontSize: fontSize(16),
+            fontWeight: '700',
+            color: colors.TEXT_COLOR,
+            lineHeight: 24
+        },
+        background: {
+            justifyContent: 'flex-end',
+        },
+        renderItem: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 16,
+            paddingVertical: 16,
+            backgroundColor: colors.BUTTON,
+            borderRadius: 8,
+            gap: 8
+        },
+        center: {
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 10
+        }
+    })
+}
+
+

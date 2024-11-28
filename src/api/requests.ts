@@ -1,11 +1,12 @@
 import { Platform } from "react-native";
-import { axiosInstanceBack } from ".";
-import { IRoom, ISearchOperator } from "../interfaces/data.types";
+import { axiosInstance, axiosInstanceBack } from ".";
+import { IBaseData, IGoverningBody, IRoom, ISearchOperator } from "../interfaces/data.types";
 import { handleUser } from "../services/asyncStoryge";
+import { urls } from "./urls";
 
 export const checkAvailableAdmins = async () => {
     try {
-        const checkActiveAdmins = await axiosInstanceBack.post<ISearchOperator>('/api/admin/online/exist')
+        const checkActiveAdmins = await axiosInstanceBack.post<ISearchOperator>(urls.CHECK_AVAILABLE_ADMINS)
         return !!checkActiveAdmins.data.operator.id;
     } catch (error) {
         console.error('checkAvailableAdmins =========>', error)
@@ -16,14 +17,13 @@ export const checkAvailableAdmins = async () => {
 export const getRooms = async () => {
     const user = await handleUser()
     console.log(user?.id, 'userId');
-    
-    const res = await axiosInstanceBack.get<IRoom[]>(`/api/room/get/rooms/user/` + user?.id);
-    console.log(res.data);
+
+    const res = await axiosInstanceBack.get<IRoom[]>(urls.GET_ROOMS + user?.id);
 
     res.data.forEach((room) => {
         room.messages = room.messages.reverse();
     })
-    
+
     return res
 };
 
@@ -39,7 +39,7 @@ interface IRegisterUser {
 
 export const registerUser = async ({ name, email, governing_body, message_category_id, phone_number, socket_id, m_user_id }: IRegisterUser) => {
     try {
-        const res = await axiosInstanceBack.post<IRegisterUser>('/api/user/register', {
+        const res = await axiosInstanceBack.post<IRegisterUser>(urls.REGISTER_USER, {
             name,
             email,
             message_category_id,
@@ -50,8 +50,13 @@ export const registerUser = async ({ name, email, governing_body, message_catego
             // m_user_id
         });
 
-        return res.data ;
+        return res.data;
     } catch (error) {
         console.error('registerUser =============> ', error);
     }
+}
+
+export const getGoverningBody = async () => {
+    const res = await axiosInstance.get<IBaseData<IGoverningBody[]>>(urls.GOV_BODY);
+    return res.data;
 }

@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import SliderComponent from "../components/Slider";
 import Menu from "../components/Menu";
-import { ICategory } from "../interfaces/data.types";
+import { ICategory, ISubcategory } from "../interfaces/data.types";
 import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
@@ -22,10 +22,10 @@ export default function CategoryScreen({ navigation, route }: IProps) {
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
 
-    const data: ICategory= route.params?.data;
+    const data: ICategory = route.params?.data;
 
-    const onPress = () => {
-        navigation.navigate(navigationTypes.SUB_CATEGORY, {data})
+    const onPress = (item: ISubcategory) => {
+        navigation.navigate(navigationTypes.SUB_CATEGORY, {item})
     }
     return (
         <Background>

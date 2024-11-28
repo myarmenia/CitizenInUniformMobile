@@ -54,4 +54,19 @@ export const sortRooms =  (rooms: IRoom[]) => {
         }
     }
     return {active, passive}
+};
+
+export function validateAndFormatPhoneNumber(phoneNumber: string): string {
+    if (phoneNumber.length !== 12){
+        return phoneNumber
+    }
+    
+    const regex = /^\+(\d{3})(\d{2})(\d{2})(\d{2})(\d{2})$/;
+    const match = phoneNumber.match(regex);
+
+    if (match) {
+        const [, countryCode, areaCode, firstPart, secondPart, lastPart] = match;
+        return `(+${countryCode}) ${areaCode} ${firstPart} ${secondPart} ${lastPart}`;
+    }
+    return phoneNumber;
 }

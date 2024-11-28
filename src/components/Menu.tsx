@@ -8,7 +8,7 @@ import { navigationTypes } from "../navigation/navigation.types";
 
 interface IProps {
     data?: ICategory[] | ISubcategory[];
-    onPress?: () => void;
+    onPress?: (v: ISubcategory) => void;
     navigation: NavigationProp<ParamListBase>
     iconUrl?: string
 }
@@ -22,8 +22,8 @@ function Menu({ data, onPress, navigation, iconUrl }: IProps) {
 
 
     const handlePress = (item: ICategory | ISubcategory) => {
-        if (onPress) {
-            onPress();
+        if (onPress ) {
+            onPress(item as ISubcategory);
         } else {
             navigation.navigate(navigationTypes.CATEGORY, { data: item });
         }

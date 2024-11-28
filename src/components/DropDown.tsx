@@ -23,11 +23,13 @@ interface IProps {
     setVisible: (visible: boolean) => void;
     onPressItem?: (item: any) => void;
     top: number;
-    selectedCategory: string,
+    selectedCategory: {
+        name: string;
+        id: number;
+    },
 }
 
 const getMessageTypes = async () => {
-    await sleep(2000)
     return axiosInstance.get(urls.GET_MESSAGE_CATEGORY);
 };
 
@@ -53,7 +55,8 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
         setVisible(false);
     };
 
-    const onPress = (v: string) => {
+    const onPress = (v: {id: number, title: string}) => {
+        {}
         onPressItem && onPressItem(v);
         onDismiss();
     };
@@ -61,7 +64,7 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
     const renderItem = (item: { id: number, title: string }, index: number) => {
         return (
             <TouchableOpacity
-                onPress={() => onPress(item.title)}
+                onPress={() => onPress(item)}
                 style={stylesMemo.item}>
                 <Text style={stylesMemo.title} numberOfLines={1}>
                     {item.title}
@@ -83,7 +86,7 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
                     ]}>
                     <View style={stylesMemo.titleBox}>
                         <Text numberOfLines={1} style={stylesMemo.title}>
-                            {selectedCategory ? selectedCategory : appStrings.category}
+                            {selectedCategory.name ? selectedCategory.name : appStrings.category}
                         </Text>
 
                     </View>

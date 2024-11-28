@@ -63,7 +63,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         if (room) {
-            setMessages(room.messages);
+            // setMessages(room.messages);
         } else {
             console.log('No messages');
         }
@@ -103,37 +103,37 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     }
 
-    // useEffect(() => {
-    //     socket.on('receive_message', (data: IMessage) => {
-    //         setMessages((prev) => {
-    //             console.log('message received ---------------->', data);
-    //             return [data, ...prev];
-    //         });
-    //         onRead()
-    //         flatListRef.current?.scrollToOffset({offset: 0, animated: true });
-    //     })
+    useEffect(() => {
+        socket.on('receive_message', (data: IMessage) => {
+            setMessages((prev) => {
+                console.log('message received ---------------->', data);
+                return [data, ...prev];
+            });
+            onRead()
+            flatListRef.current?.scrollToOffset({offset: 0, animated: true });
+        })
 
-    //     socket.on('roomEnded', (roomId:string) => {
-    //         console.log('endRoom--------',);
+        socket.on('roomEnded', (roomId:string) => {
+            console.log('endRoom--------',);
             
-    //         // Alert.alert(
-    //         //     'Alert',
-    //         //     'Chat End.',
-    //         //     [
-    //         //         {
-    //         //             text: 'OK',
-    //         //             onPress: () => navigation.navigate(navigationTypes.HOME)
-    //         //         },
-    //         //     ],
-    //         //     { cancelable: false }
-    //         // );
-    //     })
+            Alert.alert(
+                'Alert',
+                'Chat End.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate(navigationTypes.HOME)
+                    },
+                ],
+                { cancelable: false }
+            );
+        })
 
-    //     return () => {
-    //         socket.off('receive_message');
-    //         socket.off('end_chat');
-    //     }
-    // }, []);
+        return () => {
+            socket.off('receive_message');
+            socket.off('end_chat');
+        }
+    }, []);
 
 
     // useEffect(() => {

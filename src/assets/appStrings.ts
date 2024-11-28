@@ -28,5 +28,7 @@ export const appStrings = {
     notifications: 'Ծանուցումներ',
     notificationsSound: 'Ծանուցումների ձայնը',
     darkMode: 'Մուգ ռեժիմ',
-    fontSize: 'Տառաչափ'
+    fontSize: 'Տառաչափ',
+    calling: 'Զանգել',
+    cancel: 'Չեղարկել'
 }
