@@ -30,5 +30,6 @@ export const appStrings = {
     darkMode: 'Մուգ ռեժիմ',
     fontSize: 'Տառաչափ',
     calling: 'Զանգել',
-    cancel: 'Չեղարկել'
+    cancel: 'Չեղարկել',
+    answerAndQuestions: 'հարց եվ պատասխան'
 }

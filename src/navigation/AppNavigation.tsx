@@ -15,6 +15,7 @@ import FormSelectTypeScreen from "../screens/form/FormSelectCategory";
 import ChatScreen from "../screens/ChatScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import NotificationScreen from "../screens/NotificationScreen";
+import FAQScreen from "../screens/FAQScreen";
 
 
 const Stack = createStackNavigator();
@@ -35,6 +36,7 @@ export function AppNavigation() {
                 <Stack.Screen name={navigationTypes.CHAT} component={ChatScreen} />
                 <Stack.Screen name={navigationTypes.SETTINGS} component={SettingsScreen} />
                 <Stack.Screen name={navigationTypes.NOTIFICATIONS} component={NotificationScreen} />
+                <Stack.Screen name={navigationTypes.FAQ} component={FAQScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

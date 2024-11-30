@@ -15,6 +15,8 @@ export const lightColors = {
     SWITCH_ACTIVE: '#46593A',
     SWITCH_INACTIVE: '#292929',
     SWITCH: '#D9D9D9',
+    CALL_MODAL: '#D9D9D9',
+    FAQ_CONTEXT: '#383838'
 }
 
 export const darkColors = {
@@ -34,5 +36,7 @@ export const darkColors = {
     SWITCH_ACTIVE: '#46593A',
     SWITCH_INACTIVE: '#292929',
     SWITCH: '#ABABAB',
+    CALL_MODAL: '#212121',
+    FAQ_CONTEXT: '#FFFFFF'
 }
 

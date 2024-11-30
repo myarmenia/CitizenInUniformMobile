@@ -9,7 +9,7 @@ import Loading from "../components/Loading";
 import ChatList from "../components/ChatList";
 import MessageInput from "../components/MessageInput";
 import { IMessage } from "../interfaces/data.types";
-import { axiosInstance } from "../api";
+import { axiosInstance, axiosInstanceBack } from "../api";
 import { navigationTypes } from "../navigation/navigation.types";
 import { useChat } from "../hooks/useChat";
 import { handleTitle } from "../components/RoomItem";
@@ -23,7 +23,7 @@ export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 
 async function sendMessageToBack({ room_id, writer_id, content, writer }: any) {
     try {
-        const data = await axiosInstance.post("https://citizenb.trigger.ltd/api/message/create", { room_id, writer_id, content, writer })
+        const data = await axiosInstanceBack.post("/api/message/create", { room_id, writer_id, content, writer })
         return data.data
 
     } catch (error) {
@@ -83,16 +83,19 @@ export default function ChatScreen({ navigation, route }: IProps) {
             if (value.trim().length === 0) {
                 return;
             }
+
+            
             const newMessage: IMessage = {
                 writer_id: userId,
                 writer: 'user',
                 content: value,
                 room_id: roomId,
             };
-
+            
+            console.log('rooom idi log', newMessage);
             const data = await sendMessageToBack(newMessage)
-            console.log('data.message-------------------------',data.message);
-
+            console.log({data});
+            
             socket.emit('create_message', data.message)
             setValue('');
             // flatListRef.current?.scrollToEnd({ animated: true });
@@ -104,18 +107,16 @@ export default function ChatScreen({ navigation, route }: IProps) {
     }
 
     useEffect(() => {
-        socket.on('receive_message', (data: IMessage) => {
-            setMessages((prev) => {
-                console.log('message received ---------------->', data);
-                return [data, ...prev];
-            });
-            onRead()
-            flatListRef.current?.scrollToOffset({offset: 0, animated: true });
-        })
+        // socket.on('receive_message', (data: IMessage) => {
+        //     // setMessages((prev) => {
+        //     //     console.log('message received ---------------->', data);
+        //     //     return [data, ...prev];
+        //     // });
+        //     // onRead()
+        //     // flatListRef.current?.scrollToOffset({offset: 0, animated: true });
+        // })
 
-        socket.on('roomEnded', (roomId:string) => {
-            console.log('endRoom--------',);
-            
+        socket.on('roomEnded', (roomId:string) => {            
             Alert.alert(
                 'Alert',
                 'Chat End.',

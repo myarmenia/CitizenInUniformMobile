@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Linking, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { useQuery } from "@tanstack/react-query";
@@ -36,10 +36,15 @@ function CallModal({
 
     })
 
+    const onPress = (number: string) => {
+        onDismiss();
+
+        Linking.openURL(`tel:${number}`)
+    }
+
     useEffect(() => {
         if (data?.result) {
             const gov = data.result.find(v => v.id === selectedItem.id)
-            console.log(gov?.id, gov?.phone_numbers);
             if (gov) {
                 setSelectedGov(gov);
             }
@@ -48,16 +53,17 @@ function CallModal({
     }, [selectedItem.id, data])
 
     const onDismiss = () => {
-        setVisible(false)
+        setVisible(false);
     }
 
     const renderItem = ({ item }: { item: string }) => (
         <TouchableOpacity
             style={stylesMemo.renderItem}
+            onPress={() => onPress(item)}
         >
             {callFillIcon()}
             <Text style={stylesMemo.title} numberOfLines={1}>
-                {appStrings.call} {validateAndFormatPhoneNumber(item)}
+                {appStrings.calling}   {validateAndFormatPhoneNumber(item)}
             </Text>
 
         </TouchableOpacity>
@@ -83,17 +89,17 @@ function CallModal({
                         ? <FlatList
                             data={selectedGov.phone_numbers}
                             renderItem={renderItem}
-
+                            contentContainerStyle={{gap: 8}}
                         />
-                        : 
+                        :
                         <View style={stylesMemo.center}  >
-                           {isFetching
-                           ? <ActivityIndicator size={'large'} color={colors.PRIMARY}/>
-                           :<Text style={stylesMemo.title} numberOfLines={1}>
-                                Numbers is not available
-                            </Text>}
-                        </View> 
-                
+                            {isFetching
+                                ? <ActivityIndicator size={'large'} color={colors.PRIMARY} />
+                                : <Text style={stylesMemo.title} numberOfLines={1}>
+                                    Numbers is not available
+                                </Text>}
+                        </View>
+
                     }
                     <TouchableOpacity
                         style={[stylesMemo.renderItem, { justifyContent: 'center' }]}
@@ -120,7 +126,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
         container: {
             width: '100%',
             // height: 300,
-            backgroundColor: colors.BACKGROUND_2,
+            backgroundColor: colors.CALL_MODAL,
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
             ...appStyles({ colors, fontSize }).shadow,

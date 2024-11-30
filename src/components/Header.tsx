@@ -31,7 +31,7 @@ function Header({
         if (goBackAction) {
             navigation.navigate(navigationTypes.HOME);
         } else {
-            Alert.alert('Oooops!', 'FAQ page is not available')
+            navigation.navigate(navigationTypes.FAQ);
         }
     }
 

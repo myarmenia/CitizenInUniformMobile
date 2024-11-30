@@ -24,6 +24,7 @@ import GoogleRecaptcha, {
 } from 'react-native-google-recaptcha'
 import { axiosInstance } from "../api";
 import { handleUser } from "../services/asyncStoryge";
+import { IBaseData } from "../interfaces/data.types";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -63,15 +64,11 @@ export default function EmailMessageScreen({ navigation }: IProps) {
                 "message_category_id": type.id,
                 "content": value,
                 "mobile_user_id": user?.id
-            }
-            console.log( data);
-            
-            const res = await axiosInstance.post('/api/mobile/email-messages/store', data)
-            console.log(res.data);
-            
+            }            
+            const res = await axiosInstance.post<IBaseData<any>>('/api/mobile/email-messages/store', data)
+            console.log(res.data.message);
         } catch (error) {
-            console.log('send email message error', error);
-            
+            console.log('send email message error', error);   
         }
     }
 

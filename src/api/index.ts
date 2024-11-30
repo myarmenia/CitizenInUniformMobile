@@ -14,7 +14,7 @@ export const axiosInstance = axios.create({
 
 
 export const axiosInstanceBack = axios.create({
-    baseURL: BASE_URL_BACK,
+    baseURL: 'http://192.168.122.1:4008',
     timeout: 10000,
     headers: {
         "Content-Type": "application/json",

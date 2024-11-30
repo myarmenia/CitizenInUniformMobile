@@ -37,6 +37,8 @@ export const ChatProvider = ({ children }: IProps) => {
         select: (data) => data?.data,
     })
 
+
+
     const { socket, socketId } = useSocket();
 
     useEffect(() => {
@@ -45,13 +47,15 @@ export const ChatProvider = ({ children }: IProps) => {
 
     useEffect(() => {
         if (data) {            
-            const sortedRooms = sortRooms(data);
+            const sortedRooms = sortRooms(data);            
             setRooms(sortedRooms);
             if (sortedRooms?.active) {
                 sortedRooms.active.forEach(room => {
-                    if(room.activ > 0)
-                    socket.emit('operatorJoin', room);
-                    console.log('joined', room.id);
+                    if(room.activ > 0){
+                        console.log('joining room', room.id);
+                        
+                        socket.emit('operatorJoin', room);
+                    }
                     
                 })
             }
@@ -61,37 +65,37 @@ export const ChatProvider = ({ children }: IProps) => {
         }
     }, [!!data])
 
-    // useEffect(() => {
-    //     socket.on('receive_message', (message: IMessage) => {
-    //         console.log('received message', message.content);
+    useEffect(() => {
+        socket.on('receive_message', (message: IMessage) => {
+            console.log('received message', message.content);
             
-    //         if (rooms) {
-    //             const updatedRooms = { ...rooms };
-    //             let roomIndex = updatedRooms.active.findIndex((room) => room.id === message.room_id);
-    //             if (roomIndex !== -1) {
-    //                 updatedRooms.active[roomIndex].messages.unshift(message);
-    //                 setRooms({...updatedRooms});
-    //             } else {
-    //                 roomIndex = updatedRooms.passive.findIndex((room) => room.id === message.room_id);
-    //                 if (roomIndex !== -1) {
-    //                     updatedRooms.passive[roomIndex].messages.unshift(message);
-    //                     setRooms(updatedRooms);
-    //                 }
-    //             }
-    //         }
-    //         setIsUpdate(!isUpdate)
-    //     })
+            if (rooms) {
+                const updatedRooms = { ...rooms };
+                let roomIndex = updatedRooms.active.findIndex((room) => room.id === message.room_id);
+                if (roomIndex !== -1) {
+                    updatedRooms.active[roomIndex].messages.unshift(message);
+                    setRooms({...updatedRooms});
+                } else {
+                    roomIndex = updatedRooms.passive.findIndex((room) => room.id === message.room_id);
+                    if (roomIndex !== -1) {
+                        updatedRooms.passive[roomIndex].messages.unshift(message);
+                        setRooms(updatedRooms);
+                    }
+                }
+            }
+            setIsUpdate(!isUpdate)
+        })
         
-    //     socket.on('roomEnded', (roomId: string) => {
-    //         refetch()
+        socket.on('roomEnded', (roomId: string) => {
+            refetch()
             
-    //     })
+        })
         
-    //     return () => {
-    //         socket.off('receive_message');
-    //         socket.off('end_chat');
-    //     }
-    // }, []);
+        return () => {
+            socket.off('receive_message');
+            socket.off('end_chat');
+        }
+    }, []);
 
 
 

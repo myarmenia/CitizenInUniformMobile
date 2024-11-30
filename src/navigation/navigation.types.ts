@@ -14,4 +14,5 @@ export const navigationTypes = {
     CHAT: 'CHAT',
     SETTINGS: 'SETTINGS',
     NOTIFICATIONS: 'NOTIFICATIONS',
+    FAQ: 'FAQ',
 }

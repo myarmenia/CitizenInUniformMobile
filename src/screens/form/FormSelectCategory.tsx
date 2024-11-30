@@ -9,10 +9,9 @@ import Form from "../../components/Form";
 import DropDown from "../../components/DropDown";
 import { navigationTypes } from "../../navigation/navigation.types";
 import { axiosInstance } from "../../api";
-import { useQuery } from "@tanstack/react-query";
-import { urls } from "../../api/urls";
 import { handleUser } from "../../services/asyncStoryge";
 import { appStrings } from "../../assets/appStrings";
+import { checkAvailableAdmins, registerUser } from "../../api/requests";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -29,34 +28,51 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
 
     const [dropDownPosition, setDropDownPosition] = useState(0);
     const [visible, setVisible] = useState(false);
-    const [userId, setUserId] = useState('');
+    const [userId, setUserId] = useState(0);
 
     const onNextStep = async () => {
         try {
-            const checkActiveAdmins = await axiosInstance.post('https://citizenb.trigger.ltd/api/admin/online/exist')
-            console.log('111',checkActiveAdmins.data);
+            const isActiveOperator = await checkAvailableAdmins()
+            console.log({ isActiveOperator });
 
             if (name && email && socketId) {
-                const res = await axiosInstance.post('https://citizenb.trigger.ltd/api/user/register', {
-                    name,
-                    email,
-                    message_category_id: '2',
-                    governing_body: '2',
-                    type: "IOS",
-                    phone_number: phoneNumber,
-                    socket_id: socketId
-                })
+                // const res = await axiosInstance.post('https://citizenb.trigger.ltd/api/user/register', {
+                //     name,
+                //     email,
+                //     message_category_id: '2',
+                //     governing_body: '2',
+                //     type: "IOS",
+                //     phone_number: phoneNumber,
+                //     socket_id: socketId
+                // })
 
-                
-                const user = await handleUser()
-                const x = {
-                    ...res.data,
-                    m_user_id: user?.id
+                if (isActiveOperator) {
+
+                    const res = await registerUser({
+                        email,
+                        governing_body: '2',
+                        message_category_id: '2',
+                        phone_number: phoneNumber,
+                        name,
+                        socket_id: socketId,
+                    })
+                    console.log(res);
+
+                    if (res) {
+                        const user = await handleUser()
+                        const x = {
+                            ...res,
+                            m_user_id: user?.id
+                        }
+                        socket.emit('searchAdmin', x)
+                        console.log('userID', res.id);
+
+                        setUserId(res.id);
+
+                    }
+
                 }
-                socket.emit('searchAdmin', x)
-                console.log( res.data.id ,'--------------->', user?.id);
-                
-                setUserId(res.data.id);
+
             } else {
                 console.log('pakas ban ka');
             }
@@ -67,12 +83,15 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
 
     useEffect(() => {
         userId && socket.on('roomCreated', (data: any) => {
-            console.log('roomCreated --------->', data);
-            navigation.navigate(navigationTypes.CHAT, { userId, roomId: data.room });
+            console.log('roomCreated --------->', data.room.id);
+
+            navigation.navigate(navigationTypes.CHAT, { userId, roomId: data.room.id });
         })
 
+
         return () => {
-            socket.off('roomCreated')
+            socket.off('roomCreated');
+            socket.off('roomId');
         }
     }, [userId])
 
@@ -80,10 +99,8 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
         setDropDownPosition(e.nativeEvent.layout.y)
     }
 
-    const onPressListItem = (v: {title: string, id: number}) => {
+    const onPressListItem = (v: { title: string, id: number }) => {
         setVisible(false);
-        console.log({v});
-        
         setType({
             name: v.title,
             id: v.id,
@@ -91,9 +108,9 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     }
 
     const onPress = () => {
-        if (messageType === appStrings.message){
+        if (messageType === appStrings.message) {
             onNextStep();
-        
+
         } else {
             navigation.navigate(navigationTypes.EMAIL_MESSAGE)
         }
@@ -110,7 +127,7 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
                         navigation={navigation}
                         onNextStep={onPress}
                         disabled={false}
-                        
+
                     >
                         <View onLayout={onLayout} >
                             <DropDown

@@ -110,4 +110,24 @@ export interface IGoverningBody {
     email: number;
     phone: number;
     phone_numbers: string[];
-} 
+};
+
+export interface IRegisterUser {
+    name: string;
+    email: string;
+    message_category_id: string;
+    governing_body: string;
+    phone_number: string;
+    socket_id: string;
+};
+
+export interface IFAQ {
+    id: number;
+    title: string;
+    f_a_q_sub_categories: ISubFAQ[];
+}
+
+export interface ISubFAQ {
+    content: string;
+    title: string;
+}

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useMemo, useRef, useState } from "react";
 import { useFormData, useTheme } from "../../hooks";
@@ -35,11 +35,7 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
 
         setError('');
         setPhoneNumber(value);
-        if (messageType === appStrings.message) {
-            navigation.navigate(navigationTypes.FORM_SELECT_TYPE);
-        } else {
-            navigation.navigate(navigationTypes.FORM_SELECT_TYPE);
-        }
+        navigation.navigate(navigationTypes.FORM_SELECT_TYPE);
     }
 
     return (
@@ -135,8 +131,6 @@ const styles = ({ colors, fontSize }: IStyles) => {
             color: colors.ERROR,
             marginVertical: 10
         },
-
-
 
         button: {
             marginTop: 40,

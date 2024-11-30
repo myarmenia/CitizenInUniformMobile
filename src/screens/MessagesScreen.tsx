@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import Background from "../components/Background";
@@ -9,7 +9,6 @@ import { appStrings } from "../assets/appStrings";
 import Button from "../components/Button";
 import { plusIcon } from "../assets/icons/plusIcon";
 import { navigationTypes } from "../navigation/navigation.types";
-import { IMessage, IRoom } from "../interfaces/data.types";
 import { useChat } from "../hooks/useChat";
 import RoomItem from "../components/RoomItem";
 
@@ -106,7 +105,6 @@ const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
             flex: 1,
-            // padding: 16
         },
         title: {
             fontSize: fontSize(18),
@@ -114,7 +112,8 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontWeight: '700',
             textAlign: 'center',
             color: colors.TEXT_COLOR,
-            marginBottom: 20
+            marginBottom: 20,
+            marginTop: 10
         },
         row: {
             flexDirection: 'row',

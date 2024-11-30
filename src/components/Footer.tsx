@@ -5,12 +5,10 @@ import { appStrings } from "../assets/appStrings";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { appStyles } from "../styles";
 import { useFormData, useTheme } from "../hooks";
-import { ColorScheme, IStyles } from "../contexts/ThemeContext";
+import { IStyles } from "../contexts/ThemeContext";
 import { emailIcon } from "../assets/icons/emailIcon";
 import { fastConnectIcon } from "../assets/icons/fastConnectIcon";
 import { navigationTypes } from "../navigation/navigation.types";
-import { axiosInstance } from "../api";
-import { useQuery } from "@tanstack/react-query";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
@@ -20,11 +18,6 @@ interface IProps {
         name: string,
     },
     setCallAction?: (v: boolean) => void,
-}
-
-
-const getGovernigIDS = async () => {
-    return axiosInstance.get('api/mobile/governing-bodies');
 }
 
 function Footer({ navigation, showActions = false, selectedItem, setCallAction }: IProps) {
@@ -37,20 +30,11 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
 
     const { setMessageTo, setMessageType, setGoverningBodyID } = useFormData();    
 
-    const {data, isFetching, isError} = useQuery({
-        queryKey: ['governments'],
-        queryFn: getGovernigIDS,
-        select: (data) => data.data,
-    });
-    
-
     const disabledAll = selectedItem?.id == -1;
     const disabled = disabledAll || selectedItem?.id == 3;
 
 
     const onPressCall = () => {
-        // navigation.navigate('Call');
-        console.log('Call');
         setCallAction && setCallAction(true);
     }
 

@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native';
 import socketIOClient, { Socket } from 'socket.io-client';
 
-const env = 'https://citizenb.trigger.ltd/';
+// const env = 'https://citizenb.trigger.ltd/';
+const env = process.env.BASE_URL_BACK;
 // const env = 'http://192.168.122.1:4008';
 
 
@@ -55,13 +56,13 @@ export const SocketProvider = ({ children }: IProps) => {
         }
     }, [])
 
-    useEffect(()=>{
-        socket.current.on("roomCreated",(data)=>{
-         console.log("room_created-----------",{data});
+    // useEffect(()=>{
+    //     socket.current.on("roomCreated",(data)=>{
+    //      console.log("room_created-----------",{data});
          
           
-        })
-      },[])
+    //     })
+    //   },[])
 
     const value = React.useMemo(
         () => ({
