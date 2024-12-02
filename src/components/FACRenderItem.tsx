@@ -4,6 +4,7 @@ import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { IFAQ, ISubFAQ } from "../interfaces/data.types";
 import { arrowIcon } from "../assets/icons";
+import { appStyles } from "../styles";
 
 
 interface IProps {
@@ -34,7 +35,7 @@ function FACRenderItem({ data, isLastItem }: IProps) {
                 <View style={{ flex: 1, alignItems: 'flex-start' }} >
                     <Text style={stylesMemo.title}>{data.title}</Text>
                 </View>
-                <View style={{ width: 30, paddingHorizontal: 5, transform: [{ rotate: toggleVisible ? '0deg' : '180deg' }] }} >
+                <View style={{ paddingHorizontal: 5, transform: [{ rotate: toggleVisible ? '0deg' : '180deg' }] }} >
                     {arrowIcon(colors.TEXT_COLOR)}
                 </View>
             </View>
@@ -53,7 +54,8 @@ export default memo(FACRenderItem);
 const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
-            borderBottomColor: colors.BUTTON_BORDER
+            borderBottomColor: colors.BUTTON_BORDER,
+            paddingVertical: 10,
         },
         wrapper: {
             flexDirection: 'row',
@@ -83,11 +85,11 @@ const styles = ({ colors, fontSize }: IStyles) => {
             marginLeft: 14
         },
         dotBox: {
-            width: 25,
+            width: 30,
             alignSelf: 'flex-start'
         },
         context: {
-            paddingLeft: 25,
+            paddingLeft: 30,
             paddingRight: 30,
             paddingVertical: 10
         }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Appearance, Text, useColorScheme } from 'react-native';
+import { Alert, useColorScheme } from 'react-native';
 import { darkColors, lightColors } from '../assets/appColors';
 import { handleFontSize } from '../helpers';
 import { getFontSize, getThemefromAS, setFontSizeToAS, setThemeToAS } from '../services/asyncStoryge';
@@ -37,24 +37,30 @@ export const ThemeProvider = ({ children }: IProps) => {
             size && setCoefficient(+size);
         });
         getThemefromAS().then(theme => {
-            if (theme) {
+            if (theme) {                
                 setIsDark(theme === 'dark')
             } else {
                 setIsDark(isDarkTheme);
+                setThemeToAS(isDarkTheme ? 'dark' : 'light');
+
             }
         })
-    }, [isDarkTheme])
+    }, []);
 
 
-    const toggleTheme = () => {
-        if (isDarkTheme) {
-            Appearance.setColorScheme('light');
-            setThemeToAS('light');
+    const toggleTheme = async () => {
+        if (isDark) {
+            setThemeToAS('light'); 
+            console.log('light');
+            setIsDark(false)
+            
         } else {
             setThemeToAS('dark');
-            Appearance.setColorScheme('dark');
+            console.log('dark');
+            setIsDark(true)
         }
     }
+
 
     const setFontSize = async (size: number) => {
         try {
@@ -78,8 +84,6 @@ export const ThemeProvider = ({ children }: IProps) => {
         [
             isDark,
             colors,
-            toggleTheme,
-            setFontSize,
             coefficient
         ],
     )

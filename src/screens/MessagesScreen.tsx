@@ -25,7 +25,7 @@ export default function MessagesScreen({ navigation }: IProps) {
 
     const [toggleMessages, setToggleMessages] = useState(true);
 
-    const { rooms, isUpdate } = useChat();
+    const { activeRooms, passiveRooms, isUpdate } = useChat();
 
 
     const onNewMessage = () => {
@@ -77,11 +77,11 @@ export default function MessagesScreen({ navigation }: IProps) {
 
                 {
                     (
-                        toggleMessages ? (rooms.active && rooms.active?.length > 0) : (rooms.passive && rooms.passive?.length > 0)
+                        toggleMessages ? (activeRooms?.length > 0) : (passiveRooms?.length > 0)
                     )
                         ? <>
                             <FlatList
-                                data={toggleMessages ? rooms.active : rooms.passive}
+                                data={toggleMessages ? activeRooms : passiveRooms}
                                 renderItem={({ item }) => <RoomItem navigation={navigation} room={item} />}
                                 contentContainerStyle={{flexGrow: 1}}
                                 extraData={[isUpdate]}

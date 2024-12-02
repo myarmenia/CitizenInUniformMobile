@@ -30,28 +30,19 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     const [visible, setVisible] = useState(false);
     const [userId, setUserId] = useState(0);
 
-    const onNextStep = async () => {
+    const onCreateChat = async () => {
         try {
             const isActiveOperator = await checkAvailableAdmins()
             console.log({ isActiveOperator });
 
             if (name && email && socketId) {
-                // const res = await axiosInstance.post('https://citizenb.trigger.ltd/api/user/register', {
-                //     name,
-                //     email,
-                //     message_category_id: '2',
-                //     governing_body: '2',
-                //     type: "IOS",
-                //     phone_number: phoneNumber,
-                //     socket_id: socketId
-                // })
 
                 if (isActiveOperator) {
 
                     const res = await registerUser({
                         email,
-                        governing_body: '2',
-                        message_category_id: '2',
+                        governing_body: governingBodyID.toString(),
+                        message_category_id: type.id.toString(),
                         phone_number: phoneNumber,
                         name,
                         socket_id: socketId,
@@ -60,11 +51,11 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
 
                     if (res) {
                         const user = await handleUser()
-                        const x = {
+                       
+                        socket.emit('searchAdmin', {
                             ...res,
                             m_user_id: user?.id
-                        }
-                        socket.emit('searchAdmin', x)
+                        })
                         console.log('userID', res.id);
 
                         setUserId(res.id);
@@ -109,7 +100,7 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
 
     const onPress = () => {
         if (messageType === appStrings.message) {
-            onNextStep();
+            onCreateChat();
 
         } else {
             navigation.navigate(navigationTypes.EMAIL_MESSAGE)

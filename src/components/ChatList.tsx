@@ -9,22 +9,15 @@ import Message from "./Message";
 
 interface IProps {
     messages: IMessage[];
-    flatListRef: React.RefObject<FlatList<IMessage>>
 }
 
-function ChatList({ messages, flatListRef }: IProps) {
+function ChatList({ messages }: IProps) {
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-
-
-    useEffect(() => {
-        if (flatListRef.current && messages.length) {
-            flatListRef.current.scrollToOffset({offset: 0, animated: true });
-        }
-    }, [messages.length]);
-
+    const offsetRef = useRef(0)
+    const flatListRef = useRef<FlatList<IMessage>>(null);
 
     return (
         <View style={stylesMemo.container}>
@@ -59,7 +52,8 @@ const styles = ({ colors, fontSize }: IStyles) => {
             paddingHorizontal: 16,
             gap: 10,
             paddingBottom: 0,
-            flexGrow: 1
+            flexGrow: 1,
+            justifyContent: 'flex-end'
         }
     })
 }

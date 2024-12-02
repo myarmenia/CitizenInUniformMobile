@@ -16,7 +16,7 @@ import { arrowIcon } from '../assets/icons';
 import { axiosInstance } from '../api';
 import { urls } from '../api/urls';
 import { useQuery } from '@tanstack/react-query';
-import { sleep } from '../screens/ChatScreen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IProps {
     visible: boolean;
@@ -41,6 +41,7 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
         select: (data) => data.data.result,
     });
 
+    const insents = useSafeAreaInsets()
     const DROP_DOWN_HEIGHT = data ? data?.length * 51 : 0;
 
     const { colors, isDarkTheme, coefficient } = useTheme();
@@ -106,7 +107,7 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
                         style={[
                             {
                                 height: DROP_DOWN_HEIGHT,
-                                top: top + 120,
+                                top: top + 120 + insents.top,
                             },
                         ]}>
                         <FlatList

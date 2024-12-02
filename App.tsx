@@ -16,6 +16,8 @@ import { CustomFormProvider } from './src/contexts/FormContext';
 import { handleUser } from './src/services/asyncStoryge';
 import { ChatProvider } from './src/contexts/ChatContext';
 import { useChat } from './src/hooks/useChat';
+import notifee from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
 
 const queryClient = new QueryClient();
 
@@ -25,7 +27,29 @@ function App(): React.JSX.Element {
 
     useEffect(() => {
         handleUser();
-    }, [])
+        notifee.requestPermission().then(() => {
+            messaging().getToken().then((token) => {
+                console.log(token);
+                
+            });
+            
+           
+            notifee.displayNotification({
+                
+                title: 'Notification Title',
+                body: 'Main body content of the notification',
+                android: {
+                  
+                  smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+                  // pressAction is needed if you want the notification to open the app when pressed
+                  pressAction: {
+                    id: 'default',
+                  },
+                },
+              });    
+            
+        })
+        }, [])
 
 
     return (

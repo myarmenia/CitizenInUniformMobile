@@ -1,18 +1,19 @@
-import { Alert, FlatList, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase, RouteProp, useIsFocused } from "@react-navigation/native";
 import Background from "../components/Background";
 import { useFormData, useSocket, useTheme } from "../hooks";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import Loading from "../components/Loading";
 import ChatList from "../components/ChatList";
 import MessageInput from "../components/MessageInput";
 import { IMessage } from "../interfaces/data.types";
-import { axiosInstance, axiosInstanceBack } from "../api";
+import { axiosInstanceBack } from "../api";
 import { navigationTypes } from "../navigation/navigation.types";
 import { useChat } from "../hooks/useChat";
 import { handleTitle } from "../components/RoomItem";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -24,7 +25,7 @@ export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 async function sendMessageToBack({ room_id, writer_id, content, writer }: any) {
     try {
         const data = await axiosInstanceBack.post("/api/message/create", { room_id, writer_id, content, writer })
-        return data.data
+        return data.data;
 
     } catch (error) {
         console.error(error)
@@ -32,38 +33,46 @@ async function sendMessageToBack({ room_id, writer_id, content, writer }: any) {
 }
 
 export default function ChatScreen({ navigation, route }: IProps) {
-
+    
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
     const { messageTo } = useFormData();
     const { socket } = useSocket();
     const isFocused = useIsFocused();
-    const { rooms, isUpdate } = useChat();
-
+    const { activeRooms, passiveRooms, isUpdate } = useChat();
+    
     
     const userId = route.params?.userId;
     const roomId = route.params?.roomId;
     const isActive = route.params?.isActive;    
-
+    
     let messagesList = route.params?.messages;
-
-    const room = rooms.active.find(room => room.id === roomId);
+    const queryClient = useQueryClient(); 
+    
+    const room = useMemo(() => {
+        
+        const r = activeRooms.find(room => room.id === roomId);
+        return r;
+    }, [isUpdate, activeRooms]);
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<IMessage[]>(messagesList? [...messagesList]: []);
     const [value, setValue] = useState('');
-
-    const flatListRef = useRef<FlatList<IMessage>>(null);
 
     useEffect(() => {
         if (isFocused) {
             onRead();
         }
-    }, [isFocused])    
+    }, [isFocused])   
+    
+
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey: ['rooms']})
+    }, [])
 
     useEffect(() => {
         if (room) {
-            // setMessages(room.messages);
+            setMessages(room.messages);
         } else {
             console.log('No messages');
         }
@@ -83,8 +92,6 @@ export default function ChatScreen({ navigation, route }: IProps) {
             if (value.trim().length === 0) {
                 return;
             }
-
-            
             const newMessage: IMessage = {
                 writer_id: userId,
                 writer: 'user',
@@ -92,14 +99,11 @@ export default function ChatScreen({ navigation, route }: IProps) {
                 room_id: roomId,
             };
             
-            console.log('rooom idi log', newMessage);
+            console.log('message created',);
             const data = await sendMessageToBack(newMessage)
-            console.log({data});
             
             socket.emit('create_message', data.message)
             setValue('');
-            // flatListRef.current?.scrollToEnd({ animated: true });
-
         } catch (error) {
             console.log('ERROR: onSend', error);
         }
@@ -107,15 +111,6 @@ export default function ChatScreen({ navigation, route }: IProps) {
     }
 
     useEffect(() => {
-        // socket.on('receive_message', (data: IMessage) => {
-        //     // setMessages((prev) => {
-        //     //     console.log('message received ---------------->', data);
-        //     //     return [data, ...prev];
-        //     // });
-        //     // onRead()
-        //     // flatListRef.current?.scrollToOffset({offset: 0, animated: true });
-        // })
-
         socket.on('roomEnded', (roomId:string) => {            
             Alert.alert(
                 'Alert',
@@ -131,18 +126,9 @@ export default function ChatScreen({ navigation, route }: IProps) {
         })
 
         return () => {
-            socket.off('receive_message');
             socket.off('end_chat');
         }
     }, []);
-
-
-    // useEffect(() => {
-    //     (async () => {
-    //         await sleep(3000);
-    //         setIsLoading(false);
-    //     })()
-    // }, []);
 
     return (
         <Background>
@@ -162,7 +148,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
                             >
                                 <ChatList
                                     messages={messages}
-                                    flatListRef={flatListRef}
+                                    // flatListRef={flatListRef}
                                 />
                                 <MessageInput
                                     value={value}

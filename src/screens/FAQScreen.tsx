@@ -11,7 +11,7 @@ import { getFAQs } from "../api/requests";
 import { appStrings } from "../assets/appStrings";
 import Loading from "../components/Loading";
 import FACRenderItem from "../components/FACRenderItem";
-import { IFAQ } from "../interfaces/data.types";
+import { IBaseData, IFAQ } from "../interfaces/data.types";
 import FACItem from "../components/FACItem";
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -47,11 +47,10 @@ export default function FAQScreen({ navigation }: IProps) {
         )
     }
 
-
     return (
         <Background>
             <View style={stylesMemo.container}  >
-                <Header navigation={navigation} goBackAction={false} />
+                <Header navigation={navigation} goBackAction={true} />
                 <View style={stylesMemo.main} >
                     <Text style={stylesMemo.title} >
                         {appStrings.answerAndQuestions}
@@ -61,17 +60,18 @@ export default function FAQScreen({ navigation }: IProps) {
                             <FlatList
                                 data={data}
                                 renderItem={renderItem}
-                                
+                                contentContainerStyle={{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 200}}
                             />
                         </View>
                         : <Loading />
                     }
                 </View>
-
-                <Footer
-                    navigation={navigation}
-                    showActions={false}
-                />
+                    <View style={stylesMemo.footerBox} >
+                        <Footer
+                            navigation={navigation}
+                            showActions={false}
+                        />
+                    </View>
             </View>
         </Background>
     )
@@ -82,7 +82,6 @@ const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
             flex: 1,
-            // alignItems: 'center',
             justifyContent: 'center'
         },
         title: {
@@ -91,11 +90,13 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontWeight: '700',
             textAlign: 'center',
             color: colors.TEXT_COLOR,
-            marginVertical: 10
+            marginVertical: 30
         },
         main: {
             flex: 1,
-            paddingHorizontal: 16
+        },
+        footerBox: {
+            alignItems: 'center'
         }
     })
 }  

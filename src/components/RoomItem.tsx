@@ -46,7 +46,7 @@ function RoomItem({
                 {room.messages[0]?.content}
             </Text>}
             {room.messages[0] && <Text style={stylesMemo.date} numberOfLines={1}>
-                {new Date(room.messages[0]?.updated_at!).toLocaleDateString()}
+                {new Date(room.messages[0]?.created_at!).toLocaleDateString()}
             </Text>}
         </TouchableOpacity>
     )

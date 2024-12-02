@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "110457639468",
+    "project_id": "hamazgestov-qaghaqaci",
+    "storage_bucket": "hamazgestov-qaghaqaci.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110457639468:android:cdd57c6b8659aa9a573789",
+        "android_client_info": {
+          "package_name": "com.citizeninuniform"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4WQb0oE66DSKTh_fcB2g5qqPSzYinHgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL = process.env.BASE_URL
-const BASE_URL_BACK = process.env.BASE_URL_BACK
+export const BASE_URL_BACK = process.env.BASE_URL_BACK
 
 export const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -14,7 +14,7 @@ export const axiosInstance = axios.create({
 
 
 export const axiosInstanceBack = axios.create({
-    baseURL: 'http://192.168.122.1:4008',
+    baseURL: BASE_URL_BACK,
     timeout: 10000,
     headers: {
         "Content-Type": "application/json",

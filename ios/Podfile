@@ -17,8 +17,13 @@ end
 target 'CitizenInUniform' do
   config = use_native_modules!
 
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
   use_react_native!(
-    :hermes_enabled => true,
+    :hermes_enabled => false,
     :path => config[:reactNativePath],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."

@@ -11,8 +11,9 @@ interface IProps {
 }
 
 export const ChatContext = React.createContext({
-   rooms: {} as IRooms,
-   isUpdate: false,
+    activeRooms: [] as IRoom[],
+    passiveRooms: [] as IRoom[],
+    isUpdate: false,
 })
 
 
@@ -25,11 +26,8 @@ export const ChatProvider = ({ children }: IProps) => {
 
     const [user, setUser] = useState<IUser | null>(null);
     const [isUpdate, setIsUpdate] = useState(false);
-
-    const [rooms, setRooms] = useState<IRooms>({
-        active: [],
-        passive: [],
-    });
+    const [activeRooms, setActiveRooms] = useState<IRoom[]>([]);
+    const [passiveRooms, setPassiveRooms] = useState<IRoom[]>([]);
 
     const { data, isError, isFetching, refetch } = useQuery({
         queryKey: ['rooms'],
@@ -46,51 +44,55 @@ export const ChatProvider = ({ children }: IProps) => {
     }, []);
 
     useEffect(() => {
-        if (data) {            
-            const sortedRooms = sortRooms(data);            
-            setRooms(sortedRooms);
-            if (sortedRooms?.active) {
-                sortedRooms.active.forEach(room => {
-                    if(room.activ > 0){
-                        console.log('joining room', room.id);
-                        
-                        socket.emit('operatorJoin', room);
-                    }
-                    
-                })
-            }
+        if (data) {       
+            const sortedRooms = sortRooms(data);
+            setActiveRooms(sortedRooms.active);
+            setPassiveRooms(sortedRooms.passive);
+        }
+    }, [data])
+
+
+    useEffect(() => {
+        if (activeRooms){
+            console.log('activeRooms ka', activeRooms.length);
+            
+            activeRooms.map(room => {
+                console.log('joining room', room.id);
+                socket.emit('operatorJoin', room);
+            })
             return () => {
                 socket.off('operatorJoin');
             }
         }
-    }, [!!data])
+    }, [!!activeRooms.length])
+
+    const handleNewMessage = (newMessage: IMessage) => {
+        setIsUpdate(!isUpdate)
+        setActiveRooms((prevRooms) => {
+            return prevRooms.map((room: IRoom) => {
+                if (room.id === newMessage.room_id) {
+                    // Если chat_id совпадает, добавляем новое сообщение в этот чат
+                    return {
+                        ...room,
+                        messages: [ newMessage, ...room.messages],
+                    };
+                }
+                return room;
+            });
+        });
+    };
 
     useEffect(() => {
         socket.on('receive_message', (message: IMessage) => {
             console.log('received message', message.content);
-            
-            if (rooms) {
-                const updatedRooms = { ...rooms };
-                let roomIndex = updatedRooms.active.findIndex((room) => room.id === message.room_id);
-                if (roomIndex !== -1) {
-                    updatedRooms.active[roomIndex].messages.unshift(message);
-                    setRooms({...updatedRooms});
-                } else {
-                    roomIndex = updatedRooms.passive.findIndex((room) => room.id === message.room_id);
-                    if (roomIndex !== -1) {
-                        updatedRooms.passive[roomIndex].messages.unshift(message);
-                        setRooms(updatedRooms);
-                    }
-                }
-            }
-            setIsUpdate(!isUpdate)
+            handleNewMessage(message);
         })
-        
+
         socket.on('roomEnded', (roomId: string) => {
             refetch()
-            
+
         })
-        
+
         return () => {
             socket.off('receive_message');
             socket.off('end_chat');
@@ -98,15 +100,24 @@ export const ChatProvider = ({ children }: IProps) => {
     }, []);
 
 
+    useEffect(() => {
+        console.log(activeRooms.length);
+
+    }, [activeRooms])
+
+
 
     const value = React.useMemo(
         () => ({
-            rooms,
+            activeRooms,
+            passiveRooms,
             isUpdate
         }),
         [
-            rooms,
-            isUpdate
+            activeRooms,
+            passiveRooms,
+            isUpdate,
+            data
         ],
     )
 
