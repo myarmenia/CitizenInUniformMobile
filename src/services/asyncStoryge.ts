@@ -4,21 +4,28 @@ import { Alert, Platform } from "react-native";
 import { axiosInstance } from "../api";
 import { IBaseData, IUser } from "../interfaces/data.types";
 
+const sleep = async (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 export const handleUser = async () => {
     try {
         const user = await AsyncStorage.getItem(('user'));
         
-        if (user) {  
-            return JSON.parse(user) as IUser ;
+        console.log('<=====================', user, '=====================>');
+        if (user) {
+            return JSON.parse(user) as IUser;
         } else {
             const deviceID = await getDeviceID();
-            const newUser = (await axiosInstance.post<IBaseData<IUser>>('/api/mobile/user-device', {
+            const newUser = await axiosInstance.post<IBaseData<IUser>>('/api/mobile/user-device', {
                 device_id: deviceID,
                 type: Platform.OS
-            })).data.result
-            console.log('USER ------------> ', user);
-            AsyncStorage.setItem('user', JSON.stringify(newUser))
-            return newUser;
+            })
+
+            const data = newUser.data.result
+            await AsyncStorage.setItem('user', JSON.stringify(data))
+            console.log('user Created <=====================', 'newUser', '=====================>');
+            return data;
         }
     } catch {
         Alert.alert('Oooooops!', 'User is not registered.');

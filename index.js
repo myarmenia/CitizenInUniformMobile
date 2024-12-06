@@ -16,17 +16,14 @@ messaging().onMessage(async (data) => {
 		android: {
 			channelId: 'default',
 			importance: AndroidImportance.HIGH,
+			sound: ''
 		}
 	});
 })
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-	try {
-
-		const count = await notifee.getBadgeCount()
-		  notifee.setBadgeCount(count + 1)
-
-		console.log('setBackgroundMessageHandler', count);
+	try {		
+		console.log('setBackgroundMessageHandler', remoteMessage);
 
 	} catch (error) {
 		console.log('Error while setting background message', error);
@@ -44,10 +41,5 @@ notifee.onForegroundEvent(async ({ type, detail }) => {
 
 
 });
-messaging().onTokenRefresh((token) => {
-	console.log({ token });
-	updateFMCToken(token);
-
-})
 
 AppRegistry.registerComponent(appName, () => App);

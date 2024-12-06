@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     PermissionsAndroid,
     StatusBar,
@@ -18,37 +18,58 @@ import { handleUser } from './src/services/asyncStoryge';
 import { ChatProvider } from './src/contexts/ChatContext';
 import { useChat } from './src/hooks/useChat';
 import notifee, { AndroidVisibility } from '@notifee/react-native';
+import { updateFMCToken } from './src/api/requests';
 import messaging from '@react-native-firebase/messaging';
+import Loading from './src/components/Loading';
+
 
 const queryClient = new QueryClient();
 
+messaging().onTokenRefresh(async (token) => {
+    console.log({ token });
+    updateFMCToken(token);
+
+})
 function App(): React.JSX.Element {
 
-    const { } = useChat()
+    const [isLoading, steIsLoading] = useState(true);
+
+
+
+    // const { } = useChat()
 
     useEffect(() => {
-        notifee.requestPermission()
-        PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS')
+        (async () => {
+            const user = await handleUser();
+            if (user) {
+                notifee.requestPermission()
+                steIsLoading(false)
+            }
+        })()
     }, [])
 
 
     return (
         <View style={styles.flex}>
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider>
-                    <SocketProvider>
-                        <ChatProvider>
-                            <CustomFormProvider>
-                                <ModalProvider>
-                                    <StatusBar />
-                                    <AppNavigation />
-                                    <CustomModal />
-                                </ModalProvider>
-                            </CustomFormProvider>
-                        </ChatProvider>
-                    </SocketProvider>
-                </ThemeProvider>
-            </QueryClientProvider>
+            {
+                isLoading
+                    ? <Loading />
+                    : <QueryClientProvider client={queryClient}>
+                        <ThemeProvider>
+                            <SocketProvider>
+                                <ChatProvider>
+                                    <CustomFormProvider>
+                                        <ModalProvider>
+                                            <StatusBar />
+                                            <AppNavigation />
+                                            <CustomModal />
+                                        </ModalProvider>
+                                    </CustomFormProvider>
+                                </ChatProvider>
+                            </SocketProvider>
+                        </ThemeProvider>
+                    </QueryClientProvider>
+            }
 
         </View>
     );

@@ -12,7 +12,6 @@ import { handleUser } from "../../services/asyncStoryge";
 import { appStrings } from "../../assets/appStrings";
 import { checkAvailableAdmins, registerUser } from "../../api/requests";
 import RecaptchaComponent from "../../components/Recaptcha";
-import { truncateSync } from "fs";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
