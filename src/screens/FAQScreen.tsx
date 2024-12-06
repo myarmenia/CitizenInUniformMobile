@@ -34,13 +34,6 @@ export default function FAQScreen({ navigation }: IProps) {
         }
     })
 
-
-    useEffect(() => {
-        if (data) {
-            console.log('FAQ ------', data);
-        }
-    }, [data]);
-
     const renderItem = ({ item, index }: { item: IFAQ, index: number }) => {
         return (
             <FACItem data={item}/>

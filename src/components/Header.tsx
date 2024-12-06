@@ -1,11 +1,11 @@
 import { memo, useMemo } from "react";
-import { Alert, Appearance, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { alertIcon, arrowLeftIcon, settingsIcon } from "../assets/icons";
 import { appStrings } from "../assets/appStrings";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { useModal, useTheme } from "../hooks";
+import { useNotifications, useTheme } from "../hooks";
 import { questionIcon } from "../assets/icons/questionIcon";
-import { ColorScheme, IStyles } from "../contexts/ThemeContext";
+import { IStyles } from "../contexts/ThemeContext";
 import { navigationTypes } from "../navigation/navigation.types";
 import { appStyles } from "../styles";
 
@@ -22,7 +22,7 @@ function Header({
     showSettings = true,
     showNotification = true,
 }: IProps) {
-    const { showModal } = useModal();
+    const { notifications } = useNotifications();
     const { colors, isDarkTheme, coefficient, toggleTheme } = useTheme()
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient])
@@ -61,10 +61,10 @@ function Header({
                     }
                 </TouchableOpacity>
                 <View style={stylesMemo.rightContent} >
-                    {showNotification && <TouchableOpacity
+                    {notifications && notifications?.length > 0 && showNotification && <TouchableOpacity
                         onPress={onGoToNotificationPage}
                     >
-                        {alertIcon(89)}
+                         {alertIcon(notifications.length)}
                     </TouchableOpacity>}
                     {showSettings && <TouchableOpacity
                         onPress={onGoToSettingsPage}

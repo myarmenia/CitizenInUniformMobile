@@ -4,6 +4,7 @@ import {
     IBaseData,
     IFAQ,
     IGoverningBody,
+    INotification,
     IRegisteredUser,
     IRegisterUser,
     IRoom,
@@ -17,9 +18,8 @@ export const checkAvailableAdmins = async () => {
         const checkActiveAdmins = await axiosInstanceBack.post<ISearchOperator>(
             urls.CHECK_AVAILABLE_ADMINS,
         );
-        console.log(checkActiveAdmins.data);
         
-        return checkActiveAdmins.data.operator.email;
+        return checkActiveAdmins.data.message === 'success';
     } catch (error) {
         console.error('checkAvailableAdmins =========>', error);
     }
@@ -75,3 +75,29 @@ export const getFAQs = async () => {
     const res = await axiosInstance.get<IBaseData<IFAQ[]>>(urls.GET_FAQS);
     return res.data;
 };
+
+export const updateFMCToken = async (token: string) => {
+    try {
+        const user = await handleUser();
+        if (!user) return;
+        const res = await axiosInstance.post<IBaseData<any>>(
+            urls.UPDATE_FMC_TOKEN,
+            {
+                "user_id": user.id,
+                "fcm_token": token
+            }
+        );
+        console.log('updateFMCToken =============> ', res.data);
+    } catch (error) {
+        console.error('updateFMCToken =============> ', error);
+    }
+}
+
+
+export const getNotifications = async () => {
+    const user = await handleUser();
+    if (!user) return;
+    return await axiosInstance.post<IBaseData<INotification[]>>(urls.GET_NOTIFICATIONS, {
+        "mobile_user_id": user.id
+    })
+}

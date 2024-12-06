@@ -36,7 +36,7 @@ export interface IMessage {
     writer: string;
     content: string;
     room_id: number;
-    created_at?: string;
+    created_at: string;
     deleted_at?: string;
     updated_at?: string;
     id?: number;
@@ -100,7 +100,7 @@ export interface ISearchOperator {
         status: number
         surname: string;
         updated_at: string
-    }
+    },
 }
 
 export interface IGoverningBody {
@@ -130,4 +130,14 @@ export interface IFAQ {
 export interface ISubFAQ {
     content: string;
     title: string;
+}
+
+
+export interface INotification {
+    id: number;
+    setting_id: number;
+    mobile_user_id: number;
+    title?: string;
+    content?: string;
+    created_at: string;
 }

@@ -123,22 +123,3 @@ const styles = ({ colors, fontSize }: IStyles) => {
         }
     })
 }
-
-
-
-
-
-// <Animated.View style={[stylesMemo.switchContainer, {
-//                     backgroundColor: animatedValue.interpolate({
-//                         inputRange: [0, 1],
-//                         outputRange: [colors.BACKGROUND_2, colors.PRIMARY],
-//                     })
-//                 }]} />
-//                 <Animated.View style={[stylesMemo.switch, {
-//                     transform: [{
-//                         translateX: animatedValue.interpolate({
-//                             inputRange: [0, 1],
-//                             outputRange: [0, coefficient * 100],
-//                         })
-//                     }]
-//                 }]}></Animated.View>

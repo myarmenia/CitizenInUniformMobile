@@ -6,16 +6,17 @@ import { IStyles } from "../contexts/ThemeContext";
 import { navigationTypes } from "../navigation/navigation.types";
 import { IRoom } from "../interfaces/data.types";
 import { appStrings } from "../assets/appStrings";
+import { handleTime, toCountUnreadMessages } from "../helpers";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
     room: IRoom
 }
 
-export const handleTitle = (room: IRoom) => {
+export const handleTitle = (id: number) => {
     let title = '';
-    if (room.governing_body_id == 1) title = appStrings.pn
-    else if (room.governing_body_id == 2) title = appStrings.mip
+    if (id == 1) title = appStrings.pn
+    else if (id == 2) title = appStrings.mip
     return title;
 }
 
@@ -32,22 +33,38 @@ function RoomItem({
             roomId: room.id,
             messages: room.messages,
             userId: room.m_user_id,
-            isActive: room.activ !== 0
+            isActive: room.activ !== 0,
+            type: room.governing_body_id
         });
     }
 
+    const count = useMemo(() => toCountUnreadMessages(room), [room])
+
     return (
         <TouchableOpacity style={stylesMemo.container} onPress={onPress} >
-            <Text style={stylesMemo.title} numberOfLines={1} >
-                {handleTitle(room)}
-            </Text>
+            <View style={stylesMemo.row}>
+            <View style={{flex: 1}} >
 
-            {room.messages[0] && <Text style={stylesMemo.message} numberOfLines={1}>
-                {room.messages[0]?.content}
-            </Text>}
-            {room.messages[0] && <Text style={stylesMemo.date} numberOfLines={1}>
-                {new Date(room.messages[0]?.created_at!).toLocaleDateString()}
-            </Text>}
+                <Text style={stylesMemo.title} numberOfLines={1} >
+                    {handleTitle(room.governing_body_id)}
+                </Text>
+                </View>
+               {room.messages[0]?.created_at && <Text style={stylesMemo.date} numberOfLines={1}>
+                    {handleTime(room.messages[0].created_at)}
+                </Text>}
+            </View>
+            <View style={stylesMemo.row}>
+                <View style={{flex: 1}} >
+                    {room.messages[0] && <Text style={stylesMemo.message} numberOfLines={1}>
+                        {room.messages[0]?.content}
+                    </Text>}
+                </View>
+                { !!count && <View style={stylesMemo.indicator}>
+                    <Text style={[stylesMemo.indicatorText]}>
+                        {count}
+                    </Text>
+                </View>}
+            </View>
         </TouchableOpacity>
     )
 }
@@ -76,7 +93,6 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontSize: fontSize(16),
             fontWeight: '400',
             color: colors.TEXT_COLOR,
-            marginBottom: 10,
             fontFamily: 'NotoSansArmenian'
         },
         date: {
@@ -85,7 +101,30 @@ const styles = ({ colors, fontSize }: IStyles) => {
             color: colors.DISABLED,
             fontFamily: 'NotoSansArmenian'
         },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 16
+        },
 
+        indicator: {
+            minWidth: 30,
+            minHeight: 30,
+            borderRadius: 30,
+            backgroundColor: colors.PRIMARY,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingHorizontal: 5
+        },
+        indicatorText: {
+            fontSize:14,
+            fontWeight: '600',
+            color: colors.WHITE,
+            fontFamily: 'NotoSansArmenian',
+            lineHeight: 18,
+            textAlignVertical: 'center'
+        },
     })
 }
 

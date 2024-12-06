@@ -15,6 +15,7 @@ import RenderHTML from 'react-native-render-html';
 import { axiosInstance } from '../api';
 import { urls } from '../api/urls';
 import { useQuery } from '@tanstack/react-query';
+import Loading from '../components/Loading';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>;
@@ -54,7 +55,7 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
     useEffect(() => {
         if (error) {
             console.error({ error });
-        }
+        }null
     }, [error]);
 
 
@@ -72,8 +73,10 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
                     }}
                 />
             )
+        } else {
+            return <Loading/>
         }
-        return null;
+        
 
     }, [data])
 

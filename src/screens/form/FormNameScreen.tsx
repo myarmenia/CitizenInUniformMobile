@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useFormData, useTheme } from "../../hooks";
@@ -8,6 +8,7 @@ import { IStyles } from "../../contexts/ThemeContext";
 import { appStrings } from "../../assets/appStrings";
 import Form from "../../components/Form";
 import { navigationTypes } from "../../navigation/navigation.types";
+import { appStyles } from "../../styles";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -28,12 +29,10 @@ export default function FormNameScreen({ navigation }: IProps) {
     return (
         <Background>
             {
-                <View style={stylesMemo.container}  >
+                <ScrollView scrollEnabled={false} style={stylesMemo.container}  >
                     <Header navigation={navigation} goBackAction />
                     <Form
                         activeStep={1}
-                        title={appStrings.message}
-                        label={appStrings.pn}
                         showGoBackButton={false}
                         navigation={navigation}
                         onNextStep={onNextStep}
@@ -47,7 +46,7 @@ export default function FormNameScreen({ navigation }: IProps) {
                             autoFocus
                         />
                     </Form>
-                </View>
+                </ScrollView>
             }
 
         </Background>
@@ -102,6 +101,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             padding: 10,
             borderRadius: 4,
             color: colors.TEXT_COLOR,
+            ...appStyles({ colors, fontSize }).shadow
         },
     })
 }  

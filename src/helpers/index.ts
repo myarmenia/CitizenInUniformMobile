@@ -1,6 +1,6 @@
 import { Linking, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info";
-import { IRoom } from "../interfaces/data.types";
+import { IMessage, IRoom } from "../interfaces/data.types";
 
 export const callToNumber = (number: number) => {
     Linking.openURL(`tel:${number}`)
@@ -42,7 +42,7 @@ export const getDeviceID = async () => {
     }
 };
 
-export const sortRooms =  (rooms: IRoom[]) => {
+export const sortRooms = (rooms: IRoom[]) => {
     const active = [];
     const passive = [];
 
@@ -53,14 +53,18 @@ export const sortRooms =  (rooms: IRoom[]) => {
             passive.push(room);
         }
     }
-    return {active, passive}
+
+    const sortedActive = sortRoomsList(active)
+    const sortedPassive = sortRoomsList(passive)
+
+    return { active: sortedActive, passive: sortedPassive}
 };
 
 export function validateAndFormatPhoneNumber(phoneNumber: string): string {
-    if (phoneNumber.length !== 12){
+    if (phoneNumber.length !== 12) {
         return phoneNumber
     }
-    
+
     const regex = /^\+(\d{3})(\d{2})(\d{2})(\d{2})(\d{2})$/;
     const match = phoneNumber.match(regex);
 
@@ -69,4 +73,28 @@ export function validateAndFormatPhoneNumber(phoneNumber: string): string {
         return `(+${countryCode}) ${areaCode} ${firstPart} ${secondPart} ${lastPart}`;
     }
     return phoneNumber;
+}
+
+export const handleTime = (date: string) => {
+    const d = new Date(date);
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
+
+export const toCountUnreadMessages = (room: IRoom) => {
+    return room.messages.filter(message => message.readed === 0 && message.writer === 'operator').length;
+}
+
+
+export const sortRoomsList = (roomsList: IRoom[]): IRoom[] => {
+    return roomsList.sort((a, b) => {
+        const aFirstMessage = a.messages[0];
+        const bFirstMessage = b.messages[0];
+
+
+        const aDate = new Date(aFirstMessage.created_at);
+        const bDate = new Date(bFirstMessage.created_at);
+        return bDate.getTime() - aDate.getTime();
+    });
 }

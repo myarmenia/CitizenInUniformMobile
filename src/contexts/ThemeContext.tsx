@@ -51,12 +51,10 @@ export const ThemeProvider = ({ children }: IProps) => {
     const toggleTheme = async () => {
         if (isDark) {
             setThemeToAS('light'); 
-            console.log('light');
             setIsDark(false)
             
         } else {
             setThemeToAS('dark');
-            console.log('dark');
             setIsDark(true)
         }
     }

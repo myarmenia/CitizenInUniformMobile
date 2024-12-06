@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../components/Header';
 import {
     NavigationProp,
@@ -7,10 +7,15 @@ import {
 } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import Background from '../components/Background';
-import { useTheme } from '../hooks';
-import { useMemo } from 'react';
+import { useNotifications, useTheme } from '../hooks';
+import { useEffect, useMemo } from 'react';
 import { IStyles } from '../contexts/ThemeContext';
-import { ICategory, ISubcategoryData } from '../interfaces/data.types';
+import { fakeNotificationsList } from '../data/fakeData';
+import NotificationItem from '../components/NotificationItem';
+import { appStrings } from '../assets/appStrings';
+import { removeIcon } from '../assets/icons/removeIcon';
+import { appStyles } from '../styles';
+import Loading from '../components/Loading';
 
 
 interface IProps {
@@ -18,21 +23,69 @@ interface IProps {
     route: RouteProp<any>;
 }
 
-export default function NotificationScreen({ navigation, route }: IProps) {
-    const category: ICategory = route.params?.data;
-
+export default function NotificationScreen({ navigation }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
+
+    const { notifications, isFetching, isError } = useNotifications();
+
+
+    useEffect(() => {
+        console.log({ notifications });
+
+    }, [notifications])
 
     const stylesMemo = useMemo(
         () => styles({ colors, fontSize }),
         [isDarkTheme, coefficient],
     );
+
+    const handleRemoveAll = () => {
+        try {
+
+        } catch (error) {
+
+        }
+    }
+
     return (
         <Background>
             <View style={stylesMemo.container}>
-                <Header navigation={navigation} goBackAction={true} />
-               
+                <Header
+                    navigation={navigation}
+                    goBackAction={true}
+                    showNotification={false}
+                />
+                <Text style={stylesMemo.title} >
+                    {appStrings.notifications}
+                </Text>
+                {notifications && notifications?.length > 0 && <TouchableOpacity
+                    onPress={handleRemoveAll}
+                    style={stylesMemo.removeButton}
+                >
+                    {removeIcon()}
+                    <Text style={stylesMemo.buttonLabel}>
+                        {appStrings.removeAll}
+
+                    </Text>
+                </TouchableOpacity>}
+                <View style={{flex: 1}} >
+                    {
+                        !isFetching
+                            ? <FlatList
+                                data={notifications}
+                                renderItem={({ item }) => <NotificationItem notify={item} />}
+                                contentContainerStyle={stylesMemo.contentContainer}
+                                style={{ flex: 1 }}
+                                keyExtractor={(i) => i.id.toString()}
+                            />
+                            : <Loading />
+                    }
+
+                </View>
+                <View style={stylesMemo.footerBox} >
+                    <Footer navigation={navigation} showActions={false} />
+                </View>
             </View>
         </Background>
     );
@@ -42,7 +95,6 @@ const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
             flex: 1,
-            alignItems: 'center'
         },
         title: {
             fontSize: fontSize(18),
@@ -50,7 +102,36 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontWeight: '700',
             textAlign: 'center',
             color: colors.TEXT_COLOR,
-            margin: 20,
+            marginVertical: 30
         },
+        contentContainer: {
+            flexGrow: 1,
+            paddingHorizontal: 16,
+            paddingBottom: 160
+        },
+        footerBox: {
+            width: '100%',
+            alignItems: 'center'
+        },
+        removeButton: {
+            flexDirection: 'row',
+            backgroundColor: colors.BACKGROUND_2,
+            borderRadius: 8,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 9,
+            gap: 10,
+            marginRight: 16,
+            alignSelf: 'flex-end',
+            ...appStyles({ colors, fontSize }).shadow,
+            marginBottom: 10
+
+        },
+        buttonLabel: {
+            fontSize: fontSize(14),
+            fontFamily: 'NotoSansArmenian',
+            color: '#BC0606',
+            fontWeight: '500'
+        }
     });
 };

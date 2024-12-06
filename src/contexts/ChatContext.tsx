@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSocket } from '../hooks';
-import { handleUser } from '../services/asyncStoryge';
-import { IMessage, IRoom, IUser } from '../interfaces/data.types';
+import { IMessage, IRoom } from '../interfaces/data.types';
 import { getRooms } from '../api/requests';
-import { useQuery } from '@tanstack/react-query';
-import { sortRooms } from '../helpers';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { sortRooms, sortRoomsList } from '../helpers';
 
 interface IProps {
     children: React.ReactNode;
@@ -13,23 +12,19 @@ interface IProps {
 export const ChatContext = React.createContext({
     activeRooms: [] as IRoom[],
     passiveRooms: [] as IRoom[],
-    isUpdate: false,
+    endedRoomID: -1,
 })
 
 
-interface IRooms {
-    active: IRoom[];
-    passive: IRoom[];
-}
-
 export const ChatProvider = ({ children }: IProps) => {
 
-    const [user, setUser] = useState<IUser | null>(null);
-    const [isUpdate, setIsUpdate] = useState(false);
+    const [endedRoomID, setEndedRoomID] = useState(-1);
     const [activeRooms, setActiveRooms] = useState<IRoom[]>([]);
     const [passiveRooms, setPassiveRooms] = useState<IRoom[]>([]);
 
-    const { data, isError, isFetching, refetch } = useQuery({
+    const queryClient = useQueryClient();
+
+    const { data, isFetching } = useQuery({
         queryKey: ['rooms'],
         queryFn: getRooms,
         select: (data) => data?.data,
@@ -37,14 +32,10 @@ export const ChatProvider = ({ children }: IProps) => {
 
 
 
-    const { socket, socketId } = useSocket();
+    const { socket } = useSocket();
 
     useEffect(() => {
-        handleUser().then((user) => setUser(user));
-    }, []);
-
-    useEffect(() => {
-        if (data) {       
+        if (data) {
             const sortedRooms = sortRooms(data);
             setActiveRooms(sortedRooms.active);
             setPassiveRooms(sortedRooms.passive);
@@ -53,11 +44,8 @@ export const ChatProvider = ({ children }: IProps) => {
 
 
     useEffect(() => {
-        if (activeRooms){
-            console.log('activeRooms ka', activeRooms.length);
-            
+        if (activeRooms) {
             activeRooms.map(room => {
-                console.log('joining room', room.id);
                 socket.emit('operatorJoin', room);
             })
             return () => {
@@ -66,21 +54,24 @@ export const ChatProvider = ({ children }: IProps) => {
         }
     }, [!!activeRooms.length])
 
+
     const handleNewMessage = (newMessage: IMessage) => {
-        setIsUpdate(!isUpdate)
         setActiveRooms((prevRooms) => {
-            return prevRooms.map((room: IRoom) => {
+            const updatedRooms = prevRooms.map((room: IRoom) => {
                 if (room.id === newMessage.room_id) {
-                    // Если chat_id совпадает, добавляем новое сообщение в этот чат
                     return {
                         ...room,
-                        messages: [ newMessage, ...room.messages],
+                        messages: [newMessage, ...room.messages],
                     };
                 }
                 return room;
             });
+
+            return sortRoomsList(updatedRooms);
         });
     };
+
+
 
     useEffect(() => {
         socket.on('receive_message', (message: IMessage) => {
@@ -88,35 +79,28 @@ export const ChatProvider = ({ children }: IProps) => {
             handleNewMessage(message);
         })
 
-        socket.on('roomEnded', (roomId: string) => {
-            refetch()
-
+        socket.on('roomEnded', (roomId: number) => {
+            setEndedRoomID(roomId);
+            queryClient.invalidateQueries({ queryKey: ['rooms'] })
         })
 
         return () => {
             socket.off('receive_message');
-            socket.off('end_chat');
+            socket.off('roomEnded');
         }
     }, []);
-
-
-    useEffect(() => {
-        console.log(activeRooms.length);
-
-    }, [activeRooms])
-
 
 
     const value = React.useMemo(
         () => ({
             activeRooms,
             passiveRooms,
-            isUpdate
+            endedRoomID
         }),
         [
             activeRooms,
             passiveRooms,
-            isUpdate,
+            endedRoomID,
             data
         ],
     )

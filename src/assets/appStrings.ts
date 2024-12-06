@@ -31,5 +31,6 @@ export const appStrings = {
     fontSize: 'Տառաչափ',
     calling: 'Զանգել',
     cancel: 'Չեղարկել',
-    answerAndQuestions: 'հարց եվ պատասխան'
+    answerAndQuestions: 'հարց եվ պատասխան',
+    removeAll: 'Ջնջել բոլորը'
 }

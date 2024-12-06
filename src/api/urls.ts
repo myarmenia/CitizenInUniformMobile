@@ -7,5 +7,7 @@ export const urls = {
     GET_ROOMS: '/api/room/get/rooms/user/',
     SEND_EMAIL_MESSAGE: '/api/mobile/email-messages/stor/',
     CHECK_AVAILABLE_ADMINS: '/api/admin/online/exist/',
-    GET_FAQS: '/api/mobile/faq-categories/'
+    GET_FAQS: '/api/mobile/faq-categories/',
+    UPDATE_FMC_TOKEN: '/api/mobile/update-fcm-token',
+    GET_NOTIFICATIONS: '/api/mobile/notifications'
 }

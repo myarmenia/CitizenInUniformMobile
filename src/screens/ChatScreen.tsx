@@ -8,7 +8,7 @@ import { IStyles } from "../contexts/ThemeContext";
 import Loading from "../components/Loading";
 import ChatList from "../components/ChatList";
 import MessageInput from "../components/MessageInput";
-import { IMessage } from "../interfaces/data.types";
+import { IMessage, IRoom } from "../interfaces/data.types";
 import { axiosInstanceBack } from "../api";
 import { navigationTypes } from "../navigation/navigation.types";
 import { useChat } from "../hooks/useChat";
@@ -33,50 +33,49 @@ async function sendMessageToBack({ room_id, writer_id, content, writer }: any) {
 }
 
 export default function ChatScreen({ navigation, route }: IProps) {
-    
+
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
     const { messageTo } = useFormData();
     const { socket } = useSocket();
     const isFocused = useIsFocused();
-    const { activeRooms, passiveRooms, isUpdate } = useChat();
-    
-    
+    const { activeRooms, passiveRooms, endedRoomID } = useChat();
+
+
     const userId = route.params?.userId;
     const roomId = route.params?.roomId;
-    const isActive = route.params?.isActive;    
-    
+    const isActive = route.params?.isActive;
+    const type = route.params?.type;
+
     let messagesList = route.params?.messages;
-    const queryClient = useQueryClient(); 
-    
+    const queryClient = useQueryClient();
+
     const room = useMemo(() => {
-        
-        const r = activeRooms.find(room => room.id === roomId);
-        return r;
-    }, [isUpdate, activeRooms]);
+
+        return activeRooms.find(room => room.id === roomId) as IRoom;
+    }, [ activeRooms]);
+
     const [isLoading, setIsLoading] = useState(false);
-    const [messages, setMessages] = useState<IMessage[]>(messagesList? [...messagesList]: []);
+    const [messages, setMessages] = useState<IMessage[]>(messagesList ? [...messagesList] : []);
     const [value, setValue] = useState('');
 
     useEffect(() => {
         if (isFocused) {
             onRead();
         }
-    }, [isFocused])   
-    
+    }, [isFocused])
+
 
     useEffect(() => {
-        queryClient.invalidateQueries({ queryKey: ['rooms']})
+        queryClient.invalidateQueries({ queryKey: ['rooms'] })
     }, [])
 
     useEffect(() => {
         if (room) {
             setMessages(room.messages);
-        } else {
-            console.log('No messages');
         }
-    }, [room, isUpdate])
+    }, [room])
 
     const onRead = async () => {
         try {
@@ -98,10 +97,9 @@ export default function ChatScreen({ navigation, route }: IProps) {
                 content: value,
                 room_id: roomId,
             };
-            
-            console.log('message created',);
+
             const data = await sendMessageToBack(newMessage)
-            
+
             socket.emit('create_message', data.message)
             setValue('');
         } catch (error) {
@@ -110,8 +108,8 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     }
 
-    useEffect(() => {
-        socket.on('roomEnded', (roomId:string) => {            
+    useEffect(() => {        
+        if (room?.id === endedRoomID) {
             Alert.alert(
                 'Alert',
                 'Chat End.',
@@ -123,12 +121,10 @@ export default function ChatScreen({ navigation, route }: IProps) {
                 ],
                 { cancelable: false }
             );
-        })
 
-        return () => {
-            socket.off('end_chat');
         }
-    }, []);
+
+    }, [endedRoomID]);
 
     return (
         <Background>
@@ -137,8 +133,8 @@ export default function ChatScreen({ navigation, route }: IProps) {
                     ? <>
                         <View style={stylesMemo.container}  >
                             <Header navigation={navigation} goBackAction={true} />
-                            {room && <Text style={stylesMemo.title}>
-                                {handleTitle(room)}
+                            {(room || type) && <Text style={stylesMemo.title}>
+                                {handleTitle(room?.governing_body_id ?? type)}
                             </Text>}
                             <KeyboardAvoidingView
                                 behavior="padding"
@@ -148,7 +144,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
                             >
                                 <ChatList
                                     messages={messages}
-                                    // flatListRef={flatListRef}
+                                // flatListRef={flatListRef}
                                 />
                                 <MessageInput
                                     value={value}

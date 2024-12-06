@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useEffect, useMemo, useState } from "react";
 import { useFormData, useTheme } from "../../hooks";
@@ -9,6 +9,7 @@ import { appStrings } from "../../assets/appStrings";
 import Form from "../../components/Form";
 import { isValidEmail } from "../../helpers";
 import { navigationTypes } from "../../navigation/navigation.types";
+import { appStyles } from "../../styles";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -49,7 +50,7 @@ export default function FormEmailScreen({ navigation }: IProps) {
     return (
         <Background>
             {
-                <View style={stylesMemo.container}  >
+                <ScrollView scrollEnabled={false} style={stylesMemo.container}  >
                     <Header navigation={navigation} goBackAction />
                     <Form
                         activeStep={2}
@@ -66,7 +67,7 @@ export default function FormEmailScreen({ navigation }: IProps) {
                         />
                         {error && <Text style={{ color: colors.ERROR, marginTop: 10 }}>{error}</Text>}
                     </Form>
-                </View>
+                </ScrollView>
             }
 
         </Background>
@@ -121,6 +122,8 @@ const styles = ({ colors, fontSize }: IStyles) => {
             padding: 10,
             borderRadius: 4,
             color: colors.TEXT_COLOR,
+            ...appStyles({ colors, fontSize }).shadow
+
         },
     })
 }  

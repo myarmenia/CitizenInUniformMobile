@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { urls } from "../api/urls";
 import Loading from "../components/Loading";
 import { axiosInstance } from "../api";
+import notifee, { EventType } from '@notifee/react-native';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -35,11 +36,9 @@ export default function HomeScreen({ navigation }: IProps) {
         select: (data) => data.data,
     });
 
-    useEffect(() => {        
-        isFocused && clearState()        
+    useEffect(() => {
+        isFocused && clearState()
     }, [isFocused]);
-
-  
 
     return (
         <Background>

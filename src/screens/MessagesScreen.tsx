@@ -25,13 +25,12 @@ export default function MessagesScreen({ navigation }: IProps) {
 
     const [toggleMessages, setToggleMessages] = useState(true);
 
-    const { activeRooms, passiveRooms, isUpdate } = useChat();
-
+    const { activeRooms, passiveRooms } = useChat();
 
     const onNewMessage = () => {
         navigation.navigate(navigationTypes.FORM_NAME);
     }
-    
+
     return (
         <Background>
             <Header
@@ -43,7 +42,7 @@ export default function MessagesScreen({ navigation }: IProps) {
                     {appStrings.sendMessage}
                 </Text>
 
-                <View style={[stylesMemo.row, {paddingHorizontal: 16}]} >
+                <View style={[stylesMemo.row, { paddingHorizontal: 16 }]} >
 
                     <View style={stylesMemo.row} >
                         <Button
@@ -67,7 +66,6 @@ export default function MessagesScreen({ navigation }: IProps) {
                     <Button borderWidth={2} borderEnabled onPress={onNewMessage} >
                         <View style={stylesMemo.row} >
                             {plusIcon(colors.WHITE)}
-
                             <Text style={stylesMemo.label} >
                                 {appStrings.new}
                             </Text>
@@ -83,8 +81,7 @@ export default function MessagesScreen({ navigation }: IProps) {
                             <FlatList
                                 data={toggleMessages ? activeRooms : passiveRooms}
                                 renderItem={({ item }) => <RoomItem navigation={navigation} room={item} />}
-                                contentContainerStyle={{flexGrow: 1}}
-                                extraData={[isUpdate]}
+                                contentContainerStyle={{ flexGrow: 1 }}
                             />
                         </>
 
@@ -112,8 +109,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontWeight: '700',
             textAlign: 'center',
             color: colors.TEXT_COLOR,
-            marginBottom: 20,
-            marginTop: 10
+            marginVertical: 30
         },
         row: {
             flexDirection: 'row',
@@ -142,6 +138,16 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontFamily: 'NotoSansArmenian',
             textAlign: 'center',
             color: colors.WHITE,
+        },
+
+        deleteBox: {
+            backgroundColor: colors.BACKGROUND_2,
+            padding: 10,
+            borderRadius: 6,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'flex-end',
+            flexDirection: 'row'
         }
     })
 }  

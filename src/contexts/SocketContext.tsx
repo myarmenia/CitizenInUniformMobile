@@ -56,13 +56,6 @@ export const SocketProvider = ({ children }: IProps) => {
         }
     }, [])
 
-    // useEffect(()=>{
-    //     socket.current.on("roomCreated",(data)=>{
-    //      console.log("room_created-----------",{data});
-         
-          
-    //     })
-    //   },[])
 
     const value = React.useMemo(
         () => ({

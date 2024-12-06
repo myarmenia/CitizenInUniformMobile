@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { navigationTypes } from "./navigation.types";
 
@@ -19,7 +19,8 @@ import FAQScreen from "../screens/FAQScreen";
 
 
 const Stack = createStackNavigator();
-export function AppNavigation() {
+export function AppNavigation() {  
+
     return (
         <NavigationContainer  >
             <Stack.Navigator initialRouteName={navigationTypes.HOME} screenOptions={{ headerShown: false }}  >

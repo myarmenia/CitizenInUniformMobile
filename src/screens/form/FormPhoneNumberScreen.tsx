@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useMemo, useRef, useState } from "react";
 import { useFormData, useTheme } from "../../hooks";
@@ -41,7 +41,7 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
     return (
         <Background>
             {
-                <View style={stylesMemo.container}  >
+                <ScrollView scrollEnabled={false} style={stylesMemo.container}  >
                     <Header navigation={navigation} goBackAction />
                     <Form
                         activeStep={3}
@@ -93,7 +93,7 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
                         />
                         {error && <Text style={{ color: colors.ERROR, marginTop: 10 }}>{error}</Text>}
                     </Form>
-                </View>
+                </ScrollView>
             }
         </Background>
     )

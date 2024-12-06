@@ -7,7 +7,7 @@ import { IBaseData, IUser } from "../interfaces/data.types";
 export const handleUser = async () => {
     try {
         const user = await AsyncStorage.getItem(('user'));
-
+        
         if (user) {  
             return JSON.parse(user) as IUser ;
         } else {
