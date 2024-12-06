@@ -8,6 +8,20 @@ const sleep = async (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+
+export const createUser = async () => {
+    const deviceID = await getDeviceID();
+    const newUser = await axiosInstance.post<IBaseData<IUser>>('/api/mobile/user-device', {
+        device_id: deviceID,
+        type: Platform.OS
+    })
+
+    const data = newUser.data.result
+    await AsyncStorage.setItem('user', JSON.stringify(data))
+    console.log('user Created <=====================', 'newUser', '=====================>');
+    return data;
+}
+
 export const handleUser = async () => {
     try {
         const user = await AsyncStorage.getItem(('user'));
@@ -15,17 +29,6 @@ export const handleUser = async () => {
         console.log('<=====================', user, '=====================>');
         if (user) {
             return JSON.parse(user) as IUser;
-        } else {
-            const deviceID = await getDeviceID();
-            const newUser = await axiosInstance.post<IBaseData<IUser>>('/api/mobile/user-device', {
-                device_id: deviceID,
-                type: Platform.OS
-            })
-
-            const data = newUser.data.result
-            await AsyncStorage.setItem('user', JSON.stringify(data))
-            console.log('user Created <=====================', 'newUser', '=====================>');
-            return data;
         }
     } catch {
         Alert.alert('Oooooops!', 'User is not registered.');

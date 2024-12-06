@@ -80,6 +80,7 @@ export const updateFMCToken = async (token: string) => {
     try {
         const user = await handleUser();
         if (!user) return;
+        
         const res = await axiosInstance.post<IBaseData<any>>(
             urls.UPDATE_FMC_TOKEN,
             {

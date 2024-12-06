@@ -14,22 +14,19 @@ import 'react-native-gesture-handler'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { darkColors } from './src/assets/appColors';
 import { CustomFormProvider } from './src/contexts/FormContext';
-import { handleUser } from './src/services/asyncStoryge';
+import { createUser, handleUser } from './src/services/asyncStoryge';
 import { ChatProvider } from './src/contexts/ChatContext';
 import { useChat } from './src/hooks/useChat';
 import notifee, { AndroidVisibility } from '@notifee/react-native';
 import { updateFMCToken } from './src/api/requests';
 import messaging from '@react-native-firebase/messaging';
 import Loading from './src/components/Loading';
+import { create } from 'domain';
 
 
 const queryClient = new QueryClient();
 
-messaging().onTokenRefresh(async (token) => {
-    console.log({ token });
-    updateFMCToken(token);
 
-})
 function App(): React.JSX.Element {
 
     const [isLoading, steIsLoading] = useState(true);
@@ -40,10 +37,16 @@ function App(): React.JSX.Element {
 
     useEffect(() => {
         (async () => {
-            const user = await handleUser();
-            if (user) {
-                notifee.requestPermission()
+            const  isAvailableUser = await handleUser()
+            const user = !isAvailableUser &&  await createUser();
+            if (user || isAvailableUser) {
+                await notifee.requestPermission()
                 steIsLoading(false)
+                await messaging().getToken().then(async (token) => {
+                    console.log({ token });
+                    await updateFMCToken(token);
+                
+                })
             }
         })()
     }, [])
