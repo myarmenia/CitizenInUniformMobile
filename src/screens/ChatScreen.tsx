@@ -70,7 +70,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     useEffect(() => {
         if (messages?.length) {
             messages.forEach( async message => {
-                if (message.readed === 0 && message.writer === 'operator'){
+                if (message?.readed === 0 && message?.writer === 'operator'){
                     try {
                         console.log('is read: ', message.content);
                         await updateSituation(message);
@@ -84,7 +84,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         const lastMessage = messages[0];
-        if (lastMessage.readed === 0 && lastMessage.writer === 'operator'){
+        if (lastMessage?.readed === 0 && lastMessage?.writer === 'operator'){
             updateSituation(lastMessage);
         }
     }, [messages])
