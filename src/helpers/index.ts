@@ -1,4 +1,4 @@
-import { Linking, Platform } from "react-native"
+import { Linking, PermissionsAndroid, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info";
 import { IMessage, IRoom } from "../interfaces/data.types";
 import NetInfo from "@react-native-community/netinfo";
@@ -111,14 +111,31 @@ export const checkNetworkStatus = async () => {
 };
 
 export const handleNotificationPermission = async () => {
-    try {
-        const status = await  notifee.requestPermission({
-            sound: false
-        });
-
-        console.log({status});
-        
-    } catch (e) {
-        console.warn("Error handling notification permission", e)
-    }
-}
+    if(Platform.OS ==="android"){
+        try {
+          PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
+            response => {
+              if(!response){
+                PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS',{
+                    title: 'Notification',
+                    message:
+                      'App needs access to your notification ' +
+                      'so you can get Updates',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                }).then(() => {
+                    
+                })
+              }
+            }
+          ).catch(
+            (err: any) => {
+              console.log("Notification Error=====>",err);
+            }
+          )
+        } catch (err){
+          console.log(err);
+        }
+      }
+    };

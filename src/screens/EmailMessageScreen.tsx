@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import React, { useMemo, useRef, useState } from "react";
 import { useFormData, useModal, useTheme } from "../hooks";
@@ -58,7 +58,7 @@ export default function EmailMessageScreen({ navigation }: IProps) {
         }
     }
 
-    const onVerify =  async (token: string) => {
+    const onVerify = async (token: string) => {
         onNextStep();
     }
 
@@ -71,35 +71,40 @@ export default function EmailMessageScreen({ navigation }: IProps) {
     }
 
     return (
-        <Background>
-                <ScrollView style={stylesMemo.container}  >
-                <Header navigation={navigation} goBackAction />
-                <Form
-                    activeStep={4}
-                    showGoBackButton={false}
-                    navigation={navigation}
-                    onNextStep={onPress}
-                    disabled={!value.trim()}
-                    childrenTitle={appStrings.message + '*'}
-                >
-                    <TextInput
-                        style={stylesMemo.input}
-                        defaultValue={value}
-                        onChangeText={setValue}
-                        multiline
-                        autoFocus
+        <KeyboardAvoidingView
+            behavior={'padding'}
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={40}
+        >
+            <Background>
 
-                    />
-                    <RecaptchaComponent
-                        onVerify={onVerify}
-                        onExpire={onExpire}
-                        open={showCaptcha}
-                        setOpen={setShowCaptcha}
-                    />
-                   
-                </Form>
-            </ScrollView>
-        </Background>
+                <ScrollView style={stylesMemo.container}  >
+                    <Header navigation={navigation} goBackAction />
+                    <Form
+                        activeStep={4}
+                        showGoBackButton={false}
+                        navigation={navigation}
+                        onNextStep={onPress}
+                        disabled={!value.trim()}
+                        childrenTitle={appStrings.message + '*'}
+                    >
+                        <TextInput
+                            style={stylesMemo.input}
+                            defaultValue={value}
+                            onChangeText={setValue}
+                            multiline
+                        />
+                        <RecaptchaComponent
+                            onVerify={onVerify}
+                            onExpire={onExpire}
+                            open={showCaptcha}
+                            setOpen={setShowCaptcha}
+                        />
+
+                    </Form>
+                </ScrollView>
+            </Background>
+        </KeyboardAvoidingView>
     )
 
 
@@ -139,7 +144,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
         },
 
         input: {
-            height: '30%',
+            height: 120,
             padding: 10,
             borderRadius: 4,
             color: colors.TEXT_COLOR,
