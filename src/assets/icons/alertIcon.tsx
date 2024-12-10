@@ -2,7 +2,7 @@ import { Appearance, Text, View } from "react-native"
 import Svg, { Path } from "react-native-svg"
 import { useTheme } from "../../hooks"
 
-export const alertIcon = (count?: number) => {
+export const alertIcon = (count: number) => {
     
 
     const { colors } = useTheme()
@@ -16,7 +16,7 @@ export const alertIcon = (count?: number) => {
                 <Path d="M11.8751 2.63125C11.8751 3.83247 12.8489 5.35 14.0501 5.35C15.2513 5.35 16.2251 3.83247 16.2251 2.63125C16.2251 1.43003 15.2513 1 14.0501 1C12.8489 1 11.8751 1.43003 11.8751 2.63125Z" stroke={colors.ICON_COLOR} stroke-width="1.13333" />
                 <Path d="M18.4 25.6499C18.4 28.0523 16.4524 29.9999 14.05 29.9999C11.6475 29.9999 9.69998 28.0523 9.69998 25.6499" stroke={colors.ICON_COLOR} stroke-width="1.13333" stroke-linecap="round" stroke-linejoin="round" />
             </Svg>
-            {count &&  <View style={{
+            {count > 0 &&  <View style={{
                 height: 18,
                 minWidth: 18,
                 alignItems: 'center',

@@ -9,5 +9,7 @@ export const urls = {
     CHECK_AVAILABLE_ADMINS: '/api/admin/online/exist/',
     GET_FAQS: '/api/mobile/faq-categories/',
     UPDATE_FMC_TOKEN: '/api/mobile/update-fcm-token',
-    GET_NOTIFICATIONS: '/api/mobile/notifications'
+    NOTIFICATIONS: '/api/mobile/notifications',
+    SETTINGS: '/api/mobile/settings',
+    UPDATE_SITUATION: '/api/message/update/situation/',
 }

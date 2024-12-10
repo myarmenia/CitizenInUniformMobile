@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { alertIcon, arrowLeftIcon, settingsIcon } from "../assets/icons";
 import { appStrings } from "../assets/appStrings";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { useNotifications, useTheme } from "../hooks";
+import { useNotify, useTheme } from "../hooks";
 import { questionIcon } from "../assets/icons/questionIcon";
 import { IStyles } from "../contexts/ThemeContext";
 import { navigationTypes } from "../navigation/navigation.types";
@@ -14,18 +14,18 @@ interface IProps {
     goBackAction?: boolean,
     showSettings?: boolean,
     showNotification?: boolean,
+    count?: number,
 }
-
 function Header({
     navigation,
     goBackAction = true,
     showSettings = true,
     showNotification = true,
 }: IProps) {
-    const { notifications } = useNotifications();
-    const { colors, isDarkTheme, coefficient, toggleTheme } = useTheme()
+    const { colors, isDarkTheme, coefficient } = useTheme();
+    const  { count } = useNotify();
     const fontSize = (size: number) => size * coefficient;
-    const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient])
+    const stylesMemo = useMemo(() => styles({ colors, fontSize }), [coefficient, isDarkTheme])
 
     const onGoToHamePage = () => {
         if (goBackAction) {
@@ -61,12 +61,12 @@ function Header({
                     }
                 </TouchableOpacity>
                 <View style={stylesMemo.rightContent} >
-                    {notifications && notifications?.length > 0 && showNotification && <TouchableOpacity
+                    {count > 0 && showNotification && <TouchableOpacity
                         onPress={onGoToNotificationPage}
                     >
-                         {alertIcon(notifications.length)}
+                        {alertIcon(count)}
                     </TouchableOpacity>}
-                    {showSettings && <TouchableOpacity
+                    { showSettings && <TouchableOpacity
                         onPress={onGoToSettingsPage}
                     >
                         {settingsIcon(colors.ICON_COLOR)}

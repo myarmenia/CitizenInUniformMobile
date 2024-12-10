@@ -7,9 +7,11 @@ export interface ICategory {
 }
 
 export interface ISubcategory {
-    category_id: number;
     id: number;
     title: string;
+    category_id: number;
+    fils: string[],
+    content: string
 }
 
 
@@ -22,13 +24,7 @@ export interface IBaseData<T> {
 export interface ISubcategoryData {
     message: string;
     success: boolean;
-    result: {
-        id: string;
-        title: string;
-        category_id: number;
-        fils: string[],
-        content: string
-    }
+    result: ISubcategory
 }
 
 export interface IMessage {

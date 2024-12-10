@@ -113,7 +113,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             minHeight: 30,
             borderRadius: 30,
             backgroundColor: colors.PRIMARY,
-            flexDirection: 'row',
+            alignItems: 'center',
             justifyContent: 'center',
             paddingHorizontal: 5
         },
@@ -123,7 +123,8 @@ const styles = ({ colors, fontSize }: IStyles) => {
             color: colors.WHITE,
             fontFamily: 'NotoSansArmenian',
             lineHeight: 18,
-            textAlignVertical: 'center'
+            textAlignVertical: 'center',
+            textAlign: 'center'
         },
     })
 }

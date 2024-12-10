@@ -26,12 +26,6 @@ export default function FAQScreen({ navigation }: IProps) {
     const { data, isError, isFetching } = useQuery({
         queryKey: ['faq'],
         queryFn: getFAQs,
-        select: (data) => data.result,
-        initialData: {
-            message: '',
-            success: false,
-            result: []
-        }
     })
 
     const renderItem = ({ item, index }: { item: IFAQ, index: number }) => {

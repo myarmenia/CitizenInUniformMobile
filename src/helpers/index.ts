@@ -1,6 +1,8 @@
 import { Linking, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info";
 import { IMessage, IRoom } from "../interfaces/data.types";
+import NetInfo from "@react-native-community/netinfo";
+import notifee, { AndroidVisibility } from '@notifee/react-native';
 
 export const callToNumber = (number: number) => {
     Linking.openURL(`tel:${number}`)
@@ -84,8 +86,7 @@ export const handleTime = (date: string) => {
 
 export const toCountUnreadMessages = (room: IRoom) => {
     return room.messages.filter(message => message.readed === 0 && message.writer === 'operator').length;
-}
-
+};
 
 export const sortRoomsList = (roomsList: IRoom[]): IRoom[] => {
     return roomsList.sort((a, b) => {
@@ -93,8 +94,31 @@ export const sortRoomsList = (roomsList: IRoom[]): IRoom[] => {
         const bFirstMessage = b.messages[0];
 
 
-        const aDate = new Date(aFirstMessage.created_at);
-        const bDate = new Date(bFirstMessage.created_at);
+        const aDate = new Date(aFirstMessage?.created_at);
+        const bDate = new Date(bFirstMessage?.created_at);
         return bDate.getTime() - aDate.getTime();
     });
+};
+
+export const checkNetworkStatus = async () => {
+    try {
+        const state = await NetInfo.fetch();
+        return state.isConnected;
+    } catch (error) {
+        console.error("Error checking network status:", error);
+        return false;
+    }
+};
+
+export const handleNotificationPermission = async () => {
+    try {
+        const status = await  notifee.requestPermission({
+            sound: false
+        });
+
+        console.log({status});
+        
+    } catch (e) {
+        console.warn("Error handling notification permission", e)
+    }
 }

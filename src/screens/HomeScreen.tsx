@@ -8,18 +8,14 @@ import { useEffect, useMemo } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import Menu from "../components/Menu";
 import { useQuery } from "@tanstack/react-query";
-import { urls } from "../api/urls";
 import Loading from "../components/Loading";
-import { axiosInstance } from "../api";
-import notifee, { EventType } from '@notifee/react-native';
+import { getCategories } from "../api/requests";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
 }
 
-const getCategories = async () => {
-    return axiosInstance.get(urls.CATEGORIES)
-}
+
 
 export default function HomeScreen({ navigation }: IProps) {
 
@@ -33,7 +29,7 @@ export default function HomeScreen({ navigation }: IProps) {
     const { data, isError, isFetching } = useQuery({
         queryKey: ['categories'],
         queryFn: getCategories,
-        select: (data) => data.data,
+        select: (data) => data,
     });
 
     useEffect(() => {
@@ -47,7 +43,7 @@ export default function HomeScreen({ navigation }: IProps) {
                     ? <>
                         <View style={stylesMemo.container}  >
                             <Header navigation={navigation} goBackAction={false} />
-                            <Menu data={data?.result} navigation={navigation} />
+                            <Menu data={data} navigation={navigation} />
                             <Footer
                                 navigation={navigation}
                                 showActions={false}

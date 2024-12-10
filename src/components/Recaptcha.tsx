@@ -31,6 +31,9 @@ const RecaptchaComponent = ({ onVerify, open, onExpire, setOpen }: IProps) => {
                 onExpire={onExpire}
                 size='normal'
                 onClose={() => setOpen && setOpen(false)}
+                modalProps={{style: {
+                    paddingTop: 200
+                }}}
             />}
         </View>
     );

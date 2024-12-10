@@ -8,7 +8,7 @@ import {
 import Footer from '../components/Footer';
 import Background from '../components/Background';
 import { useTheme } from '../hooks';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { IStyles } from '../contexts/ThemeContext';
 import { ISubcategory, ISubcategoryData } from '../interfaces/data.types';
 import RenderHTML from 'react-native-render-html';
@@ -16,22 +16,13 @@ import { axiosInstance } from '../api';
 import { urls } from '../api/urls';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../components/Loading';
+import { getSubCategory } from '../api/requests';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>;
     route: RouteProp<any>;
 }
 
-const getSubCategory = async (id?: number) => {
-    try {
-        if (id) {
-            return axiosInstance.get<ISubcategoryData>(urls.SUB_CATEGORY + `${id}/show`)
-        }
-
-    } catch (error) {
-        console.error(error)
-    }
-}
 
 export default function SubCategoryScreen({ navigation, route }: IProps) {
     const { width } = useWindowDimensions();
@@ -42,9 +33,12 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
     const category: ISubcategory = route.params?.item;
     const { data, error, isFetching } = useQuery({
         queryKey: ['subcategory' + category.id],
-        queryFn: async () => await getSubCategory(category.id),
-        select: (data) => data?.data,
+        queryFn: async () => await getSubCategory(category.id!),
+        select: (data) => data as ISubcategory,
     });
+
+    console.log({data});
+    
 
     const stylesMemo = useMemo(
         () => styles({ colors, fontSize }),
@@ -64,7 +58,7 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
             return (
                 <RenderHTML
                     contentWidth={width - 32}
-                    source={{ html: data.result.content }}
+                    source={{ html: data.content }}
                     defaultTextProps={{
                         style: {
                             fontSize: 16,
@@ -95,8 +89,8 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
                         alignItems: 'center',
                         paddingBottom: 200
                     }}>
-                    {data?.result.title && <Text style={stylesMemo.title} >
-                        {data?.result.title}
+                    {data?.title && <Text style={stylesMemo.title} >
+                        {data?.title}
                     </Text>}
                     {htmlComponent}
                 </ScrollView>

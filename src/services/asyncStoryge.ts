@@ -18,15 +18,12 @@ export const createUser = async () => {
 
     const data = newUser.data.result
     await AsyncStorage.setItem('user', JSON.stringify(data))
-    console.log('user Created <=====================', 'newUser', '=====================>');
     return data;
 }
 
 export const handleUser = async () => {
     try {
         const user = await AsyncStorage.getItem(('user'));
-        
-        console.log('<=====================', user, '=====================>');
         if (user) {
             return JSON.parse(user) as IUser;
         }

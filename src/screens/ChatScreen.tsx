@@ -2,7 +2,7 @@ import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "r
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase, RouteProp, useIsFocused } from "@react-navigation/native";
 import Background from "../components/Background";
-import { useFormData, useSocket, useTheme } from "../hooks";
+import { useSocket, useTheme } from "../hooks";
 import { useEffect, useMemo, useState } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import Loading from "../components/Loading";
@@ -14,6 +14,7 @@ import { navigationTypes } from "../navigation/navigation.types";
 import { useChat } from "../hooks/useChat";
 import { handleTitle } from "../components/RoomItem";
 import { useQueryClient } from "@tanstack/react-query";
+import { updateSituation } from "../api/requests";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -37,10 +38,9 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { messageTo } = useFormData();
     const { socket } = useSocket();
     const isFocused = useIsFocused();
-    const { activeRooms, passiveRooms, endedRoomID } = useChat();
+    const { activeRooms, endedRoomID } = useChat();
 
 
     const userId = route.params?.userId;
@@ -64,8 +64,30 @@ export default function ChatScreen({ navigation, route }: IProps) {
         if (isFocused) {
             onRead();
         }
-    }, [isFocused])
+    }, [isFocused, messages])
 
+
+    useEffect(() => {
+        if (messages?.length) {
+            messages.forEach( async message => {
+                if (message.readed === 0 && message.writer === 'operator'){
+                    try {
+                        console.log('is read: ', message.content);
+                        await updateSituation(message);
+                    } catch {
+                        console.log('messsge situation is not supdated');
+                    }
+                }
+            });
+        }
+    }, [!!messages])
+
+    useEffect(() => {
+        const lastMessage = messages[0];
+        if (lastMessage.readed === 0 && lastMessage.writer === 'operator'){
+            updateSituation(lastMessage);
+        }
+    }, [messages])
 
     useEffect(() => {
         queryClient.invalidateQueries({ queryKey: ['rooms'] })
@@ -91,7 +113,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
             if (value.trim().length === 0) {
                 return;
             }
-            const newMessage: IMessage = {
+            const newMessage = {
                 writer_id: userId,
                 writer: 'user',
                 content: value,

@@ -15,6 +15,7 @@ import SliderComponent from '../components/Slider';
 import { appStrings } from '../assets/appStrings';
 import { getNotifAccessFromAS, getNotifSoundAccessFromAS, setNotifAccessToAS, setNotifSoundAccessToAS } from '../services/asyncStoryge';
 import { access } from 'fs';
+import { getSettings, updateSettings } from '../api/requests';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>;
@@ -35,6 +36,11 @@ export default function SettingsScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         getParams();
+
+        getSettings().then((settings) => {
+           console.log(settings?.data.result);
+           
+        })
     }, [])
 
 
@@ -52,14 +58,27 @@ export default function SettingsScreen({ navigation, route }: IProps) {
         }
     }
 
-    const onToggleNotifAccess = () => {
-        setAccessNotif(!accessNotif)
-        setNotifAccessToAS(!accessNotif)
+    const onToggleNotifAccess = async () => {
+        try {
+            setAccessNotif(!accessNotif);
+            await updateSettings(!accessNotif, !!accessSound);
+            await setNotifAccessToAS(!accessNotif);
+        } catch (error) {
+            console.error('onToggleNotifAccess', error);
+            
+        }
     }
 
-    const onToggleNotifSound = () => {
-        setAccessSound(!accessSound);
-        setNotifSoundAccessToAS(!accessSound);
+    const onToggleNotifSound = async () => {
+        try {
+            setAccessSound(!accessSound);
+            await updateSettings(!!accessNotif, !accessSound);
+            setNotifSoundAccessToAS(!accessSound);
+
+            
+        } catch (error) {
+             console.error('onToggleNotifSound', error);
+        }
     }
 
     return (

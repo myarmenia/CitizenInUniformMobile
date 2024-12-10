@@ -84,9 +84,51 @@ export const ChatProvider = ({ children }: IProps) => {
             queryClient.invalidateQueries({ queryKey: ['rooms'] })
         })
 
+        socket.on('userMessageAlreadyReaded', (r: IRoom) => {
+            const roomId = r.id;
+            setActiveRooms((prevRooms) => {
+                return prevRooms.map((room) => {
+                    if (room.id === roomId) {
+                        return {
+                            ...room,
+                            messages: room.messages.map((message) => ({
+                                ...message,
+                                readed: 1,
+                            })),
+                        };
+                    }
+                    return room;
+                });
+            });
+        })
+
+        socket.on('messageRead', (r: IRoom) => {
+            const roomId = r.id;
+
+            setActiveRooms((prevRooms) => {
+                return prevRooms.map((room) => {
+                    if (room.id === roomId) {
+                        return {
+                            ...room,
+                            messages: ((): IMessage[] => {
+                                const newMessages = [...room.messages];
+
+                                newMessages[0].readed = 1;
+                                return newMessages
+                            })()
+
+                        };
+                    }
+                    return room;
+                });
+            });
+        })
+
         return () => {
             socket.off('receive_message');
             socket.off('roomEnded');
+            socket.off('userMessageAlreadyReaded');
+            socket.off('messageRead');
         }
     }, []);
 

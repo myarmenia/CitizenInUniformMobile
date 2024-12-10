@@ -5,11 +5,17 @@ import { IStyles } from "../contexts/ThemeContext";
 import { INotification } from "../interfaces/data.types";
 import { notifyAlertIcon } from "../assets/icons/notifyAlertIcon";
 import { arrowIcon } from "../assets/icons";
+import { handleTime } from "../helpers";
+import { notifySettingsIcon } from "../assets/icons/notifySettingsIcon";
+import { notifyChatIcon } from "../assets/icons/notifyChatIcon copy";
+import { notifyLawIcon } from "../assets/icons/notifyLawIcon";
+import { readNorification } from "../api/requests";
 
 
 interface IProps {
     notify: INotification
 }
+
 
 function NotificationItem({ notify }: IProps) {
 
@@ -17,24 +23,46 @@ function NotificationItem({ notify }: IProps) {
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
 
+    const handlePress = async () => {
+        // TODO: Navigate to notification details screen
+        try {
+            const res = await readNorification(notify.id);
+            console.log('Notification is readed', res?.data.message)
+        } catch (error) {
+            console.warn();
+        }
+
+    }
+
+    const handleIcon = (id: number) => {
+        if (id === 1) return notifySettingsIcon(colors.ICON_COLOR);
+        else if (id === 4) return notifyChatIcon(colors.ICON_COLOR);
+        else if (id === 5) return notifyLawIcon(colors.ICON_COLOR);
+        return notifyAlertIcon(colors.ICON_COLOR);
+    }
     return (
-        <TouchableOpacity style={stylesMemo.container} >
+        <TouchableOpacity style={stylesMemo.container} onPress={handlePress} >
             <View
                 style={stylesMemo.icon}
             >
-                {notifyAlertIcon(colors.ICON_COLOR)}
+                {handleIcon(notify.setting_id)}
             </View>
 
             <View
                 style={stylesMemo.main}
             >
                 <Text style={stylesMemo.title} >
+                    {notify.title}
+                </Text>
+
+                <Text style={stylesMemo.title} >
                     {notify.content}
                 </Text>
 
-               { <Text style={stylesMemo.time} >
-                    {'11:23'}
-                </Text> }
+                {<Text style={stylesMemo.time} >
+                    {handleTime(notify.created_at)}   2125
+                    {new Date(notify.created_at).toLocaleDateString()}
+                </Text>}
             </View>
 
             <View
@@ -46,7 +74,7 @@ function NotificationItem({ notify }: IProps) {
     )
 }
 
-export default NotificationItem;
+export default memo(NotificationItem);
 
 
 

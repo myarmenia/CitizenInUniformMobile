@@ -4,11 +4,12 @@ import {
     NavigationProp,
     ParamListBase,
     RouteProp,
+    useIsFocused,
 } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import Background from '../components/Background';
-import { useNotifications, useTheme } from '../hooks';
-import { useEffect, useMemo } from 'react';
+import { useNotify, useTheme } from '../hooks';
+import { useEffect, useMemo, useState } from 'react';
 import { IStyles } from '../contexts/ThemeContext';
 import { fakeNotificationsList } from '../data/fakeData';
 import NotificationItem from '../components/NotificationItem';
@@ -16,6 +17,7 @@ import { appStrings } from '../assets/appStrings';
 import { removeIcon } from '../assets/icons/removeIcon';
 import { appStyles } from '../styles';
 import Loading from '../components/Loading';
+import { removeAllNorifications } from '../api/requests';
 
 
 interface IProps {
@@ -26,25 +28,29 @@ interface IProps {
 export default function NotificationScreen({ navigation }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
+    const [isLoading, steIsLoading] = useState(false);
 
-    const { notifications, isFetching, isError } = useNotifications();
+    const { notifications, isFetching, refetch } = useNotify();
 
+    const isFocused = useIsFocused();
 
     useEffect(() => {
-        console.log({ notifications });
-
-    }, [notifications])
+        refetch();
+    }, [isFocused]);
 
     const stylesMemo = useMemo(
         () => styles({ colors, fontSize }),
         [isDarkTheme, coefficient],
     );
 
-    const handleRemoveAll = () => {
+    const handleRemoveAll =  async () => {
         try {
-
-        } catch (error) {
-
+            steIsLoading(true);
+            await removeAllNorifications();
+            refetch();
+            steIsLoading(false);
+        } finally {
+            steIsLoading(false);
         }
     }
 

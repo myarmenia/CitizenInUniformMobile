@@ -27,7 +27,6 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 
 	} catch (error) {
 		console.log('Error while setting background message', error);
-
 	}
 })
 
@@ -38,8 +37,6 @@ notifee.onBackgroundEvent(async ({ type, detail }) => {
 
 notifee.onForegroundEvent(async ({ type, detail }) => {
 	console.log('onForegroundEvent', { type, detail });
-
-
 });
 
 AppRegistry.registerComponent(appName, () => App);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+    Alert,
     PermissionsAndroid,
     StatusBar,
     StyleSheet,
@@ -21,58 +22,83 @@ import notifee, { AndroidVisibility } from '@notifee/react-native';
 import { updateFMCToken } from './src/api/requests';
 import messaging from '@react-native-firebase/messaging';
 import Loading from './src/components/Loading';
-import { create } from 'domain';
+import { NotifyProvider } from './src/contexts/NotifyContext';
+import { checkNetworkStatus, handleNotificationPermission } from './src/helpers';
+import { sleep } from './src/screens/ChatScreen';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 
 const queryClient = new QueryClient();
 
+// Alert.alert(
+//     'Ooooops!',
+//     'Check connection!.',
+//     [
+//         {
+//             text: 'OK',
+//             onPress: () => { }
+//         },
+//     ],
+//     { cancelable: false }
+// );
 
 function App(): React.JSX.Element {
 
-    const [isLoading, steIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const { isConnected } = useNetInfo();
 
 
 
     // const { } = useChat()
 
     useEffect(() => {
+        console.log('Loading');
+
         (async () => {
-            const  isAvailableUser = await handleUser()
-            const user = !isAvailableUser &&  await createUser();
-            if (user || isAvailableUser) {
-                await notifee.requestPermission()
-                steIsLoading(false)
-                await messaging().getToken().then(async (token) => {
-                    console.log({ token });
-                    await updateFMCToken(token);
-                
-                })
+            const isAvailableUser = await handleUser();
+            const isConnected = await checkNetworkStatus()
+            if (!isAvailableUser && isConnected) {
+                await createUser();
             }
+
+            setIsLoading(false)
+            messaging().getToken().then(async (token) => {
+                console.log('FCM token: ', token);
+                await updateFMCToken(token);
+            });
+            handleNotificationPermission()
+            
         })()
+        
     }, [])
 
 
     return (
         <View style={styles.flex}>
-            {
-                isLoading
-                    ? <Loading />
-                    : <QueryClientProvider client={queryClient}>
-                        <ThemeProvider>
-                            <SocketProvider>
-                                <ChatProvider>
-                                    <CustomFormProvider>
-                                        <ModalProvider>
-                                            <StatusBar />
-                                            <AppNavigation />
-                                            <CustomModal />
-                                        </ModalProvider>
-                                    </CustomFormProvider>
-                                </ChatProvider>
-                            </SocketProvider>
-                        </ThemeProvider>
-                    </QueryClientProvider>
-            }
+
+
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider>
+                    <SocketProvider>
+                        <ChatProvider>
+                            <CustomFormProvider>
+                                <ModalProvider>
+                                    <NotifyProvider>
+                                        <StatusBar />
+                                        {isLoading
+                                            ? <Loading />
+
+                                            : <AppNavigation />
+                                        }
+                                        <CustomModal />
+                                    </NotifyProvider>
+                                </ModalProvider>
+                            </CustomFormProvider>
+                        </ChatProvider>
+                    </SocketProvider>
+                </ThemeProvider>
+            </QueryClientProvider>
+
 
         </View>
     );

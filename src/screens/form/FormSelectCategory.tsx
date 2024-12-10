@@ -35,7 +35,7 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
 
     const checkAdmins = async () => {
         try {
-            const isActiveOperator = await checkAvailableAdmins()
+            const isActiveOperator = await checkAvailableAdmins(governingBodyID)
             if (isActiveOperator) {
                 return isActiveOperator
             } else {
@@ -57,9 +57,17 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     const onCreateChat = async () => {
         try {
             const isActiveOperator = await checkAdmins()
-            console.log({ isActiveOperator });
+            console.log({ isActiveOperator, name , email ,socketId:  socket.id});
 
             if (name && email && socketId) {
+                console.log('_________________________________________>', {
+                    email,
+                    governing_body: governingBodyID.toString(),
+                    message_category_id: type.id.toString(),
+                    phone_number: phoneNumber,
+                    name,
+                    socket_id: socketId,
+                });
 
                 if (isActiveOperator) {
 
@@ -75,6 +83,11 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
 
                     if (res) {
                         const user = await handleUser()
+                        console.log('search admin =============>', {
+                            ...res,
+                            m_user_id: user?.id
+                        });
+                        
 
                         socket.emit('searchAdmin', {
                             ...res,
