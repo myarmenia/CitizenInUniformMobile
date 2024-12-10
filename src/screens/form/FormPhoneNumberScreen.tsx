@@ -9,6 +9,7 @@ import { appStrings } from "../../assets/appStrings";
 import Form from "../../components/Form";
 import { navigationTypes } from "../../navigation/navigation.types";
 import PhoneInput from "@perttu/react-native-phone-number-input";
+import { appStyles } from "../../styles";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -50,47 +51,53 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
                         onNextStep={onNextStep}
                         childrenTitle={appStrings.number}
                     >
-                        <PhoneInput
-                            textInputProps={{
-                                maxLength: 10,
-                                cursorColor: 'grey',
-                                placeholder: ''
-                            }}
-                            containerStyle={{
-                                backgroundColor: colors.BACKGROUND_2,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                height: 50,
-                                width: Dimensions.get('window').width - 32,
-                                overflow: 'hidden',
-                                borderRadius: 6
-                            }}
-                            textInputStyle={{
-                                fontSize: 16,
-                                height: 40,
-                                color: colors.TEXT_COLOR
-                            }}
-                            textContainerStyle={{
-                                paddingHorizontal: 0,
-                                paddingVertical: 0,
-                                backgroundColor: 'transparent'
+                        <View style={{
+                                        ...appStyles({ colors, fontSize }).shadow
 
-                            }}
-                            codeTextStyle={{
-                                fontSize: 16,
-                                color: colors.TEXT_COLOR
-                            }}
-                            ref={phoneInput}
-                            defaultValue={phoneNumber}
-                            defaultCode="AM"
-                            layout="first"
-                            onChangeFormattedText={(text) => {
-                                setValue(text);
-                            }}
-                            withDarkTheme={isDarkTheme}
-                            withShadow
-                            autoFocus
-                        />
+                        }} >
+
+                            <PhoneInput
+                                textInputProps={{
+                                    maxLength: 10,
+                                    cursorColor: 'grey',
+                                    placeholder: ''
+                                }}
+                                containerStyle={{
+                                    backgroundColor: colors.BACKGROUND_2,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    height: 50,
+                                    width: Dimensions.get('window').width - 32,
+                                    overflow: 'hidden',
+                                    borderRadius: 6
+                                }}
+                                textInputStyle={{
+                                    fontSize: 16,
+                                    height: 40,
+                                    color: colors.TEXT_COLOR
+                                }}
+                                textContainerStyle={{
+                                    paddingHorizontal: 0,
+                                    paddingVertical: 0,
+                                    backgroundColor: 'transparent'
+
+                                }}
+                                codeTextStyle={{
+                                    fontSize: 16,
+                                    color: colors.TEXT_COLOR
+                                }}
+                                ref={phoneInput}
+                                defaultValue={phoneNumber}
+                                defaultCode="AM"
+                                layout="first"
+                                onChangeFormattedText={(text) => {
+                                    setValue(text);
+                                }}
+                                withDarkTheme={isDarkTheme}
+                                withShadow
+                                autoFocus
+                            />
+                        </View>
                         {error && <Text style={{ color: colors.ERROR, marginTop: 10 }}>{error}</Text>}
                     </Form>
                 </ScrollView>
@@ -147,6 +154,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             padding: 10,
             borderRadius: 4,
             color: 'black',
+
         },
     })
 }  

@@ -74,10 +74,9 @@ export default function EmailMessageScreen({ navigation }: IProps) {
         <KeyboardAvoidingView
             behavior={'padding'}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={40}
+            keyboardVerticalOffset={Platform.OS === 'ios'? 0 : 40}
         >
             <Background>
-
                 <ScrollView style={stylesMemo.container}  >
                     <Header navigation={navigation} goBackAction />
                     <Form
@@ -100,7 +99,6 @@ export default function EmailMessageScreen({ navigation }: IProps) {
                             open={showCaptcha}
                             setOpen={setShowCaptcha}
                         />
-
                     </Form>
                 </ScrollView>
             </Background>

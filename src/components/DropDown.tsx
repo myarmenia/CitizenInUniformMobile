@@ -17,6 +17,7 @@ import { axiosInstance } from '../api';
 import { urls } from '../api/urls';
 import { useQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { appStyles } from '../styles';
 
 interface IProps {
     visible: boolean;
@@ -83,7 +84,12 @@ function DropDown({ visible, setVisible, top, onPressItem, selectedCategory }: I
                     style={[
                         stylesMemo.item,
                         stylesMemo.button,
-                        { borderColor: visible ? colors.PRIMARY : colors.BACKGROUND_2 },
+                        { 
+                            borderColor: visible ? colors.PRIMARY : colors.BACKGROUND_2,
+                            borderBottomColor : visible ? colors.PRIMARY : colors.BACKGROUND_2,
+                            ...appStyles({ colors, fontSize }).shadow
+
+                         },
                     ]}>
                     <View style={stylesMemo.titleBox}>
                         <Text numberOfLines={1} style={stylesMemo.title}>
