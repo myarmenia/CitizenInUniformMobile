@@ -17,39 +17,21 @@ import { darkColors } from './src/assets/appColors';
 import { CustomFormProvider } from './src/contexts/FormContext';
 import { createUser, handleUser } from './src/services/asyncStoryge';
 import { ChatProvider } from './src/contexts/ChatContext';
-import { useChat } from './src/hooks/useChat';
-import notifee, { AndroidVisibility } from '@notifee/react-native';
 import { updateFMCToken } from './src/api/requests';
 import messaging from '@react-native-firebase/messaging';
 import Loading from './src/components/Loading';
 import { NotifyProvider } from './src/contexts/NotifyContext';
 import { checkNetworkStatus, handleNotificationPermission } from './src/helpers';
-import { sleep } from './src/screens/ChatScreen';
 import { useNetInfo } from '@react-native-community/netinfo';
+import Middleware from './src/components/Middleware';
 
 
 const queryClient = new QueryClient();
-
-// Alert.alert(
-//     'Ooooops!',
-//     'Check connection!.',
-//     [
-//         {
-//             text: 'OK',
-//             onPress: () => { }
-//         },
-//     ],
-//     { cancelable: false }
-// );
 
 function App(): React.JSX.Element {
 
     const [isLoading, setIsLoading] = useState(true);
     const { isConnected } = useNetInfo();
-
-
-
-    // const { } = useChat()
 
     useEffect(() => {
         console.log('Loading');
@@ -66,32 +48,29 @@ function App(): React.JSX.Element {
                 console.log('FCM token: ', token);
                 await updateFMCToken(token);
             });
-            handleNotificationPermission()
-            
+            handleNotificationPermission();
+
         })()
-        
+
     }, [])
 
 
     return (
         <View style={styles.flex}>
-
-
             <QueryClientProvider client={queryClient}>
                 <ThemeProvider>
                     <SocketProvider>
                         <ChatProvider>
                             <CustomFormProvider>
                                 <ModalProvider>
-                                    <NotifyProvider>
                                         <StatusBar />
-                                        {isLoading
-                                            ? <Loading />
-
-                                            : <AppNavigation />
-                                        }
-                                        <CustomModal />
-                                    </NotifyProvider>
+                                        <Middleware>
+                                            {isLoading
+                                                ? <Loading />
+                                                : <AppNavigation />
+                                            }
+                                        
+                                        </Middleware>
                                 </ModalProvider>
                             </CustomFormProvider>
                         </ChatProvider>

@@ -96,7 +96,7 @@ function CallModal({
                             {isFetching
                                 ? <ActivityIndicator size={'large'} color={colors.PRIMARY} />
                                 : <Text style={stylesMemo.title} numberOfLines={1}>
-                                    Numbers is not available
+                                    {appStrings.numbersIsNotAvailable}
                                 </Text>}
                         </View>
 

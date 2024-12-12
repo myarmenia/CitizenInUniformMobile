@@ -1,18 +1,18 @@
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react'
-import { Platform } from 'react-native';
-import socketIOClient from 'socket.io-client';
+import React, { useEffect, useState } from 'react'
 import { navigationTypes } from '../navigation/navigation.types';
-import { IBaseData, INotification } from '../interfaces/data.types';
+import { INotification } from '../interfaces/data.types';
 import { useQuery } from '@tanstack/react-query';
 import { getNotifications } from '../api/requests';
-import { AxiosResponse } from 'axios';
+import notifee from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
+import Toast from 'react-native-toast-message';
 
 export const NotifyContext = React.createContext({
     notifications: [] as INotification[],
     count: 0,
-    isFetching: false,
-    refetch: () => {}
+    isLoading: false,
+    refetch: () => { }
 })
 
 interface IProps {
@@ -20,9 +20,10 @@ interface IProps {
 }
 
 export const NotifyProvider = ({ children }: IProps) => {
-    const [count, setCount ] = useState(0);
+    const [count, setCount] = useState(0);
+    const navigation: NavigationProp<ParamListBase> = useNavigation()
 
-    const { data: notifications, isError, isFetching, refetch } = useQuery({
+    const { data: notifications, isLoading, refetch } = useQuery({
         queryKey: ["notifications"],
         queryFn: getNotifications,
         refetchInterval: 60000,
@@ -30,25 +31,61 @@ export const NotifyProvider = ({ children }: IProps) => {
         initialData: []
     })
 
+
+
     useEffect(() => {
-        if (!!notifications?.length){
+        const unsubscribe = messaging().onMessage(async (data) => {
+            try {
+                Toast.show({
+                    text1: data?.notification?.title,
+                    text2: data?.notification?.body,
+                    type: 'custom',
+                    topOffset: 10,
+                    onPress: () => {
+                        navigation?.navigate(navigationTypes.MESSAGES)
+                    }
+                })
+                refetch()
+            } catch (error) {
+                console.log('error', error);
+
+            }
+
+        })
+
+        return () => {
+            notifee.stopForegroundService()
+            unsubscribe()
+        }
+
+    }, [])
+
+
+
+
+
+    useEffect(() => {
+        if (!!notifications?.length) {
             console.log(notifications.length);
-            
+
             setCount(notifications?.length)
         }
     }, [notifications?.length])
-   
-    
+
+
+
+
+
     const value = React.useMemo(
         () => ({
-            notifications: notifications ? notifications : [], 
+            notifications: notifications ? notifications : [],
             count: count,
-            isFetching,
+            isLoading,
             refetch
         }),
         [
             notifications,
-            isFetching,
+            isLoading,
             count
         ],
     )

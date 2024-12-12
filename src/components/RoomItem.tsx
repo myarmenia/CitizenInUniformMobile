@@ -93,7 +93,8 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontSize: fontSize(16),
             fontWeight: '400',
             color: colors.TEXT_COLOR,
-            fontFamily: 'NotoSansArmenian'
+            fontFamily: 'NotoSansArmenian',
+            lineHeight: fontSize(20),
         },
         date: {
             fontSize: fontSize(14),

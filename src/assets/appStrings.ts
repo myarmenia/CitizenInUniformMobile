@@ -32,5 +32,6 @@ export const appStrings = {
     calling: 'Զանգել',
     cancel: 'Չեղարկել',
     answerAndQuestions: 'հարց եվ պատասխան',
-    removeAll: 'Ջնջել բոլորը'
+    removeAll: 'Ջնջել բոլորը',
+    numbersIsNotAvailable: 'Չկան ակտիվ համարներ։'
 }

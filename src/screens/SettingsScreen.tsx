@@ -16,6 +16,7 @@ import { appStrings } from '../assets/appStrings';
 import { getNotifAccessFromAS, getNotifSoundAccessFromAS, setNotifAccessToAS, setNotifSoundAccessToAS } from '../services/asyncStoryge';
 import { access } from 'fs';
 import { getSettings, updateSettings } from '../api/requests';
+import { handleNotificationPermission } from '../helpers';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>;
@@ -60,6 +61,7 @@ export default function SettingsScreen({ navigation, route }: IProps) {
 
     const onToggleNotifAccess = async () => {
         try {
+            const permission = handleNotificationPermission()
             setAccessNotif(!accessNotif);
             await updateSettings(!accessNotif, !!accessSound);
             await setNotifAccessToAS(!accessNotif);
@@ -75,7 +77,6 @@ export default function SettingsScreen({ navigation, route }: IProps) {
             await updateSettings(!!accessNotif, !accessSound);
             setNotifSoundAccessToAS(!accessSound);
 
-            
         } catch (error) {
              console.error('onToggleNotifSound', error);
         }

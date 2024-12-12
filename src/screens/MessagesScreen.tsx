@@ -42,7 +42,7 @@ export default function MessagesScreen({ navigation }: IProps) {
                     {appStrings.sendMessage}
                 </Text>
 
-                <View style={[stylesMemo.row, { paddingHorizontal: 16 }]} >
+                <View style={[stylesMemo.row, { paddingHorizontal: 16, marginBottom: 20 }]} >
 
                     <View style={stylesMemo.row} >
                         <Button

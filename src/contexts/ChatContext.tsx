@@ -12,13 +12,14 @@ interface IProps {
 export const ChatContext = React.createContext({
     activeRooms: [] as IRoom[],
     passiveRooms: [] as IRoom[],
-    endedRoomID: -1,
+    activeRoomID: -1,
+    setActiveRoomID: (id: number) =>{}
 })
 
 
 export const ChatProvider = ({ children }: IProps) => {
 
-    const [endedRoomID, setEndedRoomID] = useState(-1);
+    const [activeRoomID, setActiveRoomID] = useState(-1);
     const [activeRooms, setActiveRooms] = useState<IRoom[]>([]);
     const [passiveRooms, setPassiveRooms] = useState<IRoom[]>([]);
 
@@ -80,7 +81,6 @@ export const ChatProvider = ({ children }: IProps) => {
         })
 
         socket.on('roomEnded', (roomId: number) => {
-            setEndedRoomID(roomId);
             queryClient.invalidateQueries({ queryKey: ['rooms'] })
         })
 
@@ -103,25 +103,26 @@ export const ChatProvider = ({ children }: IProps) => {
         })
 
         socket.on('messageRead', (r: IRoom) => {
+            console.log('messageRead');
+            
             const roomId = r.id;
-
-            setActiveRooms((prevRooms) => {
-                return prevRooms.map((room) => {
-                    if (room.id === roomId) {
-                        return {
-                            ...room,
-                            messages: ((): IMessage[] => {
-                                const newMessages = [...room.messages];
-
-                                newMessages[0].readed = 1;
-                                return newMessages
-                            })()
-
-                        };
-                    }
-                    return room;
+            if (activeRoomID === roomId) {
+                setActiveRooms((prevRooms) => {
+                    return prevRooms.map((room) => {
+                        if (room.id === roomId) {
+                            const newMessages = [...room.messages];
+    
+                            newMessages[0].readed = 1;
+                            return {
+                                ...room,
+                                messages: newMessages
+    
+                            };
+                        }
+                        return room;
+                    });
                 });
-            });
+            }
         })
 
         return () => {
@@ -137,12 +138,13 @@ export const ChatProvider = ({ children }: IProps) => {
         () => ({
             activeRooms,
             passiveRooms,
-            endedRoomID
+            activeRoomID,
+            setActiveRoomID
         }),
         [
             activeRooms,
             passiveRooms,
-            endedRoomID,
+            activeRoomID,
             data
         ],
     )

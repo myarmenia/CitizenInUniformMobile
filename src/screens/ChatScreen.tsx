@@ -40,7 +40,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
     const { socket } = useSocket();
     const isFocused = useIsFocused();
-    const { activeRooms, endedRoomID } = useChat();
+    const { activeRooms, activeRoomID, setActiveRoomID } = useChat();
 
 
     const userId = route.params?.userId;
@@ -65,6 +65,15 @@ export default function ChatScreen({ navigation, route }: IProps) {
             onRead();
         }
     }, [isFocused, messages])
+
+    useEffect(() => {
+        if (isFocused) {
+            setActiveRoomID(roomId)
+        } else {
+            setActiveRoomID(-1)
+        }
+    }, [isFocused])
+
 
 
     useEffect(() => {
@@ -130,23 +139,23 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     }
 
-    useEffect(() => {        
-        if (room?.id === endedRoomID) {
-            Alert.alert(
-                'Alert',
-                'Chat End.',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate(navigationTypes.HOME)
-                    },
-                ],
-                { cancelable: false }
-            );
+    // useEffect(() => {        
+    //     if (room?.id === endedRoomID) {
+    //         Alert.alert(
+    //             'Alert',
+    //             'Chat End.',
+    //             [
+    //                 {
+    //                     text: 'OK',
+    //                     onPress: () => navigation.navigate(navigationTypes.HOME)
+    //                 },
+    //             ],
+    //             { cancelable: false }
+    //         );
 
-        }
+    //     }
 
-    }, [endedRoomID]);
+    // }, [endedRoomID]);
 
     return (
         <Background>

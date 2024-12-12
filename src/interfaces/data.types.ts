@@ -10,8 +10,15 @@ export interface ISubcategory {
     id: number;
     title: string;
     category_id: number;
-    fils: string[],
+    files: IFiles[],
     content: string
+}
+
+export interface IFiles {
+    id: number;
+    name: string;
+    path: string;
+    type: string;
 }
 
 

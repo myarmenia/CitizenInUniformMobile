@@ -4,12 +4,14 @@ import { NavigationProp, ParamListBase, RouteProp } from "@react-navigation/nati
 import Footer from "../components/Footer";
 import Background from "../components/Background";
 import { useTheme } from "../hooks";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import SliderComponent from "../components/Slider";
 import Menu from "../components/Menu";
 import { ICategory, ISubcategory } from "../interfaces/data.types";
 import { navigationTypes } from "../navigation/navigation.types";
+import Toast from "react-native-toast-message";
+import messaging from '@react-native-firebase/messaging';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -27,6 +29,35 @@ export default function CategoryScreen({ navigation, route }: IProps) {
     const onPress = (item: ISubcategory) => {
         navigation.navigate(navigationTypes.SUB_CATEGORY, {item})
     }
+
+    useEffect(() => {
+        
+
+        const unsubscribe =  messaging().onMessage(async (data) => {
+            try {
+                console.log(data.notification);
+                
+
+                Toast.show({
+                    text1: data?.notification?.title,
+                    text2: data?.notification?.body,
+                    type: 'custom',
+                    onPress: () => {
+                        navigation?.navigate(navigationTypes.MESSAGES)
+                    }
+                })
+            } catch (error) {
+                console.log('error', error);
+        
+            }
+        
+        })
+
+        return () => {
+            unsubscribe()
+        }
+    },[])
+
     return (
         <Background>
             <View style={stylesMemo.container}  >

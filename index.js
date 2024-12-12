@@ -8,33 +8,42 @@ import { Alert, AppRegistry } from 'react-native';
 import App from './App';
 import { name as appName } from './app.json';
 import { updateFMCToken } from './src/api/requests';
+import Toast from 'react-native-toast-message';
 
-messaging().app
 
-
-messaging().onMessage(async (data) => {
-	Alert.alert(
-		data.notification.title,
-		data.notification.body
-	)
+notifee.createChannel({
+	id: 'silent',
+	name: 'Silent mode',
+	description: 'This is the default channel',
+	importance: AndroidImportance.DEFAULT,
+	sound: 'empty',
+	vibration: true,
+	// vibrationPattern: [200, 300, 200],
+	sticky: true,
+	enableVibration: true,
+	showWhen: true,
 })
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-	try {		
-		notifee.displayNotification({
-			title: remoteMessage.notification.title,
-			body: remoteMessage.notification.body,
-			android: {
-				channelId: 'default',
-				importance: AndroidImportance.HIGH,
-				sound: null
-			}
-		});
-		console.log('setBackgroundMessageHandler', remoteMessage);
-
-	} catch (error) {
-		console.log('Error while setting background message', error);
-	}
+notifee.createChannel({
+	id: 'default',
+	name: 'Default mode',
+	description: 'This is the default channel',
+	importance: AndroidImportance.DEFAULT,
+	sound: '',
+	vibration: true,
+	// vibrationPattern: [200, 300, 200],
+	sticky: true,
+	enableVibration: true,
+	showWhen: true,
 })
+
+// messaging().setBackgroundMessageHandler((remoteMessage) => {
+// 	try {
+// 		console.log('setBackgroundMessageHandler', remoteMessage);
+// 	} catch (error) {
+// 		console.log('Error while setting background message', error);
+// 	}
+// })
+
 
 AppRegistry.registerComponent(appName, () => App);

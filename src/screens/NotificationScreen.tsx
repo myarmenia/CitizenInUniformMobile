@@ -30,7 +30,7 @@ export default function NotificationScreen({ navigation }: IProps) {
     const fontSize = (size: number) => size * coefficient;
     const [isLoading, steIsLoading] = useState(false);
 
-    const { notifications, isFetching, refetch } = useNotify();
+    const { notifications, isLoading: isFetching, refetch } = useNotify();
 
     const isFocused = useIsFocused();
 
@@ -43,7 +43,7 @@ export default function NotificationScreen({ navigation }: IProps) {
         [isDarkTheme, coefficient],
     );
 
-    const handleRemoveAll =  async () => {
+    const handleRemoveAll = async () => {
         try {
             steIsLoading(true);
             await removeAllNorifications();
@@ -75,12 +75,12 @@ export default function NotificationScreen({ navigation }: IProps) {
 
                     </Text>
                 </TouchableOpacity>}
-                <View style={{flex: 1}} >
+                <View style={{ flex: 1 }} >
                     {
                         !isFetching
                             ? <FlatList
                                 data={notifications}
-                                renderItem={({ item }) => <NotificationItem notify={item} />}
+                                renderItem={({ item }) => <NotificationItem navigation={navigation} notify={item} />}
                                 contentContainerStyle={stylesMemo.contentContainer}
                                 style={{ flex: 1 }}
                                 keyExtractor={(i) => i.id.toString()}

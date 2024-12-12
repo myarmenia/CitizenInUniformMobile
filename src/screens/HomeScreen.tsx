@@ -10,12 +10,12 @@ import Menu from "../components/Menu";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../components/Loading";
 import { getCategories } from "../api/requests";
+import Button from "../components/Button";
+import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
 }
-
-
 
 export default function HomeScreen({ navigation }: IProps) {
 
@@ -43,6 +43,19 @@ export default function HomeScreen({ navigation }: IProps) {
                     ? <>
                         <View style={stylesMemo.container}  >
                             <Header navigation={navigation} goBackAction={false} />
+                            <Button
+                                title="send notification"
+                                onPress={() => {
+                                    notifee.displayNotification({
+                                        title: 'new notification',
+                                        body: ' hello world!!!',
+                                        android: {
+                                            channelId: 'silent',
+                                        }
+                                    });
+                                  
+                                }}
+                            />
                             <Menu data={data} navigation={navigation} />
                             <Footer
                                 navigation={navigation}

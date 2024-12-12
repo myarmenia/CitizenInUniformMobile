@@ -3,6 +3,8 @@ import DeviceInfo from "react-native-device-info";
 import { IMessage, IRoom } from "../interfaces/data.types";
 import NetInfo from "@react-native-community/netinfo";
 import notifee, { AndroidVisibility } from '@notifee/react-native';
+import { updateSettings } from "../api/requests";
+import { setNotifAccessToAS, setNotifSoundAccessToAS } from "../services/asyncStoryge";
 
 export const callToNumber = (number: number) => {
     Linking.openURL(`tel:${number}`)
@@ -59,7 +61,7 @@ export const sortRooms = (rooms: IRoom[]) => {
     const sortedActive = sortRoomsList(active)
     const sortedPassive = sortRoomsList(passive)
 
-    return { active: sortedActive, passive: sortedPassive}
+    return { active: sortedActive, passive: sortedPassive }
 };
 
 export function validateAndFormatPhoneNumber(phoneNumber: string): string {
@@ -111,31 +113,37 @@ export const checkNetworkStatus = async () => {
 };
 
 export const handleNotificationPermission = async () => {
-    if(Platform.OS ==="android"){
+    if (Platform.OS === "android") {
         try {
-          PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
-            response => {
-              if(!response){
-                PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS',{
+            const status = await PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS')
+            console.log({ status });
+            if (!status) {
+                const permission = await  PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS', {
                     title: 'Notification',
                     message:
-                      'App needs access to your notification ' +
-                      'so you can get Updates',
+                        'App needs access to your notification ' +
+                        'so you can get Updates',
                     buttonNeutral: 'Ask Me Later',
                     buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                }).then(() => {
-                    
+                    buttonPositive: 'OK'
                 })
-              }
+
+                console.log({permission});
+
+                if(permission === 'denied') {
+                    await updateSettings(false, false)
+                    setNotifAccessToAS(false);
+                    setNotifSoundAccessToAS(false)
+                    return false
+                }
+                return true;
             }
-          ).catch(
-            (err: any) => {
-              console.log("Notification Error=====>",err);
-            }
-          )
-        } catch (err){
-          console.log(err);
+           
+        } catch (err) {
+            console.log('PermissionsAndroid.check', err);
+            return false;
         }
+    }  else {
+         notifee.requestPermission();
       }
-    };
+};

@@ -10,26 +10,31 @@ import { notifySettingsIcon } from "../assets/icons/notifySettingsIcon";
 import { notifyChatIcon } from "../assets/icons/notifyChatIcon copy";
 import { notifyLawIcon } from "../assets/icons/notifyLawIcon";
 import { readNorification } from "../api/requests";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { navigationTypes } from "../navigation/navigation.types";
 
 
 interface IProps {
-    notify: INotification
+    notify: INotification,
+    navigation: NavigationProp<ParamListBase>
 }
 
 
-function NotificationItem({ notify }: IProps) {
+function NotificationItem({ notify, navigation }: IProps) {
 
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
 
     const handlePress = async () => {
-        // TODO: Navigate to notification details screen
         try {
+            if (notify.setting_id === 4 ){
+                navigation.navigate(navigationTypes.MESSAGES)
+            }
             const res = await readNorification(notify.id);
             console.log('Notification is readed', res?.data.message)
         } catch (error) {
-            console.warn();
+            console.warn(error);
         }
 
     }
@@ -37,7 +42,6 @@ function NotificationItem({ notify }: IProps) {
     const handleIcon = (id: number) => {
         if (id === 1) return notifySettingsIcon(colors.ICON_COLOR);
         else if (id === 4) return notifyChatIcon(colors.ICON_COLOR);
-        else if (id === 5) return notifyLawIcon(colors.ICON_COLOR);
         return notifyAlertIcon(colors.ICON_COLOR);
     }
     return (
@@ -60,16 +64,16 @@ function NotificationItem({ notify }: IProps) {
                 </Text>
 
                 {<Text style={stylesMemo.time} >
-                    {handleTime(notify.created_at)}   2125
+                    {handleTime(notify.created_at)}
                     {new Date(notify.created_at).toLocaleDateString()}
                 </Text>}
             </View>
 
-            <View
+           {notify.setting_id === 4 && <View
                 style={stylesMemo.arrowBox}
             >
                 {arrowIcon(colors.ICON_COLOR)}
-            </View>
+            </View>}
         </TouchableOpacity>
     )
 }
