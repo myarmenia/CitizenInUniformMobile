@@ -43,19 +43,6 @@ export default function HomeScreen({ navigation }: IProps) {
                     ? <>
                         <View style={stylesMemo.container}  >
                             <Header navigation={navigation} goBackAction={false} />
-                            <Button
-                                title="send notification"
-                                onPress={() => {
-                                    notifee.displayNotification({
-                                        title: 'new notification',
-                                        body: ' hello world!!!',
-                                        android: {
-                                            channelId: 'silent',
-                                        }
-                                    });
-                                  
-                                }}
-                            />
                             <Menu data={data} navigation={navigation} />
                             <Footer
                                 navigation={navigation}
