@@ -1,6 +1,6 @@
 
 
-import React, { memo, ReactNode, useMemo, useRef, useState } from "react";
+import React, { memo, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, ViewStyle } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
@@ -9,9 +9,11 @@ import { playIcon } from "../assets/icons/playIcon";
 
 interface IProps {
     url: string;
+    setActiveVideoUrl: Function,
+    activeVideoUrl: string
 }
 
-function VideoItem({ url }: IProps) {
+function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
     const { width } = useWindowDimensions();
 
     const [isPlaying, setIsPlaying] = useState(false);
@@ -23,21 +25,34 @@ function VideoItem({ url }: IProps) {
 
     const handlePlayPress = () => {
         setIsPlaying(!isPlaying);
-        
+
         if (isPlaying) {
-            videoRef.current?.pause();
+            setActiveVideoUrl('')
         } else {
-            videoRef.current?.resume();
+            setActiveVideoUrl(url)
+           
         }
     }
 
+    useEffect(() => {
+        if (url === activeVideoUrl) {
+            setIsPlaying(true);
+            videoRef.current?.resume();
+
+        } else {
+            setIsPlaying(false);
+            videoRef.current?.pause();
+
+        }
+    }, [activeVideoUrl])
+
     return (
-        <Pressable style={stylesMemo.container}  onPress={handlePlayPress} >
+        <Pressable style={stylesMemo.container} onPress={handlePlayPress} >
             <Video
-                source={{uri: url}}
-                style={[stylesMemo.backgroundVideo, { width: width - 32}]}
+                source={{ uri: url }}
+                style={[stylesMemo.backgroundVideo, { width: width - 32 }]}
                 resizeMode="contain"
-                repeat={false} 
+                repeat={false}
                 paused={true}
                 ref={videoRef}
                 onEnd={() => setIsPlaying(false)}
@@ -55,7 +70,7 @@ export default memo(VideoItem);
 const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
-           marginVertical: 15
+            marginVertical: 15
         },
 
         title: {
@@ -67,7 +82,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             color: colors.TEXT_COLOR,
         },
         backgroundVideo: {
-            
+
             height: 200,
         },
         buttonWrapper: {

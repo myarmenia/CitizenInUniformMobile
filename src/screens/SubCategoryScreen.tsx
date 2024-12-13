@@ -25,15 +25,23 @@ interface IProps {
 }
 
 
-const RenderItem = ({m}: {m:IFiles}) => {
+const RenderItem = ({
+    m,
+    setActiveVideoUrl,
+    activeVideoUrl
+}: {
+    m: IFiles,
+    setActiveVideoUrl: Function,
+    activeVideoUrl: string
+}) => {
 
     const [ratio, setRatio] = useState(0)
 
 
-    
-     m.type === 'image' && Image.getSize(m.path, (w, h) => {
+
+    m.type === 'image' && Image.getSize(m.path, (w, h) => {
         console.log(' -------------------------->', w / h);
-        setRatio(w/h)
+        setRatio(w / h)
         return w / h
     })
 
@@ -41,7 +49,7 @@ const RenderItem = ({m}: {m:IFiles}) => {
         <View>
             {
                 m.type === 'image'
-                    ?  ratio > 0 && <Image
+                    ? ratio > 0 && <Image
                         style={{
                             width: '100%',
                             resizeMode: 'contain',
@@ -53,7 +61,11 @@ const RenderItem = ({m}: {m:IFiles}) => {
 
                     />
                     : <View>
-                        <VideoItem url={m.path} />
+                        <VideoItem
+                            url={m.path}
+                            activeVideoUrl={activeVideoUrl}
+                            setActiveVideoUrl={setActiveVideoUrl}
+                        />
                     </View>
             }
         </View>
@@ -66,6 +78,8 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
     const { width } = useWindowDimensions();
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
+
+    const [activeVideoUrl, setActiveVideoUrl] = useState('');
 
 
     const category: ISubcategory = route.params?.item;
@@ -131,7 +145,12 @@ export default function SubCategoryScreen({ navigation, route }: IProps) {
                     {data && data.files.length > 0 &&
                         <FlatList
                             data={data.files}
-                            renderItem={({ item }) => <RenderItem m={item} />}
+                            renderItem={({ item }) =>
+                                <RenderItem
+                                    m={item}
+                                    activeVideoUrl={activeVideoUrl}
+                                    setActiveVideoUrl={setActiveVideoUrl}
+                                />}
                             keyExtractor={(item) => item.id.toString()}
                             scrollEnabled={false}
                             contentContainerStyle={{ flexGrow: 1 }}
