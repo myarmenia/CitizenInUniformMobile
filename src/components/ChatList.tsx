@@ -15,7 +15,6 @@ function ChatList({ messages }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const offsetRef = useRef(0)
     const flatListRef = useRef<FlatList<IMessage>>(null);
 
     return (
@@ -50,7 +49,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
         contentContainer: {
             paddingHorizontal: 16,
             gap: 10,
-            paddingBottom: 20,
+            paddingTop: 20,
             flexGrow: 1,
             justifyContent: 'flex-end'
         }
