@@ -63,8 +63,7 @@ function NotificationItem({ notify, navigation }: IProps) {
                 </Text>
 
                 {<Text style={stylesMemo.time} >
-                    {handleTime(notify.created_at)}   
-                    {new Date(notify.created_at).toLocaleDateString()}
+                    {handleTime(notify.created_at)}{'  '}{new Date(notify.created_at).toLocaleDateString()}
                 </Text>}
             </View>
 

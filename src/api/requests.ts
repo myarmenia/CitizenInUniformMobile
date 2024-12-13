@@ -157,7 +157,7 @@ export const getNotifications = async () => {
     const res = await axiosInstance.post<IBaseData<INotification[]>>(urls.NOTIFICATIONS, {
         "mobile_user_id": user.id
     })
-    return res.data.result;
+    return res.data.result.reverse();
 
 }
 

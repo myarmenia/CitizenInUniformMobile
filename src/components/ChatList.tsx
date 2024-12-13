@@ -2,7 +2,6 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
-import { fakeMessagesList } from "../data/fakeData";
 import { IMessage } from "../interfaces/data.types";
 import Message from "./Message";
 
@@ -51,7 +50,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
         contentContainer: {
             paddingHorizontal: 16,
             gap: 10,
-            paddingBottom: 0,
+            paddingBottom: 20,
             flexGrow: 1,
             justifyContent: 'flex-end'
         }

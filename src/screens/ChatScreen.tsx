@@ -103,10 +103,14 @@ export default function ChatScreen({ navigation, route }: IProps) {
     useEffect(() => {
         queryClient.invalidateQueries({ queryKey: ['rooms'] })
         const focus = navigation.addListener('focus', () => {
+            console.log('focus');
+            
             setEnabled(false);
         })
         const blur = navigation.addListener('blur', () => {
             setEnabled(true);
+            console.log('blur');
+            
         })
 
         return () => {

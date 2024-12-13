@@ -45,6 +45,8 @@ export const NotifyProvider = ({ children }: IProps) => {
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async (data) => {
             try {
+                console.log({enabled});
+                
                 if (enabled) {
                     Toast.show({
                         text1: data?.notification?.title,
@@ -69,7 +71,7 @@ export const NotifyProvider = ({ children }: IProps) => {
             unsubscribe()
         }
 
-    }, [])
+    }, [enabled])
 
 
 
