@@ -17,6 +17,7 @@ import { urls } from '../api/urls';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../components/Loading';
 import { getSubCategory } from '../api/requests';
+import VideoItem from '../components/VideoItem';
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>;
@@ -28,16 +29,13 @@ const RenderItem = ({m}: {m:IFiles}) => {
 
     const [ratio, setRatio] = useState(0)
 
-    console.log({ m });
 
-    Image.getSize(m.path, (w, h) => {
+    
+     m.type === 'image' && Image.getSize(m.path, (w, h) => {
         console.log(' -------------------------->', w / h);
         setRatio(w/h)
         return w / h
     })
-
-    console.log({ ratio });
-
 
     return (
         <View>
@@ -55,9 +53,7 @@ const RenderItem = ({m}: {m:IFiles}) => {
 
                     />
                     : <View>
-                        <Text>
-                            dsfdsfsdf
-                        </Text>
+                        <VideoItem url={m.path} />
                     </View>
             }
         </View>
