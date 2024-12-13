@@ -13,12 +13,10 @@ import { readNorification } from "../api/requests";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { navigationTypes } from "../navigation/navigation.types";
 
-
 interface IProps {
     notify: INotification,
     navigation: NavigationProp<ParamListBase>
 }
-
 
 function NotificationItem({ notify, navigation }: IProps) {
 
@@ -31,6 +29,7 @@ function NotificationItem({ notify, navigation }: IProps) {
             if (notify.setting_id === 4 ){
                 navigation.navigate(navigationTypes.MESSAGES)
             }
+
             const res = await readNorification(notify.id);
             console.log('Notification is readed', res?.data.message)
         } catch (error) {
@@ -64,7 +63,7 @@ function NotificationItem({ notify, navigation }: IProps) {
                 </Text>
 
                 {<Text style={stylesMemo.time} >
-                    {handleTime(notify.created_at)}
+                    {handleTime(notify.created_at)}   
                     {new Date(notify.created_at).toLocaleDateString()}
                 </Text>}
             </View>

@@ -41,6 +41,7 @@ function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
             setIsPlaying(true);
             videoRef.current?.resume();
 
+
         } else {
             setIsPlaying(false);
             videoRef.current?.pause();
@@ -64,9 +65,12 @@ function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
                 repeat={false}
                 paused={true}
                 ref={videoRef}
-                volume={volume}
-                onVolumeChange={(data) => setVolume(data.volume)}
-                onEnd={() => setIsPlaying(false)}
+
+                onEnd={() =>{
+                     setIsPlaying(false)
+                     setActiveVideoUrl('')
+                     videoRef.current?.seek(0)
+                    }}
             />
             <View style={stylesMemo.buttonWrapper}>
                 {!isPlaying && playIcon()}
