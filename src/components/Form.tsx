@@ -7,6 +7,7 @@ import Button from "./Button";
 import { arrowLeftIcon } from "../assets/icons";
 import { arrowRightIcon } from "../assets/icons/arrowRight";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { arrowLeftIconBig } from "../assets/icons/arrowLeftIconBig";
 
 interface IProps {
     stepsCount?: number;
@@ -65,7 +66,7 @@ function Form({
                     backgroundColor={colors.BUTTON}
                     onPress={onGoBack}
                 >
-                    {arrowLeftIcon(colors.ICON_COLOR)}
+                    {arrowLeftIconBig(colors.ICON_COLOR)}
                     
                 </Button>}
                 
