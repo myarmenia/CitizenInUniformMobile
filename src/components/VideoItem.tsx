@@ -18,6 +18,7 @@ function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
     const { width } = useWindowDimensions();
 
     const [isPlaying, setIsPlaying] = useState(false);
+    const [volume, setVolume] = useState(0);
     const isFocused = useIsFocused();
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
@@ -63,6 +64,8 @@ function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
                 repeat={false}
                 paused={true}
                 ref={videoRef}
+                volume={volume}
+                onVolumeChange={(data) => setVolume(data.volume)}
                 onEnd={() => setIsPlaying(false)}
             />
             <View style={stylesMemo.buttonWrapper}>

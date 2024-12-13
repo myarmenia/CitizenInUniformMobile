@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }: IProps) {
     useEffect(() => {
         isFocused && clearState()
     }, [isFocused]);
-
+    
     return (
         <Background>
             {

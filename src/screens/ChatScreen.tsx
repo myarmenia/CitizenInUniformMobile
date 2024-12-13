@@ -2,7 +2,7 @@ import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "r
 import Header from "../components/Header";
 import { NavigationProp, ParamListBase, RouteProp, useIsFocused } from "@react-navigation/native";
 import Background from "../components/Background";
-import { useSocket, useTheme } from "../hooks";
+import { useNotify, useSocket, useTheme } from "../hooks";
 import { useEffect, useMemo, useState } from "react";
 import { IStyles } from "../contexts/ThemeContext";
 import Loading from "../components/Loading";
@@ -38,7 +38,9 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { socket } = useSocket();
+    const { socket } = useSocket();    
+    const { setEnabled } = useNotify();
+
     const isFocused = useIsFocused();
     const { activeRooms, activeRoomID, setActiveRoomID, refetch } = useChat();
 
@@ -54,7 +56,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const room = useMemo(() => {
 
         return activeRooms.find(room => room.id === roomId) as IRoom;
-    }, [ activeRooms]);
+    }, [activeRooms]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<IMessage[]>(messagesList ? [...messagesList] : []);
@@ -78,8 +80,8 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         if (messages?.length) {
-            messages.forEach( async message => {
-                if (message?.readed === 0 && message?.writer === 'operator'){
+            messages.forEach(async message => {
+                if (message?.readed === 0 && message?.writer === 'operator') {
                     try {
                         console.log('is read: ', message.content);
                         await updateSituation(message);
@@ -93,13 +95,25 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         const lastMessage = messages[0];
-        if (lastMessage?.readed === 0 && lastMessage?.writer === 'operator'){
+        if (lastMessage?.readed === 0 && lastMessage?.writer === 'operator') {
             updateSituation(lastMessage);
         }
     }, [messages])
 
     useEffect(() => {
         queryClient.invalidateQueries({ queryKey: ['rooms'] })
+        const focus = navigation.addListener('focus', () => {
+            setEnabled(false);
+        })
+        const blur = navigation.addListener('blur', () => {
+            setEnabled(true);
+        })
+
+        return () => {
+            focus();
+            blur();
+        }
+        
     }, [])
 
     useEffect(() => {

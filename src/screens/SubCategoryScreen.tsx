@@ -12,8 +12,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { IStyles } from '../contexts/ThemeContext';
 import { IFiles, ISubcategory, ISubcategoryData } from '../interfaces/data.types';
 import RenderHTML from 'react-native-render-html';
-import { axiosInstance } from '../api';
-import { urls } from '../api/urls';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../components/Loading';
 import { getSubCategory } from '../api/requests';

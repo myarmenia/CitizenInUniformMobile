@@ -8,12 +8,16 @@ import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import Toast from 'react-native-toast-message';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { removeListener } from 'process';
+import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 export const NotifyContext = React.createContext({
     notifications: [] as INotification[],
     count: 0,
     isLoading: false,
-    refetch: () => { }
+    refetch: () => { },    
+    setEnabled: (v: boolean) => { },
+
 })
 
 interface IProps {
@@ -22,8 +26,9 @@ interface IProps {
 
 export const NotifyProvider = ({ children }: IProps) => {
     const [count, setCount] = useState(0);
-    const navigation: NavigationProp<ParamListBase> = useNavigation()
+    const [enabled, setEnabled] = useState(true);
 
+    const navigation: NavigationProp<any> = useNavigation()
 
     const insets = useSafeAreaInsets();
 
@@ -40,15 +45,17 @@ export const NotifyProvider = ({ children }: IProps) => {
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async (data) => {
             try {
-                Toast.show({
-                    text1: data?.notification?.title,
-                    text2: data?.notification?.body,
-                    type: 'custom',
-                    topOffset: 10 + insets.top,
-                    onPress: () => {
-                        navigation?.navigate(navigationTypes.MESSAGES)
-                    }
-                })
+                if (enabled) {
+                    Toast.show({
+                        text1: data?.notification?.title,
+                        text2: data?.notification?.body,
+                        type: 'custom',
+                        topOffset: 10 + insets.top,
+                        onPress: () => {
+                            navigation?.navigate(navigationTypes.MESSAGES)
+                        }
+                    })
+                }
                 refetch()
             } catch (error) {
                 console.log('error', error);
@@ -70,7 +77,7 @@ export const NotifyProvider = ({ children }: IProps) => {
 
     useEffect(() => {
         console.log('notifee.stopForegroundService');
-        
+
         if (!!notifications) {
             console.log(notifications.length);
 
@@ -87,7 +94,8 @@ export const NotifyProvider = ({ children }: IProps) => {
             notifications: notifications ? notifications : [],
             count: count,
             isLoading,
-            refetch
+            refetch,
+            setEnabled
         }),
         [
             notifications,
