@@ -22,7 +22,6 @@ export const toastConfig = (stylesMemo: any) => {
 
         error: ({ text1, text2, onPress, hide }: ToastConfigParams<any>) => (
             <Pressable style={stylesMemo.wrapper} onPress={() => {
-                onPress()
                 hide()
             }} >
                 <View style={stylesMemo.icon} >
