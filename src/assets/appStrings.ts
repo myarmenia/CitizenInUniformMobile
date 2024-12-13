@@ -33,5 +33,9 @@ export const appStrings = {
     cancel: 'Չեղարկել',
     answerAndQuestions: 'հարց եվ պատասխան',
     removeAll: 'Ջնջել բոլորը',
-    numbersIsNotAvailable: 'Չկան ակտիվ համարներ։'
+    numbersIsNotAvailable: 'Չկան ակտիվ համարներ։',
+    hey: 'Ուշադրություն',
+    unableInternet: 'Չկա ինտերնետ հասանելիություն։',
+    operatornotFound: 'Այս պահին չկան ակտիվ օպերատորներ։',
+    retry: 'Խնդրում ենք փոձել մի փոքր ուշ։'
 }

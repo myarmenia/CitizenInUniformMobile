@@ -23,7 +23,7 @@ function Header({
     showNotification = true,
 }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
-    const  { count } = useNotify();
+    const  { count, refetch } = useNotify();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [coefficient, isDarkTheme])
 

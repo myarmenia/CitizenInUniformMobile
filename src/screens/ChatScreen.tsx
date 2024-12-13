@@ -40,7 +40,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
     const { socket } = useSocket();
     const isFocused = useIsFocused();
-    const { activeRooms, activeRoomID, setActiveRoomID } = useChat();
+    const { activeRooms, activeRoomID, setActiveRoomID, refetch } = useChat();
 
 
     const userId = route.params?.userId;
@@ -111,7 +111,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const onRead = async () => {
         try {
             socket.emit("operatorMessageWasReaded", { id: roomId })
-
+            refetch()
         } catch (error) {
             console.error(error)
         }
@@ -139,24 +139,6 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     }
 
-    // useEffect(() => {        
-    //     if (room?.id === endedRoomID) {
-    //         Alert.alert(
-    //             'Alert',
-    //             'Chat End.',
-    //             [
-    //                 {
-    //                     text: 'OK',
-    //                     onPress: () => navigation.navigate(navigationTypes.HOME)
-    //                 },
-    //             ],
-    //             { cancelable: false }
-    //         );
-
-    //     }
-
-    // }, [endedRoomID]);
-
     return (
         <Background>
             {
@@ -175,7 +157,6 @@ export default function ChatScreen({ navigation, route }: IProps) {
                             >
                                 <ChatList
                                     messages={messages}
-                                // flatListRef={flatListRef}
                                 />
                                 <MessageInput
                                     value={value}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 export const FormContext = React.createContext({
+    phoneNumberCropped: '',
+    setPhoneNumberCropped: (value: string) => { },
     phoneNumber: '',
     setPhoneNumber: (value: string) => { },
     name: '',
@@ -33,6 +35,7 @@ export const CustomFormProvider = ({ children }: IProps) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumberCropped, setPhoneNumberCropped] = useState('');
     const [type, setType] = useState({
         id: 0,
         name: ''
@@ -44,7 +47,8 @@ export const CustomFormProvider = ({ children }: IProps) => {
     const clearState = () => {
         setName('');
         setEmail('');
-        setPhoneNumber('');
+        setPhoneNumber('');        
+        setPhoneNumberCropped('');
         setType({
             id: 0,
             name: ''
@@ -62,6 +66,8 @@ export const CustomFormProvider = ({ children }: IProps) => {
             setEmail,
             phoneNumber,
             setPhoneNumber,
+            phoneNumberCropped,
+            setPhoneNumberCropped,
             type,
             setType,
             clearState,

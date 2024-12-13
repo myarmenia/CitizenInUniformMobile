@@ -12,6 +12,8 @@ import { handleUser } from "../../services/asyncStoryge";
 import { appStrings } from "../../assets/appStrings";
 import { checkAvailableAdmins, registerUser } from "../../api/requests";
 import RecaptchaComponent from "../../components/Recaptcha";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -25,6 +27,7 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
     const { type, setType, name, email, phoneNumber, governingBodyID, messageType } = useFormData();
     const { socketId, socket } = useSocket();
+    const insets = useSafeAreaInsets();
 
     const [dropDownPosition, setDropDownPosition] = useState(0);
     const [visible, setVisible] = useState(false);
@@ -39,36 +42,31 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
             if (isActiveOperator) {
                 return isActiveOperator
             } else {
-                Alert.alert(
-                    'Ooooops!',
-                    'Active operators is not available',
-                );
+                Toast.show({
+                    type: 'error',
+                    text1: appStrings.hey,
+                    text2: appStrings.operatornotFound,
+                    topOffset: 10 + insets.top,
+                })
                 return false
             }
 
         } catch {
-            Alert.alert(
-                'Ooooops!',
-                'Active operators is not available',
-            );
+            Toast.show({
+                type: 'error',
+                text1: appStrings.hey,
+                text2: appStrings.unableInternet,
+                topOffset: 10 + insets.top,
+            })
         }
     }
 
     const onCreateChat = async () => {
         try {
             const isActiveOperator = await checkAdmins()
-            console.log({ isActiveOperator, name , email ,socketId:  socket.id});
+            console.log({ isActiveOperator, name, email, socketId: socket.id });
 
             if (name && email && socketId) {
-                console.log('_________________________________________>', {
-                    email,
-                    governing_body: governingBodyID.toString(),
-                    message_category_id: type.id.toString(),
-                    phone_number: phoneNumber,
-                    name,
-                    socket_id: socketId,
-                });
-
                 if (isActiveOperator) {
 
                     const res = await registerUser({
@@ -79,30 +77,23 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
                         name,
                         socket_id: socketId,
                     })
-                    console.log('registered user =============>', res);
-
                     if (res) {
                         const user = await handleUser()
-                        console.log('search admin =============>', {
-                            ...res,
-                            m_user_id: user?.id
-                        });
                         
-
                         socket.emit('searchAdmin', {
                             ...res,
                             m_user_id: user?.id
                         })
-                        console.log('userID', res.id);
-
                         setUserId(res.id);
-
                     }
-
                 }
-
             } else {
-                console.log('pakas ban ka');
+                Toast.show({
+                    type: 'error',
+                    text1: appStrings.hey,
+                    text2: appStrings.retry,
+                    topOffset: 10 + insets.top,
+                })
             }
         } catch (error) {
             console.log({ error: error! })
@@ -110,17 +101,18 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     }
 
     useEffect(() => {
-        userId && socket.on('roomCreated', (data: any) => {
-            console.log('roomCreated --------->', data.room.id);
 
-            navigation.navigate(navigationTypes.CHAT, {
-                userId,
-                roomId: data.room.id,
-                isActive: data.activ !== 0,
-                type: data.governing_body_id
-            });
-        })
+        if (userId) {
+            socket.on('roomCreated', (data: any) => {
+                navigation.navigate(navigationTypes.CHAT, {
+                    userId,
+                    roomId: data.room.id,
+                    isActive: data.activ !== 0,
+                    type: data.governing_body_id
+                });
+            })
 
+        }
 
         return () => {
             socket.off('roomCreated');

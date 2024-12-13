@@ -7,6 +7,7 @@ import { getNotifications } from '../api/requests';
 import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import Toast from 'react-native-toast-message';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const NotifyContext = React.createContext({
     notifications: [] as INotification[],
@@ -22,6 +23,9 @@ interface IProps {
 export const NotifyProvider = ({ children }: IProps) => {
     const [count, setCount] = useState(0);
     const navigation: NavigationProp<ParamListBase> = useNavigation()
+
+
+    const insets = useSafeAreaInsets();
 
     const { data: notifications, isLoading, refetch } = useQuery({
         queryKey: ["notifications"],
@@ -40,7 +44,7 @@ export const NotifyProvider = ({ children }: IProps) => {
                     text1: data?.notification?.title,
                     text2: data?.notification?.body,
                     type: 'custom',
-                    topOffset: 10,
+                    topOffset: 10 + insets.top,
                     onPress: () => {
                         navigation?.navigate(navigationTypes.MESSAGES)
                     }
@@ -65,7 +69,9 @@ export const NotifyProvider = ({ children }: IProps) => {
 
 
     useEffect(() => {
-        if (!!notifications?.length) {
+        console.log('notifee.stopForegroundService');
+        
+        if (!!notifications) {
             console.log(notifications.length);
 
             setCount(notifications?.length)

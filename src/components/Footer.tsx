@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import {  StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { callIcon, chatIcon } from "../assets/icons";
 import { appStrings } from "../assets/appStrings";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
@@ -9,6 +9,9 @@ import { IStyles } from "../contexts/ThemeContext";
 import { emailIcon } from "../assets/icons/emailIcon";
 import { fastConnectIcon } from "../assets/icons/fastConnectIcon";
 import { navigationTypes } from "../navigation/navigation.types";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNetInfo } from "@react-native-community/netinfo";
+import Toast from "react-native-toast-message";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
@@ -25,10 +28,12 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
 
     const { colors, isDarkTheme, coefficient } = useTheme()
     const fontSize = (size: number) => size * coefficient;
-    const stylesMemo = useMemo(() => styles({colors, fontSize}), [isDarkTheme, coefficient])
-    const appStylesMemo = useMemo(() => appStyles({colors, fontSize}), [isDarkTheme, coefficient])
+    const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient])
+    const appStylesMemo = useMemo(() => appStyles({ colors, fontSize }), [isDarkTheme, coefficient])
 
-    const { setMessageTo, setMessageType, setGoverningBodyID } = useFormData();    
+    const { setMessageTo, setMessageType, setGoverningBodyID } = useFormData();
+    const insets = useSafeAreaInsets();
+    const { isConnected } = useNetInfo()
 
     const disabledAll = selectedItem?.id == -1;
     const disabled = disabledAll || selectedItem?.id == 3;
@@ -39,7 +44,7 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
     }
 
     const onPressChat = () => {
-        if (selectedItem?.name){
+        if (selectedItem?.name) {
             setGoverningBodyID(selectedItem.id)
             setMessageTo(selectedItem?.name);
             setMessageType(appStrings.message);
@@ -48,13 +53,23 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
     }
 
     const onPressEmail = () => {
-        if (selectedItem?.name){
-            setGoverningBodyID(selectedItem.id)
-            setMessageTo(selectedItem?.name);
-            setMessageType(appStrings.emailMessageLarge);
-            navigation.navigate(navigationTypes.FORM_NAME);
+        if (isConnected) {
+            if (selectedItem?.name) {
+                setGoverningBodyID(selectedItem.id)
+                setMessageTo(selectedItem?.name);
+                setMessageType(appStrings.emailMessageLarge);
+                navigation.navigate(navigationTypes.FORM_NAME);
 
+            }
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: appStrings.hey,
+                text2: appStrings.unableInternet,
+                topOffset: 10 + insets.top,
+            })
         }
+
     }
 
     const onPressFastConnect = () => {
@@ -80,7 +95,7 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
                             disabled={disabled}
                             style={stylesMemo.item}
                             onPress={onPressChat}
-                            
+
                         >
                             {chatIcon(disabled)}
                             <Text style={appStylesMemo.subTitle} >
@@ -114,10 +129,10 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
 
 export default memo(Footer);
 
-const styles = ({colors, fontSize }: IStyles) => {
+const styles = ({ colors, fontSize }: IStyles) => {
     return StyleSheet.create({
         container: {
-            ...appStyles({colors, fontSize}).shadow,
+            ...appStyles({ colors, fontSize }).shadow,
             backgroundColor: colors.BACKGROUND_2,
             paddingHorizontal: 16,
             paddingVertical: 10,

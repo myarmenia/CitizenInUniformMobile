@@ -11,6 +11,9 @@ import { plusIcon } from "../assets/icons/plusIcon";
 import { navigationTypes } from "../navigation/navigation.types";
 import { useChat } from "../hooks/useChat";
 import RoomItem from "../components/RoomItem";
+import { useNetInfo } from "@react-native-community/netinfo";
+import Toast from "react-native-toast-message";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>
@@ -26,9 +29,21 @@ export default function MessagesScreen({ navigation }: IProps) {
     const [toggleMessages, setToggleMessages] = useState(true);
 
     const { activeRooms, passiveRooms } = useChat();
+    const { isConnected } = useNetInfo();
+    const insets = useSafeAreaInsets();
+
 
     const onNewMessage = () => {
-        navigation.navigate(navigationTypes.FORM_NAME);
+        if(isConnected) {
+            navigation.navigate(navigationTypes.FORM_NAME);
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: appStrings.hey,
+                text2: appStrings.unableInternet,
+                topOffset: 10 + insets.top,
+            })
+        }
     }
 
     return (

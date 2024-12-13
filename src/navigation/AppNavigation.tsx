@@ -17,6 +17,7 @@ import SettingsScreen from "../screens/SettingsScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import FAQScreen from "../screens/FAQScreen";
 import { NotifyProvider } from "../contexts/NotifyContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 
 const Stack = createStackNavigator();
@@ -24,6 +25,7 @@ export function AppNavigation() {
 
     return (
         <NavigationContainer  >
+            <SafeAreaProvider>
             <NotifyProvider>
                 <Stack.Navigator initialRouteName={navigationTypes.HOME} screenOptions={{ headerShown: false }}  >
                     <Stack.Screen name={navigationTypes.HOME} component={HomeScreen} />
@@ -42,6 +44,7 @@ export function AppNavigation() {
                     <Stack.Screen name={navigationTypes.FAQ} component={FAQScreen} />
                 </Stack.Navigator>
             </NotifyProvider>
+            </SafeAreaProvider>
         </NavigationContainer>
     );
 }

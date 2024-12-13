@@ -35,6 +35,8 @@ export default function NotificationScreen({ navigation }: IProps) {
     const isFocused = useIsFocused();
 
     useEffect(() => {
+        console.log('isFocused', isFocused);
+        
         refetch();
     }, [isFocused]);
 

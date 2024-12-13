@@ -12,7 +12,7 @@ const connectionConfig = {
     reconnection: true,
     autoConnect: true,
     reconnectionDelay: 10000,
-    reconnectionAttempts: 0,
+    reconnectionAttempts: 100,
     transports: ['websocket'],
     query: {
         source: 'auction:mobile',

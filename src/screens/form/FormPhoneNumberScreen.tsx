@@ -20,7 +20,7 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { phoneNumber, setPhoneNumber, messageType } = useFormData();
+    const { phoneNumber, setPhoneNumber, setPhoneNumberCropped, phoneNumberCropped } = useFormData();
 
     const [value, setValue] = useState('');
     const [error, setError] = useState('');
@@ -52,7 +52,7 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
                         childrenTitle={appStrings.number}
                     >
                         <View style={{
-                                        ...appStyles({ colors, fontSize }).shadow
+                            ...appStyles({ colors, fontSize }).shadow
 
                         }} >
 
@@ -87,12 +87,13 @@ export default function FormPhoneNumberScreen({ navigation }: IProps) {
                                     color: colors.TEXT_COLOR
                                 }}
                                 ref={phoneInput}
-                                defaultValue={phoneNumber}
+                                defaultValue={phoneNumberCropped}
                                 defaultCode="AM"
                                 layout="first"
                                 onChangeFormattedText={(text) => {
                                     setValue(text);
                                 }}
+                                onChangeText={setPhoneNumberCropped}
                                 withDarkTheme={isDarkTheme}
                                 withShadow
                                 autoFocus

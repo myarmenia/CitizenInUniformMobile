@@ -13,7 +13,8 @@ export const ChatContext = React.createContext({
     activeRooms: [] as IRoom[],
     passiveRooms: [] as IRoom[],
     activeRoomID: -1,
-    setActiveRoomID: (id: number) =>{}
+    setActiveRoomID: (id: number) => {},
+    refetch: () => {}
 })
 
 
@@ -25,7 +26,7 @@ export const ChatProvider = ({ children }: IProps) => {
 
     const queryClient = useQueryClient();
 
-    const { data, isFetching } = useQuery({
+    const { data, isFetching, refetch } = useQuery({
         queryKey: ['rooms'],
         queryFn: getRooms,
         select: (data) => data?.data,
@@ -139,7 +140,8 @@ export const ChatProvider = ({ children }: IProps) => {
             activeRooms,
             passiveRooms,
             activeRoomID,
-            setActiveRoomID
+            setActiveRoomID,
+            refetch
         }),
         [
             activeRooms,
