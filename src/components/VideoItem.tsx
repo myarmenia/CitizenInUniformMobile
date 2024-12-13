@@ -6,6 +6,7 @@ import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import Video, { VideoRef } from 'react-native-video';
 import { playIcon } from "../assets/icons/playIcon";
+import { useIsFocused } from "@react-navigation/native";
 
 interface IProps {
     url: string;
@@ -17,7 +18,7 @@ function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
     const { width } = useWindowDimensions();
 
     const [isPlaying, setIsPlaying] = useState(false);
-
+    const isFocused = useIsFocused();
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient])
@@ -45,6 +46,13 @@ function VideoItem({ url, activeVideoUrl, setActiveVideoUrl }: IProps) {
 
         }
     }, [activeVideoUrl])
+
+
+    useEffect(() => {
+        videoRef.current === null
+    }, [isFocused])
+
+
 
     return (
         <Pressable style={stylesMemo.container} onPress={handlePlayPress} >
