@@ -60,9 +60,7 @@ export const SocketProvider = ({ children }: IProps) => {
 
 
     useEffect(() => {
-        if (appState  && !socket.current.id) {
-            console.log('update');
-            
+        if (appState) {
             socket.current.on('connect', () => {
                 console.log(`connected ${socket.current.id}`)
                 setIsConnected(true);
@@ -77,24 +75,18 @@ export const SocketProvider = ({ children }: IProps) => {
             });
 
             return () => {
-                socket.current.disconnect();
+                socket.current.off('disconnect');
+                socket.current.off('connect');
             }
         }
     }, [appState])
 
 
-    const value = React.useMemo(
-        () => ({
+    const value ={
             socket: socket.current,
             socketId,
             isConnected
-        }),
-        [
-            socket.current,
-            socketId,
-            isConnected
-        ],
-    )
+        }
 
     return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
 }

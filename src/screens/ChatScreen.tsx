@@ -38,7 +38,7 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const { colors, isDarkTheme, coefficient } = useTheme();
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
-    const { socket } = useSocket();    
+    const { socket, socketId } = useSocket();    
     const { setEnabled } = useNotify();
 
     const isFocused = useIsFocused();
@@ -148,8 +148,9 @@ export default function ChatScreen({ navigation, route }: IProps) {
             };
 
             const data = await sendMessageToBack(newMessage)
-
+            
             socket.emit('create_message', data.message)
+            console.log('create_message',socket.id , data.message);
             setValue('');
         } catch (error) {
             console.log('ERROR: onSend', error);
