@@ -12,13 +12,13 @@ const connectionConfig = {
     reconnection: true,
     autoConnect: true,
     reconnectionDelay: 10000,
-    reconnectionAttempts: 100,
+    reconnectionAttempts: 1000,
     transports: ['websocket'],
     query: {
         source: 'auction:mobile',
         platform: Platform.OS,
     },
-    timeout: 60000
+    timeout: 5000
 
 };
 
