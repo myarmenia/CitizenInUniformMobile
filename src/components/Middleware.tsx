@@ -37,7 +37,7 @@ const styles = ({ colors, fontSize }: IStyles) => {
             flex: 1,
             justifyContent: 'center',
             marginBottom: 10,
-            gap: 10
+            gap: 5
 
         },
         customText1: {

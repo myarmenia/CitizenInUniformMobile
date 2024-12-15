@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import socketIOClient, { Socket } from 'socket.io-client';
 
 // const env = 'https://citizenb.trigger.ltd/';
@@ -36,25 +36,51 @@ export const SocketProvider = ({ children }: IProps) => {
     const [socketId, setSocketId] = useState('')
     const socket = useRef(socketIOClient(env, connectionConfig));
     const [isConnected, setIsConnected] = useState(false);
+    const [appState, setAppState] = useState(AppState.currentState === 'active');
+
+
 
     useEffect(() => {
-        socket.current.on('connect', () => {
-            console.log(`connected ${socket.current.id}`)
-            setIsConnected(true);
-            if(socket.current.id) {
-                setSocketId(socket.current?.id);
+        const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+            console.log(AppState.currentState);
+            if (nextAppState === 'active') {
+                
+                setAppState(true);
+            } else if (nextAppState === 'background') {
+                setAppState(false);
+
             }
         });
 
-        socket.current.on('disconnect', () => {
-            console.log('Disconnected from the server');
-            setIsConnected(false);
-        });
-
         return () => {
-            socket.current.disconnect();
+            appStateListener.remove();
+        };
+    }, []);
+
+
+
+    useEffect(() => {
+        if (appState  && !socket.current.id) {
+            console.log('update');
+            
+            socket.current.on('connect', () => {
+                console.log(`connected ${socket.current.id}`)
+                setIsConnected(true);
+                if (socket.current.id) {
+                    setSocketId(socket.current?.id);
+                }
+            });
+
+            socket.current.on('disconnect', () => {
+                console.log('Disconnected from the server');
+                setIsConnected(false);
+            });
+
+            return () => {
+                socket.current.disconnect();
+            }
         }
-    }, [])
+    }, [appState])
 
 
     const value = React.useMemo(
