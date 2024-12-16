@@ -72,6 +72,7 @@ export const SocketProvider = ({ children }: IProps) => {
             socket.current.on('disconnect', () => {
                 console.log('Disconnected from the server');
                 setIsConnected(false);
+                setSocketId('');
             });
 
             return () => {

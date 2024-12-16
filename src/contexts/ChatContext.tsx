@@ -4,6 +4,7 @@ import { IMessage, IRoom } from '../interfaces/data.types';
 import { getRooms } from '../api/requests';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { sortRooms, sortRoomsList } from '../helpers';
+import { AppState } from 'react-native';
 
 interface IProps {
     children: React.ReactNode;
@@ -33,7 +34,6 @@ export const ChatProvider = ({ children }: IProps) => {
     })
 
 
-
     const { socket } = useSocket();
 
     useEffect(() => {
@@ -43,6 +43,20 @@ export const ChatProvider = ({ children }: IProps) => {
             setPassiveRooms(sortedRooms.passive);
         }
     }, [data])
+
+
+    useEffect(() => {
+        const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+            console.log(AppState.currentState);
+            if (nextAppState === 'active') {
+                refetch()
+            }
+        });
+
+        return () => {
+            appStateListener.remove();
+        };
+    }, []);
 
 
     useEffect(() => {
