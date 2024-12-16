@@ -12,4 +12,5 @@ export const urls = {
     NOTIFICATIONS: '/api/mobile/notifications',
     SETTINGS: '/api/mobile/settings',
     UPDATE_SITUATION: '/api/message/update/situation/',
+    CALL_EVENT: '/api/mobile/phone-call/store/'
 }

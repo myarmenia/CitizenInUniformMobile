@@ -111,18 +111,21 @@ export const getGoverningBody = async () => {
     const res = await axiosInstance.get<IBaseData<IGoverningBody[]>>(
         urls.GOV_BODY,
     );
+
+    console.log(res.data.result);
+
     return res.data;
 };
 
 export const getFAQs = async () => {
-    
+
     const isConnected = await checkNetworkStatus();
     if (isConnected) {
         const res = await axiosInstance.get<IBaseData<IFAQ[]>>(urls.GET_FAQS);
         cacheFAQs(res.data.result);
         return res.data.result;
     } else {
-        const cachedFAQs = await  getCachedFAQs()
+        const cachedFAQs = await getCachedFAQs()
         if (cachedFAQs) {
             return cachedFAQs;
         } else {
@@ -228,6 +231,23 @@ export const updateSituation = async (message: IMessage) => {
                 sender: 'user'
             })
         }
+    } catch (error) {
+        console.error('settings is not geted: =============> ', error);
+    }
+}
+
+
+export const phoneCallEvent = async (gov_id: number, number: string) => {
+    try {
+        const user = await handleUser();
+        if (!user) throw new Error(' user is not found');
+
+        return await axiosInstance.post<IBaseData<any>>(urls.CALL_EVENT, {
+            "governing_body_id": gov_id,
+            "phone_number": number,
+            "mobile_user_id": user.id
+        })
+
     } catch (error) {
         console.error('settings is not geted: =============> ', error);
     }

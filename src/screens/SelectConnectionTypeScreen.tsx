@@ -23,8 +23,6 @@ export default function SelectConnectionTypeScreen({ navigation }: IProps) {
         name: '',
         id: -1
     });
-
-
     const [visible, setVisible] = useState(false);
 
 

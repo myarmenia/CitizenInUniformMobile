@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { callIcon, chatIcon } from "../assets/icons";
 import { appStrings } from "../assets/appStrings";
@@ -12,6 +12,9 @@ import { navigationTypes } from "../navigation/navigation.types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNetInfo } from "@react-native-community/netinfo";
 import Toast from "react-native-toast-message";
+import { IGoverningBody } from "../interfaces/data.types";
+import { useQuery } from "@tanstack/react-query";
+import { getGoverningBody } from "../api/requests";
 
 interface IProps {
     navigation: NavigationProp<ParamListBase>,
@@ -24,6 +27,7 @@ interface IProps {
 }
 
 function Footer({ navigation, showActions = false, selectedItem, setCallAction }: IProps) {
+    const [selectedGov, setSelectedGov] = useState<IGoverningBody>()
 
 
     const { colors, isDarkTheme, coefficient } = useTheme()
@@ -37,6 +41,36 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
 
     const disabledAll = selectedItem?.id == -1;
     const disabled = disabledAll || selectedItem?.id == 3;
+
+
+    const { data, isFetching, isError } = useQuery({
+        queryKey: ['governingBodies'],
+        queryFn: getGoverningBody,
+
+    })
+
+    useEffect(() => {
+        if (data?.result) {
+            const gov = data.result.find(v => v.id === selectedItem?.id)
+            console.log(gov);
+            
+            if (gov) {
+                setSelectedGov(gov);
+            }
+
+        }
+    }, [selectedItem?.id, data])
+
+    const emailAvailability = useMemo(() => {
+       if (selectedItem?.id === 1 || selectedItem?.id === 2) {
+        const gov = data?.result.find(v => v.id === selectedItem?.id)
+        return !gov?.email
+
+       } else if (selectedItem?.id === 3){
+            return !(!!data?.result[0].email && !!data?.result[1].email)
+       }
+       return true
+    }, [data, selectedItem])
 
 
     const onPressCall = () => {
@@ -84,9 +118,9 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
                         <TouchableOpacity
                             style={stylesMemo.item}
                             onPress={onPressEmail}
-                            disabled={disabledAll}
+                            disabled={disabledAll || emailAvailability}
                         >
-                            {emailIcon(disabledAll)}
+                            {emailIcon(disabledAll || emailAvailability)}
                             <Text style={appStylesMemo.subTitle} >
                                 {appStrings.emailMessage}
                             </Text>

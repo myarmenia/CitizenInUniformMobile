@@ -1,9 +1,9 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, Linking, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { useQuery } from "@tanstack/react-query";
-import { getGoverningBody } from "../api/requests";
+import { getGoverningBody, phoneCallEvent } from "../api/requests";
 import { IGoverningBody } from "../interfaces/data.types";
 import { appStyles } from "../styles";
 import { callFillIcon } from "../assets/icons/callFillIcon";
@@ -38,9 +38,13 @@ function CallModal({
 
     const onPress = (number: string) => {
         onDismiss();
-
+        phoneCallEvent(selectedItem.id, number)
         Linking.openURL(`tel:${number}`)
     }
+
+const number = useCallback((item: any) => {
+    return validateAndFormatPhoneNumber(item)
+}, [selectedGov])    
 
     useEffect(() => {
         if (data?.result) {
@@ -63,12 +67,13 @@ function CallModal({
         >
             {callFillIcon()}
             <Text style={stylesMemo.title} numberOfLines={1}>
-                {appStrings.calling}   {validateAndFormatPhoneNumber(item)}
+                {`${appStrings.calling}  ${number(item)} `}
             </Text>
 
         </TouchableOpacity>
     )
 
+const numbersIsNotAvailable = useMemo(() => selectedGov?.phone, [selectedGov])
 
     return (
         <Modal
@@ -84,10 +89,10 @@ function CallModal({
                 onPress={onDismiss}
             >
                 <Pressable style={stylesMemo.container}>
-                    {selectedGov?.phone_numbers.length
+                    {numbersIsNotAvailable
 
                         ? <FlatList
-                            data={selectedGov.phone_numbers}
+                            data={selectedGov?.phone_numbers}
                             renderItem={renderItem}
                             contentContainerStyle={{gap: 8}}
                         />
@@ -140,7 +145,6 @@ const styles = ({ colors, fontSize }: IStyles) => {
             fontSize: fontSize(16),
             fontWeight: '700',
             color: colors.TEXT_COLOR,
-            lineHeight: 24
         },
         background: {
             justifyContent: 'flex-end',
