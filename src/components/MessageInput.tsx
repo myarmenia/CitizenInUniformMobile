@@ -1,5 +1,5 @@
-import { memo, useMemo } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { memo, useMemo, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../hooks";
 import { IStyles } from "../contexts/ThemeContext";
 import { IMessage } from "../interfaces/data.types";
@@ -7,12 +7,13 @@ import { sendIcon } from "../assets/icons/sendIcon";
 import { appStyles } from "../styles";
 import { SafeAreaInsetsContext, useSafeAreaInsets } from "react-native-safe-area-context";
 import { appStrings } from "../assets/appStrings";
+import Toast from "react-native-toast-message";
 
 
 interface IProps {
     value: string;
     setValue: (text: string) => void,
-    onSend: () => void,
+    onSend: () => Promise<void>,
     disabled?: boolean,
 }
 
@@ -22,9 +23,28 @@ function Message({ value, setValue, onSend, disabled }: IProps) {
     const fontSize = (size: number) => size * coefficient;
     const stylesMemo = useMemo(() => styles({ colors, fontSize }), [isDarkTheme, coefficient]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+
     const MAX_HEIGHT = 5 * 26 + 30;
     const insets = useSafeAreaInsets()
     const bottom = insets ? insets.bottom + 20 : 20;
+
+    const onPressSend = async () => {
+        try {
+            setIsLoading(true);
+            await onSend();
+            setIsLoading(false);
+
+        } catch {
+            Toast.show({
+                type: 'error',
+                text1: appStrings.hey,
+                text2: appStrings.unableInternet,
+                topOffset: 10 + insets.top,
+            })
+        }
+    }
 
     return (
         <View style={[stylesMemo.container, { marginBottom: bottom }]}  >
@@ -40,11 +60,15 @@ function Message({ value, setValue, onSend, disabled }: IProps) {
                 />
             </View>
             <TouchableOpacity
-                onPress={onSend}
+                onPress={onPressSend}
                 style={stylesMemo.button}
-                disabled={disabled}
+                disabled={disabled || isLoading}
             >
-                {sendIcon()}
+
+                {!isLoading
+                    ? sendIcon()
+                    : <ActivityIndicator color={colors.PRIMARY} size={'small'} />
+                }
             </TouchableOpacity>
         </View>
     )

@@ -44,9 +44,7 @@ export const NotifyProvider = ({ children }: IProps) => {
 
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async (data) => {
-            try {
-                console.log({enabled});
-                
+            try {                
                 if (enabled) {
                     Toast.show({
                         text1: data?.notification?.title,
@@ -78,11 +76,7 @@ export const NotifyProvider = ({ children }: IProps) => {
 
 
     useEffect(() => {
-        console.log('notifee.stopForegroundService');
-
         if (!!notifications) {
-            console.log(notifications.length);
-
             setCount(notifications?.length)
         }
     }, [notifications?.length])

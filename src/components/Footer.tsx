@@ -51,9 +51,7 @@ function Footer({ navigation, showActions = false, selectedItem, setCallAction }
 
     useEffect(() => {
         if (data?.result) {
-            const gov = data.result.find(v => v.id === selectedItem?.id)
-            console.log(gov);
-            
+            const gov = data.result.find(v => v.id === selectedItem?.id)            
             if (gov) {
                 setSelectedGov(gov);
             }

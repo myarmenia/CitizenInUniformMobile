@@ -42,7 +42,6 @@ export const SocketProvider = ({ children }: IProps) => {
 
     useEffect(() => {
         const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-            console.log(AppState.currentState);
             if (nextAppState === 'active') {
                 
                 setAppState(true);

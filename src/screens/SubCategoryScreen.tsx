@@ -38,7 +38,6 @@ const RenderItem = ({
 
 
     m.type === 'image' && Image.getSize(m.path, (w, h) => {
-        console.log(' -------------------------->', w / h);
         setRatio(w / h)
         return w / h
     })

@@ -34,8 +34,6 @@ function App(): React.JSX.Element {
     const { isConnected } = useNetInfo();
 
     useEffect(() => {
-        console.log('Loading');
-
         (async () => {
             const isAvailableUser = await handleUser();
             const isConnected = await checkNetworkStatus()
@@ -45,7 +43,6 @@ function App(): React.JSX.Element {
 
             setIsLoading(false)
             messaging().getToken().then(async (token) => {
-                console.log('FCM token: ', token);
                 await updateFMCToken(token);
             });
             handleNotificationPermission();

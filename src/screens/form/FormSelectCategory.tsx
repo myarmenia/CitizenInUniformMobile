@@ -64,8 +64,6 @@ export default function FormSelectTypeScreen({ navigation }: IProps) {
     const onCreateChat = async () => {
         try {
             const isActiveOperator = await checkAdmins()
-            console.log({ isActiveOperator, name, email, socketId: socket.id });
-
             if (name && email && socketId) {
                 if (isActiveOperator) {
 

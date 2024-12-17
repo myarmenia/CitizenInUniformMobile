@@ -14,14 +14,15 @@ export const ChatContext = React.createContext({
     activeRooms: [] as IRoom[],
     passiveRooms: [] as IRoom[],
     activeRoomID: -1,
-    setActiveRoomID: (id: number) => {},
-    refetch: () => {}
+    setActiveRoomID: (id: number) => { },
+    refetch: () => { }
 })
 
 
 export const ChatProvider = ({ children }: IProps) => {
 
     const [activeRoomID, setActiveRoomID] = useState(-1);
+    const [openedApp, setOpenedApp] = useState(AppState.currentState !== 'background');
     const [activeRooms, setActiveRooms] = useState<IRoom[]>([]);
     const [passiveRooms, setPassiveRooms] = useState<IRoom[]>([]);
 
@@ -32,7 +33,6 @@ export const ChatProvider = ({ children }: IProps) => {
         queryFn: getRooms,
         select: (data) => data?.data,
     })
-
 
     const { socket } = useSocket();
 
@@ -47,9 +47,11 @@ export const ChatProvider = ({ children }: IProps) => {
 
     useEffect(() => {
         const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-            console.log(AppState.currentState);
             if (nextAppState === 'active') {
+                setOpenedApp(true);
                 refetch()
+            } else if (nextAppState === 'background') {
+                setOpenedApp(false)
             }
         });
 
@@ -58,9 +60,10 @@ export const ChatProvider = ({ children }: IProps) => {
         };
     }, []);
 
-
     useEffect(() => {
-        if (activeRooms) {
+        if (activeRooms && openedApp) {
+            console.log('taza kpav');
+
             activeRooms.map(room => {
                 socket.emit('operatorJoin', room);
             })
@@ -68,9 +71,8 @@ export const ChatProvider = ({ children }: IProps) => {
                 socket.off('operatorJoin');
             }
         }
-    }, [!!activeRooms.length])
-
-
+    }, [!!activeRooms.length, openedApp])
+    
     const handleNewMessage = (newMessage: IMessage) => {
         setActiveRooms((prevRooms) => {
             const updatedRooms = prevRooms.map((room: IRoom) => {
@@ -126,12 +128,12 @@ export const ChatProvider = ({ children }: IProps) => {
                     return prevRooms.map((room) => {
                         if (room.id === roomId) {
                             const newMessages = [...room.messages];
-    
-                            newMessages[0].readed = 1;
+                            const firstMessage = {...newMessages[0], readed: 1}
+                            newMessages.splice(0, 1, firstMessage);
                             return {
                                 ...room,
                                 messages: newMessages
-    
+
                             };
                         }
                         return room;

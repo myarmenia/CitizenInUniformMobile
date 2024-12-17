@@ -116,7 +116,6 @@ export const handleNotificationPermission = async () => {
     if (Platform.OS === "android") {
         try {
             const status = await PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS')
-            console.log({ status });
             if (!status) {
                 const permission = await  PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS', {
                     title: 'Notification',
@@ -127,8 +126,6 @@ export const handleNotificationPermission = async () => {
                     buttonNegative: 'Cancel',
                     buttonPositive: 'OK'
                 })
-
-                console.log({permission});
 
                 if(permission === 'denied') {
                     await updateSettings(false, false)

@@ -102,15 +102,11 @@ export default function ChatScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         queryClient.invalidateQueries({ queryKey: ['rooms'] })
-        const focus = navigation.addListener('focus', () => {
-            console.log('focus');
-            
+        const focus = navigation.addListener('focus', () => {            
             setEnabled(false);
         })
         const blur = navigation.addListener('blur', () => {
-            setEnabled(true);
-            console.log('blur');
-            
+            setEnabled(true);            
         })
 
         return () => {
@@ -129,7 +125,6 @@ export default function ChatScreen({ navigation, route }: IProps) {
     const onRead = async () => {
         try {
             socket.emit("operatorMessageWasReaded", { id: roomId })
-            refetch()
         } catch (error) {
             console.error(error)
         }

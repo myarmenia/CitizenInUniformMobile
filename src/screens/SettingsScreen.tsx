@@ -37,11 +37,6 @@ export default function SettingsScreen({ navigation, route }: IProps) {
 
     useEffect(() => {
         getParams();
-
-        getSettings().then((settings) => {
-           console.log(settings?.data.result);
-           
-        })
     }, [])
 
 

@@ -60,7 +60,6 @@ export const checkAvailableAdmins = async (id: number) => {
             }
         );
 
-        console.log(checkActiveAdmins.data);
         return checkActiveAdmins.data.message === 'success';
     } catch (error) {
         console.error('checkAvailableAdmins =========>', error);
@@ -112,7 +111,6 @@ export const getGoverningBody = async () => {
         urls.GOV_BODY,
     );
 
-    console.log(res.data.result);
 
     return res.data;
 };
@@ -146,7 +144,6 @@ export const updateFMCToken = async (token: string) => {
                 "fcm_token": token
             }
         );
-        console.log('updateFMCToken =============> ', res.data);
     } catch (error) {
         console.error('updateFMCToken =============> ', error);
     }
@@ -178,7 +175,6 @@ export const removeAllNorifications = async () => {
     try {
         const user = await handleUser();
         if (!user) throw new Error(' user is not found');
-        console.log('userId', user.id);
 
         return await axiosInstance.delete(urls.NOTIFICATIONS, {
             data: {

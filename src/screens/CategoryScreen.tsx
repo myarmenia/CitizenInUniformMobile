@@ -34,10 +34,7 @@ export default function CategoryScreen({ navigation, route }: IProps) {
         
 
         const unsubscribe =  messaging().onMessage(async (data) => {
-            try {
-                console.log(data.notification);
-                
-
+            try {                
                 Toast.show({
                     text1: data?.notification?.title,
                     text2: data?.notification?.body,
@@ -48,7 +45,6 @@ export default function CategoryScreen({ navigation, route }: IProps) {
                 })
             } catch (error) {
                 console.log('error', error);
-        
             }
         
         })

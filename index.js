@@ -37,13 +37,4 @@ notifee.createChannel({
 	showWhen: true,
 })
 
-// messaging().setBackgroundMessageHandler((remoteMessage) => {
-// 	try {
-// 		console.log('setBackgroundMessageHandler', remoteMessage);
-// 	} catch (error) {
-// 		console.log('Error while setting background message', error);
-// 	}
-// })
-
-
 AppRegistry.registerComponent(appName, () => App);
