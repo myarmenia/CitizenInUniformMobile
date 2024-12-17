@@ -8,8 +8,6 @@ import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import Toast from 'react-native-toast-message';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { removeListener } from 'process';
-import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 export const NotifyContext = React.createContext({
     notifications: [] as INotification[],
@@ -96,7 +94,8 @@ export const NotifyProvider = ({ children }: IProps) => {
         [
             notifications,
             isLoading,
-            count
+            count,
+            enabled
         ],
     )
 
